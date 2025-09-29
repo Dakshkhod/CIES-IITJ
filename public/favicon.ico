@@ -1,0 +1,14 @@
+# This is a placeholder for favicon.ico
+# Replace with actual favicon file
+# You can generate favicons from your logo at https://favicon.io/
+# 
+# Required favicon files:
+# - favicon.ico (32x32, 16x16 multi-size ICO file)
+# - favicon-16x16.png
+# - favicon-32x32.png
+# - apple-touch-icon.png (180x180)
+# - android-chrome-192x192.png
+# - android-chrome-512x512.png
+# 
+# Place your IITJ and CIES logos in the public directory and
+# generate these favicon files from them.

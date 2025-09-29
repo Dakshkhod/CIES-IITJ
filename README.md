@@ -70,16 +70,6 @@ public/
 │   └── ... (other team photos)
 └── manifest.json               # PWA manifest
 ```
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create `.env.local`:
-
-```bash
-NEXT_PUBLIC_SITE_URL=https://cies.iitj.ac.in
-NEXT_PUBLIC_CONTACT_EMAIL=office@civil.iitj.ac.in
 ```
 
 ### Customization
@@ -87,13 +77,6 @@ NEXT_PUBLIC_CONTACT_EMAIL=office@civil.iitj.ac.in
 - **Colors**: Update `tailwind.config.js` for brand colors
 - **Content**: Modify data in components for team info, activities
 - **Images**: Replace logos and team photos in `public/`
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-```bash
-npm install -g vercel
-vercel
 ```
 
 ### Build for Production

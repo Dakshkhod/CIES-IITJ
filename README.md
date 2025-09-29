@@ -22,8 +22,6 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see the homepage.
-
 ## 🏗️ Tech Stack
 
 - **Framework**: Next.js 14 with App Router
@@ -130,12 +128,6 @@ npm run lint         # Run ESLint
 npm run type-check   # Run TypeScript checking
 npm run format       # Format code with Prettier
 ```
-
-## 📞 Support
-
-For questions or support:
-- **Email**: office@civil.iitj.ac.in
-- **Issues**: Create GitHub issues for bugs or feature requests
 
 ## 📄 License
 

@@ -34,13 +34,57 @@ const navItems = [
 // Team data - Replace with CMS/API integration in production
 const TEAM_DATA = [
     { 
-      id: "shashank", 
-      name: "Shashank", 
+      id: "hod", 
+      name: "Dr. A. B. C.", 
+      role: "Head of Department", 
+      committee: "Faculty Leadership", 
+      batch: "Faculty", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E", 
+      bio: "Head of the Civil & Infrastructure Engineering Department.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" }, 
+      featured: true 
+    },
+    { 
+      id: "advisor", 
+      name: "Dr. X. Y. Z.", 
+      role: "Faculty Advisor", 
+      committee: "Faculty Leadership", 
+      batch: "Faculty", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E", 
+      bio: "Faculty advisor for the Civil Engineering Society.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" }, 
+      featured: true 
+    },
+    { 
+      id: "advisor2", 
+      name: "Dr. P. Q. R.", 
+      role: "Faculty Advisor", 
+      committee: "Faculty Leadership", 
+      batch: "Faculty", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E", 
+      bio: "Faculty advisor for the Civil Engineering Society.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" }, 
+      featured: true 
+    },
+    { 
+      id: "ashwani", 
+      name: "Ashwani", 
       role: "Secretary", 
       committee: "Coordination Committee", 
       batch: "UG 2024", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3EA%3C/text%3E%3C/svg%3E", 
+      bio: "Secretary — coordinates society operations.", 
+      socials: { linkedin: "#", email: "mailto:ashwani@iitj.ac.in", instagram: "#" }, 
+      featured: true 
+    },
+    { 
+      id: "shashank", 
+      name: "Shashank", 
+      role: "Joint Secretary", 
+      committee: "Coordination Committee", 
+      batch: "UG 2024", 
       photo: "/Team images/Shashank.jpeg", 
-      bio: "Secretary coordinating society operations and events.", 
+      bio: "Joint Secretary.", 
       socials: { linkedin: "#", email: "mailto:shashank@iitj.ac.in", instagram: "#" } 
     },
     { 
@@ -94,6 +138,17 @@ const TEAM_DATA = [
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
+      id: "daksh", 
+      name: "Daksh", 
+      role: "Technical Committee (PG) / Web Dev Executive", 
+      committee: "Technical Committee", 
+      batch: "PG 2024", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3ED%3C/text%3E%3C/svg%3E", 
+      bio: "Web dev and technical executive.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" }, 
+      featured: true 
+    },
+    { 
       id: "falak", 
       name: "Falak Khan", 
       role: "Seminars & Academic Engagement", 
@@ -144,6 +199,16 @@ const TEAM_DATA = [
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
+      id: "harsh", 
+      name: "Harsh", 
+      role: "Media & Design", 
+      committee: "Media & Design Committee", 
+      batch: "UG 2024", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3EH%3C/text%3E%3C/svg%3E", 
+      bio: "Design & media.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" } 
+    },
+    { 
       id: "simran_sehgal", 
       name: "Simran Sehgal", 
       role: "Media & Design Executive", 
@@ -189,6 +254,7 @@ const TEAM_DATA = [
    UTILITIES
    ========================= */
 const committeeColors: Record<string, string> = {
+  "Faculty Leadership": "border-red-700",
   "Coordination Committee": "border-blue-700",
   "Events & Community Engagement Committee": "border-green-600",
   "Technical Committee": "border-purple-600",
@@ -475,8 +541,9 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
 
 
 function TeamPageContent() {
+    const facultyLeadership = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Faculty Leadership'), []);
     const coordinationCommittee = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Coordination Committee'), []);
-    const committeeMembers = useMemo(() => TEAM_DATA.filter(m => m.committee !== 'Coordination Committee'), []);
+    const committeeMembers = useMemo(() => TEAM_DATA.filter(m => m.committee !== 'Faculty Leadership' && m.committee !== 'Coordination Committee'), []);
     
     const groupedAndSortedCommittees = useMemo(() => {
         const committeeOrder = [
@@ -510,6 +577,15 @@ function TeamPageContent() {
         <>
             <TeamHeader />
             
+            <section className="container mx-auto px-6 py-12">
+                <SectionTitle>Faculty Leadership</SectionTitle>
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
+                    {facultyLeadership.map(member => (
+                         <MemberCard key={member.id} member={member} />
+                    ))}
+                </div>
+            </section>
+
             <section className="container mx-auto px-6 py-12 bg-white/50 dark:bg-gray-800/30 rounded-3xl my-12">
                 <SectionTitle>Coordination Committee</SectionTitle>
                  <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>

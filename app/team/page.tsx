@@ -9,21 +9,23 @@ import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal,
    ========================= */
 const navItems = [
   { name: 'Home', href: '/', icon: Home },
-  { name: 'About', href: '/#about', icon: Info },
+  { name: 'About', href: '/about', icon: Info },
   {
     name: 'Activities',
-    href: '#',
+    href: '/#activities',
     icon: Briefcase,
     dropdown: [
-      { name: 'Workshops', href: '#' },
-      { name: 'Site Visits', href: '#' },
-      { name: 'Competitions', href: '#' },
-      { name: 'Seminars', href: '#' },
+      { name: 'Workshops', href: '#/workshops' },
+      { name: 'Site Visits', href: '#/site-visits' },
+      { name: 'Competitions', href: '#/competitions' },
+      { name: 'Seminars', href: '#/seminars' },
     ],
   },
+  { name: 'Events', href: '/#activities', icon: Briefcase },
+  { name: 'Edificio', href: '/about#edificio', icon: Briefcase },
   { name: 'Team', href: '/team', icon: Users },
-  { name: 'Achievements', href: '#', icon: Award },
-  { name: 'Gallery', href: '#', icon: GalleryHorizontal },
+  { name: 'Roadmap and Calendar', href: '#achievements', icon: Award },
+  { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
   { name: 'Contact Us', href: '/#contact', icon: Mail },
 ];
 
@@ -278,9 +280,9 @@ interface HeaderProps {
 const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }: HeaderProps) => {
 
   return (
-    <header id="home" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky ? 'shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl' : 'bg-transparent'}`}>
-      <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-        <a href="/" className="flex items-center gap-3 group" aria-label="Homepage">
+    <header id="home" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/90' : 'bg-white/80 backdrop-blur-sm dark:bg-transparent'}`}>
+      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-2 md:px-4 py-2.5 md:py-3">
+        <a href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
           <img
             src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
             alt="IIT Jodhpur Logo"
@@ -291,31 +293,31 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }
             alt="CIES Logo"
             className="h-12 w-12 rounded-full object-cover shadow-lg"
           />
-          <div className="flex flex-col">
-            <span className="text-sm font-bold leading-tight text-gray-800 dark:text-white">
+          <div className="flex flex-col justify-center min-w-fit">
+            <span className="text-sm font-bold leading-tight whitespace-nowrap text-gray-800 dark:text-white">
               CIES
             </span>
-            <span className="text-xs leading-tight text-gray-500 dark:text-gray-400">
+            <span className="text-xs leading-tight whitespace-nowrap text-gray-500 dark:text-gray-400">
               IIT Jodhpur
             </span>
           </div>
         </a>
-        <div className="hidden lg:flex items-center space-x-1 bg-white/50 dark:bg-gray-800/50 px-2 py-1.5 rounded-full shadow-inner border border-gray-200 dark:border-gray-700/50">
+        <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
           {navItems.map((item) => (
             item.dropdown ? (
-              <div key={item.name} className="relative group">
-                <a href={item.href} className="flex items-center px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <div key={item.name} className="group relative">
+                <a href={item.href} className="flex items-center whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700">
                   {item.name}
                   <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                 </a>
-                <div className="absolute top-full left-0 mt-3 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-1 z-20 border dark:border-gray-700 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200" role="menu">
+                <div className="absolute left-0 top-full z-20 mt-3 w-48 rounded-lg border bg-white py-1 shadow-xl opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800" role="menu">
                   {item.dropdown.map((subItem) => (
-                    <a key={subItem.name} href={subItem.href} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">{subItem.name}</a>
+                    <a key={subItem.name} href={subItem.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700" role="menuitem">{subItem.name}</a>
                   ))}
                 </div>
               </div>
             ) : (
-              <a key={item.name} href={item.href} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${item.name === 'Team' ? 'bg-[#0b3d91] text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>{item.name}</a>
+              <a key={item.name} href={item.href} className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors ${item.name === 'Team' ? 'bg-[#0b3d91] text-white shadow-md' : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'}`}>{item.name}</a>
             )
           ))}
         </div>

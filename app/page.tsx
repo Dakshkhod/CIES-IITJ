@@ -1,350 +1,32 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
+import AppLayout from '@/components/layout/AppLayout';
 import {
-  Home,
-  Info,
-  Briefcase,
-  Users,
-  Award,
-  GalleryHorizontal,
-  Mail,
-  Menu,
-  X,
-  Sun,
-  Moon,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
 
 // --- Main Page Component ---
 export default function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    // CMS Hook: Check user's saved theme preference from a CMS or localStorage
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      document.documentElement.classList.add('dark');
-      setIsDarkMode(true);
-    } else {
-      document.documentElement.classList.remove('dark');
-      setIsDarkMode(false);
-    }
-
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleTheme = () => {
-    const newIsDarkMode = !isDarkMode;
-    setIsDarkMode(newIsDarkMode);
-    if (newIsDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
   return (
+    <AppLayout>
     <div
       className={`bg-gray-50 font-sans text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-200`}
     >
       {/* Blueprint background pattern */}
       <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
-      <Header
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        isSticky={isSticky}
-      />
-
       <main className="isolate pt-24">
         <HeroSection />
         <RecentActivities />
       </main>
-
-      <Footer />
     </div>
+    </AppLayout>
   );
 }
-
-// --- Navigation Data ---
-// CMS Hook: This navigation data should be fetched from a headless CMS (e.g., Sanity, Strapi).
-const navItems = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'About', href: '/#about', icon: Info },
-  {
-    name: 'Activities',
-    href: '#activities',
-    icon: Briefcase,
-    dropdown: [
-      { name: 'Workshops', href: '#/workshops' },
-      { name: 'Site Visits', href: '#/site-visits' },
-      { name: 'Competitions', href: '#/competitions' },
-      { name: 'Seminars', href: '#/seminars' },
-    ],
-  },
-  { name: 'Team', href: '/team', icon: Users },
-  { name: 'Achievements', href: '#achievements', icon: Award },
-  { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
-  { name: 'Contact Us', href: '/#contact', icon: Mail },
-];
-
-// --- Header Component ---
-interface HeaderProps {
-  isMenuOpen: boolean;
-  setIsMenuOpen: (open: boolean) => void;
-  isDarkMode: boolean;
-  toggleTheme: () => void;
-  isSticky: boolean;
-}
-
-const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }: HeaderProps) => {
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
-  // Enhanced keyboard navigation for dropdowns
-  const handleKeyDown = (event: React.KeyboardEvent, itemName: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      setOpenDropdown(openDropdown === itemName ? null : itemName);
-    } else if (event.key === 'Escape') {
-      setOpenDropdown(null);
-    }
-  };
-
-  const handleDropdownKeyDown = (event: React.KeyboardEvent, href: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      window.location.href = href;
-    } else if (event.key === 'Escape') {
-      setOpenDropdown(null);
-      // Focus back to the dropdown trigger
-      const trigger = (event.target as HTMLElement).closest('[role="menu"]')?.previousElementSibling as HTMLElement;
-      trigger?.focus();
-    }
-  };
-
-  return (
-    <header
-      id="home"
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/80 shadow-lg backdrop-blur-xl dark:bg-gray-900/80' : 'bg-transparent'}`}
-    >
-      <nav className="container mx-auto flex items-center justify-between px-6 py-3">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group" aria-label="Homepage">
-          <img
-            src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
-            alt="IIT Jodhpur Logo"
-            className="h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-          />
-          <img
-            src="/logo.jpg"
-            alt="CIES Logo"
-            className="h-12 w-12 rounded-full object-cover shadow-lg"
-          />
-          <div className="flex flex-col">
-            <span className="text-sm font-bold leading-tight text-gray-800 dark:text-white">
-              CIES
-            </span>
-            <span className="text-xs leading-tight text-gray-500 dark:text-gray-400">
-              IIT Jodhpur
-            </span>
-          </div>
-        </a>
-
-        {/* Desktop Navigation */}
-        <div className="hidden items-center space-x-1 rounded-full border border-gray-200 bg-white/50 px-2 py-1.5 shadow-inner dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex">
-          {navItems.map(item =>
-            item.dropdown ? (
-              <div
-                key={item.name}
-                className="group relative"
-                onMouseEnter={() => setOpenDropdown(item.name)}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <button
-                  onClick={() => setOpenDropdown(openDropdown === item.name ? null : item.name)}
-                  onKeyDown={e => handleKeyDown(e, item.name)}
-                  className="flex items-center rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700"
-                  aria-haspopup="true"
-                  aria-expanded={openDropdown === item.name}
-                  aria-controls={`dropdown-${item.name.toLowerCase().replace(' ', '-')}`}
-                >
-                  {item.name}
-                  <ChevronDown
-                    className={`ml-1 h-4 w-4 transition-transform duration-200 ${openDropdown === item.name ? 'rotate-180' : 'group-hover:rotate-180'}`}
-                  />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === item.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                      className="absolute left-0 top-full z-20 mt-3 w-48 rounded-lg border bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800"
-                      role="menu"
-                      id={`dropdown-${item.name.toLowerCase().replace(' ', '-')}`}
-                      aria-labelledby={`dropdown-trigger-${item.name.toLowerCase().replace(' ', '-')}`}
-                    >
-                      {item.dropdown.map((subItem) => (
-                        <a
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700"
-                          role="menuitem"
-                          tabIndex={0}
-                          onKeyDown={e => handleDropdownKeyDown(e, subItem.href)}
-                        >
-                          {subItem.name}
-                        </a>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <a
-                key={item.name}
-                href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] ${
-                  item.name === 'Home' 
-                    ? 'bg-[#0b3d91] text-white' 
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-                }`}
-              >
-                {item.name}
-              </a>
-            )
-          )}
-        </div>
-
-        {/* Theme Toggle & Mobile Menu Button */}
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={toggleTheme}
-            className="rounded-full p-2 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] focus-visible:ring-offset-2 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900"
-            aria-label="Toggle dark mode"
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={isDarkMode ? 'moon' : 'sun'}
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </motion.div>
-            </AnimatePresence>
-          </button>
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-800"
-              aria-label="Open menu"
-              aria-expanded={isMenuOpen}
-            >
-              <span className="sr-only">Open menu</span>
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900/95 lg:hidden"
-          >
-            <MobileNav />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-};
-
-// --- Mobile Navigation Component ---
-const MobileNav = () => {
-  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-
-  return (
-    <div className="flex flex-col space-y-1 px-4 pb-4 pt-2">
-      {navItems.map(item => (
-        <div key={item.name}>
-          {item.dropdown ? (
-            <>
-              <button
-                onClick={() => setOpenAccordion(openAccordion === item.name ? null : item.name)}
-                className="flex w-full items-center justify-between rounded-md px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                aria-expanded={openAccordion === item.name}
-              >
-                <div className="flex items-center">
-                  <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
-                  <span>{item.name}</span>
-                </div>
-                <ChevronDown
-                  className={`h-5 w-5 transition-transform duration-300 ${openAccordion === item.name ? 'rotate-180' : ''}`}
-                />
-              </button>
-              <AnimatePresence>
-                {openAccordion === item.name && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden pl-8"
-                  >
-                    <div className="ml-5 space-y-1 border-l-2 border-gray-200 py-2 dark:border-gray-700">
-                      {item.dropdown.map(subItem => (
-                        <a
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block rounded-r-md py-2 pl-4 pr-2 text-gray-600 hover:bg-gray-100 hover:text-[#0b3d91] dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-400"
-                        >
-                          {subItem.name}
-                        </a>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </>
-          ) : (
-            <a
-              href={item.href}
-              className="flex items-center rounded-md px-4 py-3 font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
-              <span>{item.name}</span>
-            </a>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
 
 // --- Ultra-Detailed Animated CIES Logo Component ---
 const AnimatedCIESLogo = () => {
@@ -405,14 +87,17 @@ const AnimatedCIESLogo = () => {
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 700 320"
-      className="mx-auto h-auto w-full text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+      className="mx-auto h-auto w-full text-[#0b3d91] dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(11,61,145,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       aria-hidden="true"
     >
+      {/* Shift the CIES lettering slightly to the right for centering */}
+      <motion.g transform="translate(20,0)">
       {/* Letter C - Enhanced with detailed internal systems */}
       <motion.path
+        className="text-[#0b3d91] dark:text-cyan-200"
         variants={letterVariants}
         d="M90 90 Q35 90 35 160 Q35 230 90 230 L130 230"
         strokeWidth="8"
@@ -449,6 +134,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter I - Enhanced tower with complex truss system */}
       <motion.path
+        className="text-[#0b3d91] dark:text-cyan-200"
         variants={letterVariants}
         d="M200 90 L200 230 M165 90 L235 90 M165 230 L235 230"
         strokeWidth="8"
@@ -488,6 +174,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter E - Enhanced with complex structural grid */}
       <motion.path
+        className="text-[#0b3d91] dark:text-cyan-200"
         variants={letterVariants}
         d="M300 90 L300 230 M300 90 L390 90 M300 160 L370 160 M300 230 L390 230"
         strokeWidth="8"
@@ -521,40 +208,45 @@ const AnimatedCIESLogo = () => {
       {/* E additional technical details */}
       <motion.path variants={circuitVariants} d="M310 100 L385 100 M310 120 L375 120 M310 170 L375 170 M310 190 L385 190 M310 220 L385 220" strokeWidth="1" stroke="currentColor" opacity="0.7" />
 
-      {/* Letter S - Enhanced with complex curved systems */}
-      <motion.path
-        variants={letterVariants}
-        d="M480 110 Q445 90 410 110 Q390 130 410 150 Q430 165 455 165 Q480 165 490 185 Q500 205 480 220 Q445 235 410 215"
-        strokeWidth="8"
-        stroke="currentColor"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* S internal curved structural systems */}
-      <motion.path
-        variants={structureVariants}
-        d="M425 105 Q415 100 405 105 M475 200 Q465 205 455 200 M420 120 L435 135 L450 145 M470 180 L455 195 L440 205"
-        strokeWidth="3"
-        stroke="currentColor"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* S complex internal circuits */}
-      <motion.path
-        variants={circuitVariants}
-        d="M430 115 Q420 110 410 115 M470 190 Q460 195 450 190 M425 125 L440 140 L455 150 M465 175 L450 190 L435 200"
-        strokeWidth="2"
-        stroke="currentColor"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* S mechanical gears and systems */}
-      <motion.circle variants={detailVariants} cx="425" cy="130" r="9" strokeWidth="2.5" stroke="currentColor" fill="none" />
-      <motion.path variants={detailVariants} d="M418 125 L432 125 M418 135 L432 135 M425 121 L425 139 M420 127 L430 127 M420 133 L430 133" strokeWidth="1.5" stroke="currentColor" />
-      <motion.circle variants={detailVariants} cx="465" cy="190" r="8" strokeWidth="2" stroke="currentColor" fill="none" />
-      <motion.path variants={detailVariants} d="M460 185 L470 185 M460 195 L470 195 M465 182 L465 198 M462 187 L468 187 M462 193 L468 193" strokeWidth="1" stroke="currentColor" />
-      {/* S additional curved details */}
-      <motion.path variants={detailVariants} d="M415 120 Q425 115 435 120 M455 195 Q465 190 475 195" strokeWidth="1.5" stroke="currentColor" />
+      {/* Letter S - Enhanced with complex curved systems (scaled up slightly) */}
+      <motion.g transform="translate(20,0) translate(450,160) scale(1.12) translate(-450,-160)">
+        <motion.path
+          className="text-[#0b3d91] dark:text-cyan-200"
+          variants={letterVariants}
+          d="M480 110 Q445 90 410 110 Q390 130 410 150 Q430 165 455 165 Q480 165 490 185 Q500 205 480 220 Q445 235 410 215"
+          strokeWidth="8"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* S internal curved structural systems */}
+        <motion.path
+          variants={structureVariants}
+          d="M425 105 Q415 100 405 105 M475 200 Q465 205 455 200 M420 120 L435 135 L450 145 M470 180 L455 195 L440 205"
+          strokeWidth="3"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* S complex internal circuits */}
+        <motion.path
+          variants={circuitVariants}
+          d="M430 115 Q420 110 410 115 M470 190 Q460 195 450 190 M425 125 L440 140 L455 150 M465 175 L450 190 L435 200"
+          strokeWidth="2"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* S mechanical gears and systems */}
+        <motion.circle variants={detailVariants} cx="425" cy="130" r="9" strokeWidth="2.5" stroke="currentColor" fill="none" />
+        <motion.path variants={detailVariants} d="M418 125 L432 125 M418 135 L432 135 M425 121 L425 139 M420 127 L430 127 M420 133 L430 133" strokeWidth="1.5" stroke="currentColor" />
+        <motion.circle variants={detailVariants} cx="465" cy="190" r="8" strokeWidth="2" stroke="currentColor" fill="none" />
+        <motion.path variants={detailVariants} d="M460 185 L470 185 M460 195 L470 195 M465 182 L465 198 M462 187 L468 187 M462 193 L468 193" strokeWidth="1" stroke="currentColor" />
+        {/* S additional curved details */}
+        <motion.path variants={detailVariants} d="M415 120 Q425 115 435 120 M455 195 Q465 190 475 195" strokeWidth="1.5" stroke="currentColor" />
+      </motion.g>
+
+      </motion.g>
 
       {/* Compact foundation structure */}
       <motion.path
@@ -658,7 +350,7 @@ const CIEHeroDesign = () => {
           </motion.h1>
           
           <motion.h2 
-            className="text-2xl font-bold text-blue-600 dark:text-blue-400 md:text-3xl lg:text-4xl"
+            className="text-2xl font-bold text-[#0b3d91] dark:text-blue-400 md:text-3xl lg:text-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
@@ -750,19 +442,19 @@ const RecentActivities = () => {
   return (
     <section id="activities" className="relative overflow-hidden py-16 -mt-4">
       {/* Theme-aware overlay to match hero tone */}
-      <div className="absolute inset-0 -z-20 bg-white dark:bg-slate-900/80"></div>
+      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-white via-gray-50 to-white dark:from-slate-900/80 dark:via-slate-900 dark:to-slate-900/80"></div>
       {/* Theme-aware engineering grid background with dark blue-gray */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.12)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.08)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.04)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.18)_2px,transparent_2px),linear-gradient(to_bottom,rgba(30,41,59,0.18)_2px,transparent_2px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(56,189,248,0.12)_2px,transparent_2px)] bg-[size:200px_200px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.08)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.04)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(11,61,145,0.12)_2px,transparent_2px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(56,189,248,0.12)_2px,transparent_2px)] bg-[size:200px_200px]"></div>
       </div>
 
       <div className="container mx-auto px-6 max-w-7xl">
         <FadeInOnScroll>
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
             Recent Activities
-            <span className="mx-auto mt-3 block h-1 w-24 rounded-full bg-[#0b3d91]"></span>
+            <span className="mx-auto mt-3 block h-1 w-24 rounded-full bg-[#0b3d91] dark:bg-cyan-400"></span>
           </h2>
         </FadeInOnScroll>
         
@@ -772,7 +464,7 @@ const RecentActivities = () => {
             whileInView={{ opacity: 1, scale: 1 }} 
             viewport={{ once: true }} 
             transition={{ duration: 0.5, delay: 0.3 }} 
-            className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700/80 p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
+            className="bg-white/90 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-300 dark:border-gray-700/80 p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
           >
             <div className="flex flex-col lg:flex-row gap-8 items-center min-h-[28rem]">
               <div className="w-full lg:w-2/5 flex-shrink-0 h-64 lg:h-80 relative">
@@ -821,17 +513,17 @@ const RecentActivities = () => {
 
             <button 
               onClick={prevActivity} 
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-white dark:hover:bg-gray-800 transition-colors z-10 shadow-lg"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
               aria-label="Previous Activity"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronLeft className="h-6 w-6 text-gray-800 dark:text-gray-300" />
             </button>
             <button 
               onClick={nextActivity} 
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-white dark:hover:bg-gray-800 transition-colors z-10 shadow-lg"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
               aria-label="Next Activity"
             >
-              <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronRight className="h-6 w-6 text-gray-800 dark:text-gray-300" />
             </button>
 
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
@@ -841,8 +533,8 @@ const RecentActivities = () => {
                   onClick={() => goToActivity(index)} 
                   className={`h-3 rounded-full transition-all duration-300 ${
                     currentIndex === index 
-                      ? 'bg-[#0b3d91] w-8' 
-                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 w-3'
+                      ? 'bg-[#0b3d91] dark:bg-cyan-400 w-8' 
+                      : 'bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500 w-3'
                   }`} 
                   aria-label={`Go to activity ${index + 1}`}
                 />
@@ -855,94 +547,3 @@ const RecentActivities = () => {
   );
 };
 
-
-// --- Footer Component ---
-const Footer = () => (
-  <footer className="border-t-4 border-[#0b3d91] bg-slate-900 text-slate-300">
-    <div className="container mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12">
-        {/* IITJ Logo (Left) */}
-        <div className="flex justify-center md:col-span-2 md:justify-start">
-          <img
-            src="/iitj-logo-white-outline.png"
-            alt="IIT Jodhpur Logo"
-            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-          />
-        </div>
-
-        {/* Quick Links */}
-        <div className="text-center md:col-span-3 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-blue-400">Quick Links</h3>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a href="https://www.iitj.ac.in/main/en/iitj" className="transition-colors hover:text-white" target="_blank" rel="noopener noreferrer">
-                IIT Jodhpur
-              </a>
-            </li>
-            <li>
-              <a href="https://www.iitj.ac.in/civil-and-infrastructure-engineering" className="transition-colors hover:text-white" target="_blank" rel="noopener noreferrer">
-                CIE-IIT Jodhpur
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Contact Info */}
-        <div className="text-center md:col-span-5 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-blue-400">Contact</h3>
-          <p className="text-sm font-semibold">
-            Department of Civil and Infrastructure Engineering
-          </p>
-          <p className="text-sm text-slate-400">Indian Institute of Technology Jodhpur</p>
-          <p className="text-sm text-slate-400">NH-62, Nagour Road</p>
-          <p className="text-sm text-slate-400">Karwar (342030)</p>
-          <p className="text-sm text-slate-400">Jodhpur </p>
-          <p className="mt-2 text-sm text-slate-400">Email: office@civil.iitj.ac.in</p>
-          <p className="text-sm text-slate-400">Phone:</p>
-        </div>
-
-        {/* CIES Logo (Right) */}
-        <div className="flex justify-center md:col-span-2 md:justify-end">
-          <img
-            src="/logo.jpg"
-            alt="CIES Logo"
-            className="h-20 w-20 rounded-full object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Social Icons */}
-      <div className="mt-12 flex justify-center space-x-6">
-        <a
-          href="https://www.instagram.com/cies_iitj/"
-          className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500"
-          aria-label="Instagram"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919 4.919 1.266-.058 1.644-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z" />
-          </svg>
-        </a>
-        <a
-          href="https://www.linkedin.com/company/107540236/admin/notifications/all/"
-          className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-400"
-          aria-label="LinkedIn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065c0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </a>
-      </div>
-
-      <div className="mt-8 border-t border-slate-700 pt-8 text-center text-sm text-slate-500">
-        <p>
-          &copy; {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur.
-          All Rights Reserved.
-        </p>
-      </div>
-    </div>
-  </footer>
-);

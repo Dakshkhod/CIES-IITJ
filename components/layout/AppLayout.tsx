@@ -24,18 +24,8 @@ import {
 const navItems = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'About', href: '/about', icon: Info },
-  {
-    name: 'Activities',
-    href: '#activities',
-    icon: Briefcase,
-    dropdown: [
-      { name: 'Workshops', href: '#/workshops' },
-      { name: 'Site Visits', href: '#/site-visits' },
-      { name: 'Competitions', href: '#/competitions' },
-      { name: 'Seminars', href: '#/seminars' },
-    ],
-  },
-  { name: 'Events', href: '/#activities', icon: Briefcase },
+  { name: 'Activities', href: '/activities', icon: Briefcase },
+  { name: 'Events', href: '/events', icon: Briefcase },
   { name: 'Edificio', href: '/about#edificio', icon: Building2 },
   { name: 'Team', href: '/team', icon: Users },
   { name: 'Roadmap and Calendar', href: '#achievements', icon: Award },

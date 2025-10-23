@@ -197,11 +197,11 @@ export default function EventsPage() {
           <section className="relative px-6 py-16 md:py-24">
             <div className="mx-auto max-w-7xl">
               <div className="text-center">
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/40 dark:border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/10 px-4 py-2 text-sm text-blue-600 dark:text-blue-300 backdrop-blur-sm shadow-sm">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-400/40 dark:border-blue-500/30 bg-slate-500/10 dark:bg-blue-500/10 px-4 py-2 text-sm text-slate-700 dark:text-blue-300 backdrop-blur-sm shadow-sm">
                   <Camera className="h-4 w-4" />
                   <span className="font-medium">Events Gallery 2025</span>
                 </div>
-                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-blue-700 to-purple-700 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
                   Past Events
                 </h1>
                 <p className="mt-6 mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
@@ -211,8 +211,8 @@ export default function EventsPage() {
 
               {/* Stats */}
               <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 max-w-4xl mx-auto">
-                <div className="rounded-xl border border-blue-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{events.length}</div>
+                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-bold text-slate-700 dark:text-blue-400">{events.length}</div>
                   <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Total Events</div>
                 </div>
                 <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">

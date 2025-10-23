@@ -380,7 +380,7 @@ const Footer = () => (
 
                 {/* Quick Links */}
                 <div className="text-center md:col-span-3 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-blue-400">Quick Links</h3>
+                  <h3 className="mb-4 text-lg font-bold text-slate-700">Quick Links</h3>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <a href="/" className="transition-colors hover:text-white">
@@ -397,7 +397,7 @@ const Footer = () => (
 
                 {/* Contact Info */}
                 <div className="text-center md:col-span-5 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-blue-400">Contact</h3>
+                  <h3 className="mb-4 text-lg font-bold text-slate-700">Contact</h3>
                   <p className="text-sm font-semibold">
                     Department of Civil and Infrastructure Engineering
                   </p>
@@ -493,7 +493,7 @@ const MemberCard = ({ member }: MemberCardProps) => (
         <img src={member.photo} alt={member.name} className="w-28 h-28 mx-auto rounded-full object-cover ring-4 ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700" loading="lazy" />
         <div className="mt-4 flex-grow">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
-            <p className="text-sm text-[#0b3d91] dark:text-blue-400 font-semibold">{member.role}</p>
+            <p className="text-sm text-slate-700 dark:text-blue-400 font-semibold">{member.role}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{member.batch}</p>
         </div>
         <div className="mt-4 flex justify-center space-x-4">

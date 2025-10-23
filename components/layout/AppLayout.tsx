@@ -28,7 +28,7 @@ const navItems = [
   { name: 'Events', href: '/events', icon: Briefcase },
   { name: 'Edificio', href: '/about#edificio', icon: Building2 },
   { name: 'Team', href: '/team', icon: Users },
-  { name: 'Roadmap and Calendar', href: '#achievements', icon: Award },
+  { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
   { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
   { name: 'Contact Us', href: '/#contact', icon: Mail },
 ];
@@ -353,29 +353,34 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
 
 // --- Footer Component ---
 const Footer = () => (
-  <footer className="border-t-4 border-[#0b3d91] bg-slate-900 text-slate-300">
+  <footer className="border-t-4 border-slate-800 dark:border-[#0b3d91] bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300">
     <div className="container mx-auto px-6 py-12">
       <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12">
         {/* IITJ Logo (Left) */}
         <div className="flex justify-center md:col-span-2 md:justify-start">
           <img
+            src="/iitj-logo-transparent.png"
+            alt="IIT Jodhpur Logo"
+            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 dark:hidden"
+          />
+          <img
             src="/iitj-logo-white-outline.png"
             alt="IIT Jodhpur Logo"
-            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 hidden dark:block"
           />
         </div>
 
         {/* Quick Links */}
         <div className="text-center md:col-span-3 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-blue-400">Quick Links</h3>
+          <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-blue-400">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="https://www.iitj.ac.in/main/en/iitj" className="transition-colors hover:text-white" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.iitj.ac.in/main/en/iitj" className="transition-colors hover:text-black dark:hover:text-white" target="_blank" rel="noopener noreferrer">
                 IIT Jodhpur
               </a>
             </li>
             <li>
-              <a href="https://www.iitj.ac.in/civil-and-infrastructure-engineering" className="transition-colors hover:text-white" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.iitj.ac.in/civil-and-infrastructure-engineering" className="transition-colors hover:text-black dark:hover:text-white" target="_blank" rel="noopener noreferrer">
                 CIE-IIT Jodhpur
               </a>
             </li>
@@ -384,16 +389,16 @@ const Footer = () => (
 
         {/* Contact Info */}
         <div className="text-center md:col-span-5 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-blue-400">Contact</h3>
+          <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-blue-400">Contact</h3>
           <p className="text-sm font-semibold">
             Department of Civil and Infrastructure Engineering
           </p>
-          <p className="text-sm text-slate-400">Indian Institute of Technology Jodhpur</p>
-          <p className="text-sm text-slate-400">NH-62, Nagour Road</p>
-          <p className="text-sm text-slate-400">Karwar (342030)</p>
-          <p className="text-sm text-slate-400">Jodhpur </p>
-          <p className="mt-2 text-sm text-slate-400">Email: office@civil.iitj.ac.in</p>
-          <p className="text-sm text-slate-400">Phone:</p>
+          <p className="text-sm text-slate-800 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
+          <p className="text-sm text-slate-800 dark:text-slate-400">NH-62, Nagour Road</p>
+          <p className="text-sm text-slate-800 dark:text-slate-400">Karwar (342030)</p>
+          <p className="text-sm text-slate-800 dark:text-slate-400">Jodhpur </p>
+          <p className="mt-2 text-sm text-slate-800 dark:text-slate-400">Email: office@civil.iitj.ac.in</p>
+          <p className="text-sm text-slate-800 dark:text-slate-400">Phone:</p>
         </div>
 
         {/* CIES Logo (Right) */}
@@ -410,7 +415,7 @@ const Footer = () => (
       <div className="mt-12 flex justify-center space-x-6">
         <a
           href="https://www.instagram.com/cies_iitj/"
-          className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500"
+          className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500 dark:hover:text-pink-500"
           aria-label="Instagram"
           target="_blank"
           rel="noopener noreferrer"
@@ -421,7 +426,7 @@ const Footer = () => (
         </a>
         <a
           href="https://www.linkedin.com/company/107540236/admin/notifications/all/"
-          className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-400"
+          className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-600 dark:hover:text-blue-400"
           aria-label="LinkedIn"
           target="_blank"
           rel="noopener noreferrer"
@@ -432,7 +437,7 @@ const Footer = () => (
         </a>
       </div>
 
-      <div className="mt-8 border-t border-slate-700 pt-8 text-center text-sm text-slate-500">
+      <div className="mt-8 border-t border-slate-500 dark:border-slate-700 pt-8 text-center text-sm text-slate-800 dark:text-slate-500">
         <p>
           &copy; {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur.
           All Rights Reserved.

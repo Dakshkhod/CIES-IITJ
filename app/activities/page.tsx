@@ -17,6 +17,7 @@ export default function ActivitiesPage() {
     category: 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'other';
     imageUrl: string;
     colorUrl?: string; // full-color image for peel effect
+    status?: 'completed' | 'upcoming' | 'ongoing';
   };
 
   const items: GalleryItem[] = useMemo(
@@ -466,6 +467,28 @@ export default function ActivitiesPage() {
     return badges[category] || badges.other;
   };
 
+  // Get event status based on date
+  const getEventStatus = (date: string): 'completed' | 'upcoming' | 'ongoing' => {
+    const eventDate = new Date(date);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+    
+    if (eventDay < today) return 'completed';
+    if (eventDay.getTime() === today.getTime()) return 'ongoing';
+    return 'upcoming';
+  };
+
+  // Get status badge styling
+  const getStatusBadge = (status: 'completed' | 'upcoming' | 'ongoing') => {
+    const badges = {
+      completed: 'bg-gradient-to-r from-slate-500/30 to-slate-600/30 border border-slate-400/70 text-slate-100 dark:from-cyan-500/30 dark:to-blue-500/30 dark:border-cyan-400/70 dark:text-cyan-100',
+      upcoming: 'bg-gradient-to-r from-slate-500/30 to-slate-600/30 border border-slate-400/70 text-slate-100 shadow-lg shadow-slate-500/30 dark:from-cyan-500/30 dark:to-blue-500/30 dark:border-cyan-400/70 dark:text-cyan-100 dark:shadow-cyan-500/30',
+      ongoing: 'bg-gradient-to-r from-amber-500/30 to-orange-500/30 border border-amber-400/70 text-amber-100 shadow-lg shadow-amber-500/30'
+    };
+    return badges[status];
+  };
+
   return (
     <AppLayout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
@@ -481,35 +504,35 @@ export default function ActivitiesPage() {
           <section className="relative px-6 py-16 md:py-24">
             <div className="mx-auto max-w-7xl">
               <div className="text-center">
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-500/10 dark:border-blue-500/30 dark:bg-blue-500/10 px-4 py-2 text-sm text-blue-600 dark:text-blue-300 backdrop-blur-sm shadow-sm">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-400/40 bg-slate-500/10 dark:border-blue-500/30 dark:bg-blue-500/10 px-4 py-2 text-sm text-slate-700 dark:text-blue-300 backdrop-blur-sm shadow-sm">
                   <Calendar className="h-4 w-4" />
                   <span className="font-medium">Academic Year 2025-26</span>
                 </div>
-                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-blue-700 to-purple-700 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
                   Activities & Events
                 </h1>
-                <p className="mt-6 mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+                <p className="mt-6 mx-auto max-w-2xl text-lg text-slate-500 dark:text-slate-300">
                   Explore our calendar of workshops, seminars, competitions, site visits, and EDIFICIO initiatives throughout the year.
                 </p>
               </div>
 
               {/* Stats */}
               <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 max-w-4xl mx-auto">
-                <div className="rounded-xl border border-blue-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{items.length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Total Events</div>
+                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-bold text-slate-700 dark:text-blue-400">{items.length}</div>
+                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Total Events</div>
                 </div>
                 <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{items.filter(i => i.category === 'seminar').length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Seminars</div>
+                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Seminars</div>
                 </div>
                 <div className="rounded-xl border border-green-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-green-600 dark:text-green-400">{items.filter(i => i.category === 'workshop').length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Workshops</div>
+                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Workshops</div>
                 </div>
                 <div className="rounded-xl border border-amber-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-amber-600 dark:text-yellow-400">{items.filter(i => i.category === 'edificio').length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">EDIFICIO</div>
+                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">EDIFICIO</div>
                 </div>
               </div>
             </div>
@@ -520,8 +543,8 @@ export default function ActivitiesPage() {
             <div className="mx-auto max-w-7xl px-6 py-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Filter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Filter:</span>
+                  <Filter className="h-4 w-4 text-slate-400 dark:text-slate-300" />
+                  <span className="text-sm text-slate-500 dark:text-slate-300 font-medium">Filter:</span>
                   {categories.map(cat => (
                     <button
                       key={cat}
@@ -537,13 +560,13 @@ export default function ActivitiesPage() {
                   ))}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">View:</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-300 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`rounded-lg p-2 transition-all ${
                       viewMode === 'grid'
                         ? 'bg-blue-500 text-white shadow-md'
-                        : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
+                        : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                     }`}
                     aria-label="Grid view"
                   >
@@ -554,7 +577,7 @@ export default function ActivitiesPage() {
                     className={`rounded-lg p-2 transition-all ${
                       viewMode === 'timeline'
                         ? 'bg-blue-500 text-white shadow-md'
-                        : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
+                        : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                     }`}
                     aria-label="Timeline view"
                   >
@@ -587,7 +610,7 @@ export default function ActivitiesPage() {
                         <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 dark:from-green-400 dark:via-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
                           Recent Events
                         </h2>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                        <p className="text-sm text-slate-500 dark:text-slate-300 mt-1">
                           Latest activities from the past 30 days
                         </p>
                       </div>
@@ -617,6 +640,14 @@ export default function ActivitiesPage() {
                             <Sparkles className="h-3.5 w-3.5 animate-pulse" />
                             NEW
                           </div>
+                        </div>
+
+                        {/* Status badge */}
+                        <div className="absolute top-0 left-0 z-10">
+                          <span className={`px-3 py-1.5 rounded-br-xl rounded-tl-xl text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(event.date))}`}>
+                            {getEventStatus(event.date) === 'completed' ? 'Completed' : 
+                             getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                          </span>
                         </div>
 
                         {/* Image Section */}
@@ -676,7 +707,7 @@ export default function ActivitiesPage() {
                   {/* Divider */}
                   <div className="mt-12 mb-8 flex items-center gap-4">
                     <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
-                    <span className="text-sm font-medium text-slate-500 dark:text-slate-400 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    <span className="text-sm font-medium text-slate-400 dark:text-slate-300 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                       All Events
                     </span>
                     <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
@@ -691,9 +722,9 @@ export default function ActivitiesPage() {
             <div className="mx-auto max-w-7xl">
               {filteredItems.length === 0 ? (
                 <div className="text-center py-20">
-                  <Calendar className="h-16 w-16 mx-auto text-slate-400 dark:text-slate-600 mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400">No events found</h3>
-                  <p className="text-slate-500 dark:text-slate-500 mt-2">Try adjusting your filters</p>
+                  <Calendar className="h-16 w-16 mx-auto text-slate-300 dark:text-slate-500 mb-4" />
+                  <h3 className="text-xl font-semibold text-slate-500 dark:text-slate-300">No events found</h3>
+                  <p className="text-slate-400 dark:text-slate-400 mt-2">Try adjusting your filters</p>
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -720,16 +751,24 @@ export default function ActivitiesPage() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                           <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(card.category)} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
                           
+                          {/* Status badge */}
+                          <div className="absolute top-4 right-4">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(card.date))}`}>
+                              {getEventStatus(card.date) === 'completed' ? 'Completed' : 
+                               getEventStatus(card.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                            </span>
+                          </div>
+                          
                           {/* Recent badge */}
                           {isRecent && (
-                            <div className="absolute top-4 right-4 flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                            <div className="absolute top-4 left-4 flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
                               <Sparkles className="h-3 w-3" />
                               Recent
                             </div>
                           )}
                           
                           {/* Category Badge */}
-                          <div className="absolute top-4 left-4">
+                          <div className="absolute bottom-4 left-4">
                             <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur-sm ${getCategoryBadge(card.category)}`}>
                               {getCategoryIcon(card.category)}
                               {card.category.replace('-', ' ').toUpperCase()}
@@ -746,7 +785,7 @@ export default function ActivitiesPage() {
                       
                         <div className="relative p-5">
                           {/* Date */}
-                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-4">
+                          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300 mb-4">
                             <Calendar className="h-4 w-4" />
                             <time dateTime={card.date}>{formatDateShort(card.date)}</time>
                           </div>
@@ -754,7 +793,7 @@ export default function ActivitiesPage() {
                           {/* Action Button */}
                           <button
                             onClick={() => setSelectedId(card.id)}
-                            className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 py-2.5 text-sm font-semibold text-white transition-all shadow-md hover:shadow-lg hover:shadow-blue-500/30"
+                            className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 py-2.5 text-sm font-semibold text-white transition-all shadow-md hover:shadow-lg hover:shadow-slate-500/30 dark:hover:shadow-blue-500/30"
                           >
                             <MapPin className="h-4 w-4" />
                             View Details
@@ -775,10 +814,10 @@ export default function ActivitiesPage() {
                     <div key={month} className="relative">
                       {/* Month Header */}
                       <div className="sticky top-32 z-10 mb-6 flex items-center gap-4">
-                        <div className="rounded-xl border border-blue-400/40 dark:border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/10 px-6 py-3 backdrop-blur-sm shadow-sm">
-                          <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300">{month}</h2>
+                        <div className="rounded-xl border border-slate-400/40 dark:border-blue-500/30 bg-slate-500/10 dark:bg-blue-500/10 px-6 py-3 backdrop-blur-sm shadow-sm">
+                          <h2 className="text-xl font-bold text-slate-800 dark:text-blue-300">{month}</h2>
                         </div>
-                        <div className="flex-1 h-px bg-gradient-to-r from-blue-400/30 dark:from-blue-500/30 to-transparent" />
+                        <div className="flex-1 h-px bg-gradient-to-r from-slate-400/30 dark:from-blue-500/30 to-transparent" />
                       </div>
 
                       {/* Timeline Events */}
@@ -818,24 +857,28 @@ export default function ActivitiesPage() {
                                           {getCategoryIcon(event.category)}
                                           {event.category.replace('-', ' ').toUpperCase()}
                                         </span>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(event.date))}`}>
+                                          {getEventStatus(event.date) === 'completed' ? 'Completed' : 
+                                           getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                                        </span>
                                         {isRecent && (
                                           <span className="inline-flex items-center gap-1 bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-1 rounded-full text-xs font-semibold border border-green-500/30">
                                             <Sparkles className="h-3 w-3" />
                                             Recent
                                           </span>
                                         )}
-                                        <div className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
+                                        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
                                           <Clock className="h-3 w-3" />
                                           <time dateTime={event.date}>{new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
                                         </div>
                                       </div>
-                                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-slate-700 dark:group-hover:text-blue-400 transition-colors">
                                         {event.title}
                                       </h3>
                                     </div>
                                     <button
                                       onClick={() => setSelectedId(event.id)}
-                                      className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-5 py-2 text-sm font-semibold text-white transition-all whitespace-nowrap shadow-md hover:shadow-lg"
+                                      className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 px-5 py-2 text-sm font-semibold text-white transition-all whitespace-nowrap shadow-md hover:shadow-lg"
                                     >
                                       <MapPin className="h-4 w-4" />
                                       View Details
@@ -892,6 +935,14 @@ export default function ActivitiesPage() {
                     </span>
                   </div>
 
+                  {/* Status badge */}
+                  <div className="absolute top-16 right-4">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(selected.date))}`}>
+                      {getEventStatus(selected.date) === 'completed' ? 'Completed' : 
+                       getEventStatus(selected.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                    </span>
+                  </div>
+
                   {/* Title at bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h2 className="text-3xl font-bold text-white drop-shadow-lg">
@@ -908,12 +959,12 @@ export default function ActivitiesPage() {
                     {/* Info Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Date & Time */}
-                      <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-500/10 dark:to-blue-500/5 border border-blue-200 dark:border-blue-500/20 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-2 rounded-lg bg-blue-500 text-white">
+                      <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-blue-500/10 dark:to-blue-500/5 border border-slate-200 dark:border-blue-500/20 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="p-2 rounded-lg bg-slate-800 dark:bg-blue-500 text-white">
                           <Calendar className="h-5 w-5" />
                         </div>
                         <div>
-                          <div className="text-xs font-medium text-blue-600 dark:text-blue-400">Event Date</div>
+                          <div className="text-xs font-medium text-slate-700 dark:text-blue-400">Event Date</div>
                           <div className="font-semibold text-slate-900 dark:text-slate-100">{formatDateShort(selected.date)}</div>
                         </div>
                       </div>
@@ -933,7 +984,7 @@ export default function ActivitiesPage() {
                     {/* Description */}
                     <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm">
                       <div className="flex items-start gap-3 mb-3">
-                        <BookOpen className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />
+                        <BookOpen className="h-5 w-5 text-slate-500 dark:text-slate-300 mt-0.5" />
                         <h3 className="font-semibold text-slate-900 dark:text-slate-100">About this Event</h3>
                       </div>
                       <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -963,12 +1014,12 @@ export default function ActivitiesPage() {
                           a.remove();
                           URL.revokeObjectURL(url);
                         }}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-6 py-3 font-semibold text-white transition-all shadow-lg hover:shadow-xl shadow-blue-500/30"
+                        className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 px-6 py-3 font-semibold text-white transition-all shadow-lg hover:shadow-xl shadow-slate-500/30 dark:shadow-blue-500/30"
                       >
                         <Calendar className="h-5 w-5" />
                         Add to Calendar
                       </button>
-                      <button className="flex-1 flex items-center justify-center gap-2 rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm hover:shadow-md">
+                      <button className="flex-1 flex items-center justify-center gap-2 rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-500 dark:hover:border-blue-500 shadow-sm hover:shadow-md">
                         <Users className="h-5 w-5" />
                         Share Event
                       </button>

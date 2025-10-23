@@ -96,13 +96,13 @@ const HeroSection = () => (
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mb-6 inline-block"
           >
-            <span className="rounded-full border-2 border-cyan-300/60 bg-cyan-300/15 px-6 py-2 text-sm font-semibold text-white backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
+            <span className="rounded-full border-2 border-slate-300/60 bg-slate-300/15 px-6 py-2 text-sm font-semibold text-slate-800 backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
               IIT Jodhpur
             </span>
           </motion.div>
 
           <h1 className="mb-6 text-5xl font-extrabold leading-tight text-white drop-shadow-lg md:text-7xl lg:text-8xl">
-            About <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">CIES</span>
+            About <span className="text-white dark:from-cyan-400 dark:to-blue-400 dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">CIES</span>
           </h1>
           
           <div className="mx-auto mb-8 h-1.5 w-40 rounded-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent dark:via-cyan-400"></div>
@@ -113,9 +113,9 @@ const HeroSection = () => (
             transition={{ duration: 0.8, delay: 0.6 }}
             className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-100 drop-shadow-md md:text-xl lg:text-2xl dark:text-gray-200"
           >
-            Constructing a Better Future: <span className="font-semibold text-cyan-200 dark:text-cyan-300">Integrity in Design</span>,{' '}
-            <span className="font-semibold text-cyan-200 dark:text-cyan-300">Sustainability in Action</span>,{' '}
-            <span className="font-semibold text-cyan-200 dark:text-cyan-300">Cementing Community with Compassion</span>
+            Constructing a Better Future: <span className="font-semibold text-slate-200 dark:text-cyan-300">Integrity in Design</span>,{' '}
+            <span className="font-semibold text-slate-200 dark:text-cyan-300">Sustainability in Action</span>,{' '}
+            <span className="font-semibold text-slate-200 dark:text-cyan-300">Cementing Community with Compassion</span>
           </motion.p>
 
           {/* Statistics Row */}
@@ -126,15 +126,15 @@ const HeroSection = () => (
             className="mt-12 grid grid-cols-3 gap-6 text-white"
           >
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-cyan-300 drop-shadow-md md:text-4xl dark:text-cyan-400">500+</div>
+              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">500+</div>
               <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Active Members</div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-cyan-300 drop-shadow-md md:text-4xl dark:text-cyan-400">50+</div>
+              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">50+</div>
               <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Events Annually</div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-cyan-300 drop-shadow-md md:text-4xl dark:text-cyan-400">100+</div>
+              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">100+</div>
               <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Industry Partners</div>
             </div>
           </motion.div>
@@ -149,7 +149,7 @@ const HeroSection = () => (
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 1.2, repeat: Infinity, repeatType: 'reverse' }}
     >
-      <ChevronDown className="h-6 w-6 text-cyan-300 drop-shadow-lg dark:text-cyan-400" />
+      <ChevronDown className="h-6 w-6 text-slate-200 drop-shadow-lg dark:text-cyan-400" />
     </motion.div>
   </section>
 );
@@ -235,7 +235,7 @@ const Block1Section = () => (
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-5 py-2 text-sm font-bold text-[#0b3d91] dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
+              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-5 py-2 text-sm font-bold text-slate-800 dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
                 Who We Are
               </span>
               <h2 className="mt-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-4xl font-extrabold text-transparent dark:from-white dark:to-gray-300 lg:text-5xl">
@@ -255,7 +255,7 @@ const Block1Section = () => (
             >
               <p className="text-gray-700 dark:text-gray-300">
                 {/* CMS Placeholder: Block 1 Content */}
-                The <span className="font-semibold text-[#0b3d91] dark:text-cyan-400">Civil & Infrastructure Engineering Society (CIES)</span> IIT Jodhpur 
+                The <span className="font-semibold text-slate-800 dark:text-cyan-400">Civil & Infrastructure Engineering Society (CIES)</span> IIT Jodhpur 
                 serves as a bridge between students, faculty, alumni, and industry, fostering a vibrant and collaborative 
                 departmental community.
               </p>
@@ -277,7 +277,7 @@ const Block1Section = () => (
             >
               <div className="text-center">
                 <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                  <Lightbulb className="h-6 w-6 text-[#0b3d91] dark:text-cyan-400" />
+                  <Lightbulb className="h-6 w-6 text-slate-800 dark:text-cyan-400" />
                 </div>
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">Innovation</p>
               </div>
@@ -289,7 +289,7 @@ const Block1Section = () => (
               </div>
               <div className="text-center">
                 <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                  <Users className="h-6 w-6 text-[#0b3d91] dark:text-cyan-400" />
+                  <Users className="h-6 w-6 text-slate-800 dark:text-cyan-400" />
                 </div>
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">Community</p>
               </div>
@@ -311,7 +311,7 @@ const Block1Section = () => (
               </Link>
               <Link
                 href="/#contact"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-[#0b3d91] px-7 py-3.5 font-semibold text-[#0b3d91] transition-all hover:bg-[#0b3d91] hover:text-white dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[#0b3d91] px-7 py-3.5 font-semibold text-slate-800 transition-all hover:bg-[#0b3d91] hover:text-white dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
               >
                 Get in Touch
               </Link>
@@ -378,7 +378,7 @@ const PillarPanelsSection = () => {
         <FadeInOnScroll>
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
-              Our <span className="text-blue-600">Pillars</span>
+              Our <span className="text-slate-700">Pillars</span>
             </h2>
             <div className="mx-auto h-1.5 w-24 rounded-full bg-blue-600"></div>
           </div>
@@ -475,7 +475,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
           {/* Expand Button */}
           <button
             onClick={onToggle}
-            className="group/btn mt-8 inline-flex items-center gap-2 self-start rounded-full border-2 border-[#0b3d91] bg-transparent px-8 py-3 font-semibold text-[#0b3d91] transition-all hover:bg-[#0b3d91] hover:text-white hover:shadow-lg dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
+            className="group/btn mt-8 inline-flex items-center gap-2 self-start rounded-full border-2 border-[#0b3d91] bg-transparent px-8 py-3 font-semibold text-slate-800 transition-all hover:bg-[#0b3d91] hover:text-white hover:shadow-lg dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
             aria-expanded={isExpanded}
             aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${pillar.title}`}
           >
@@ -545,7 +545,7 @@ const EdificioPhotoEssay = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block rounded-full border-2 border-[#0b3d91]/30 bg-[#0b3d91]/10 px-6 py-2 text-sm font-semibold text-[#0b3d91] backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
+              <span className="inline-block rounded-full border-2 border-[#0b3d91]/30 bg-[#0b3d91]/10 px-6 py-2 text-sm font-semibold text-slate-800 backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
                 Our Flagship Event
               </span>
             </motion.div>
@@ -637,7 +637,7 @@ const EdificioPhotoEssay = () => {
             </motion.a>
             <p className="mt-5 text-sm text-gray-600 dark:text-gray-400">
               {/* CMS Placeholder: PDF size and format */}
-              <span className="font-semibold text-[#0b3d91] dark:text-cyan-400">PDF</span> · 5.2 MB · Complete Event Highlights & Gallery
+              <span className="font-semibold text-slate-800 dark:text-cyan-400">PDF</span> · 5.2 MB · Complete Event Highlights & Gallery
             </p>
           </div>
         </FadeInOnScroll>
@@ -672,16 +672,16 @@ const PartnerLogoStrip = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-5 py-2 text-sm font-bold text-[#0b3d91] dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
+              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-5 py-2 text-sm font-bold text-slate-800 dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
                 Our Network
               </span>
             </motion.div>
             
             <h2 className="mb-6 mt-6 text-4xl font-extrabold text-gray-900 dark:text-white md:text-5xl">
-              Trusted <span className="bg-gradient-to-r from-[#0b3d91] to-cyan-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">Partners</span>
+              Trusted <span className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">Partners</span>
             </h2>
             
-            <div className="mx-auto mb-6 h-1.5 w-32 rounded-full bg-gradient-to-r from-transparent via-[#0b3d91] to-transparent dark:via-cyan-400"></div>
+            <div className="mx-auto mb-6 h-1.5 w-32 rounded-full bg-gradient-to-r from-transparent via-slate-600 to-transparent dark:via-cyan-400"></div>
             
             <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
               Collaborating with industry leaders, academic institutions, and innovators to drive excellence in civil engineering.

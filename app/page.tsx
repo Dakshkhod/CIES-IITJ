@@ -87,7 +87,7 @@ const AnimatedCIESLogo = () => {
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 700 320"
-      className="mx-auto h-auto w-full text-[#0b3d91] dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(11,61,145,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+      className="mx-auto h-auto w-full text-slate-800 dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(30,41,59,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -97,7 +97,7 @@ const AnimatedCIESLogo = () => {
       <motion.g transform="translate(20,0)">
       {/* Letter C - Enhanced with detailed internal systems */}
       <motion.path
-        className="text-[#0b3d91] dark:text-cyan-200"
+        className="text-slate-800 dark:text-cyan-200"
         variants={letterVariants}
         d="M90 90 Q35 90 35 160 Q35 230 90 230 L130 230"
         strokeWidth="8"
@@ -134,7 +134,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter I - Enhanced tower with complex truss system */}
       <motion.path
-        className="text-[#0b3d91] dark:text-cyan-200"
+        className="text-slate-800 dark:text-cyan-200"
         variants={letterVariants}
         d="M200 90 L200 230 M165 90 L235 90 M165 230 L235 230"
         strokeWidth="8"
@@ -174,7 +174,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter E - Enhanced with complex structural grid */}
       <motion.path
-        className="text-[#0b3d91] dark:text-cyan-200"
+        className="text-slate-800 dark:text-cyan-200"
         variants={letterVariants}
         d="M300 90 L300 230 M300 90 L390 90 M300 160 L370 160 M300 230 L390 230"
         strokeWidth="8"
@@ -211,7 +211,7 @@ const AnimatedCIESLogo = () => {
       {/* Letter S - Enhanced with complex curved systems (scaled up slightly) */}
       <motion.g transform="translate(20,0) translate(450,160) scale(1.12) translate(-450,-160)">
         <motion.path
-          className="text-[#0b3d91] dark:text-cyan-200"
+          className="text-slate-800 dark:text-cyan-200"
           variants={letterVariants}
           d="M480 110 Q445 90 410 110 Q390 130 410 150 Q430 165 455 165 Q480 165 490 185 Q500 205 480 220 Q445 235 410 215"
           strokeWidth="8"
@@ -350,7 +350,7 @@ const CIEHeroDesign = () => {
           </motion.h1>
           
           <motion.h2 
-            className="text-2xl font-bold text-[#0b3d91] dark:text-blue-400 md:text-3xl lg:text-4xl"
+            className="text-2xl font-bold text-slate-800 dark:text-blue-400 md:text-3xl lg:text-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
@@ -492,7 +492,7 @@ const RecentActivities = () => {
                     className="flex flex-col flex-grow"
                   >
                     <h3 className="text-2xl lg:text-3xl font-bold mb-3 text-gray-900 dark:text-white">{activity.title}</h3>
-                    <p className="text-sm text-[#0b3d91] dark:text-blue-400 font-semibold mb-4">{activity.date}</p>
+                    <p className="text-sm text-slate-700 dark:text-blue-400 font-semibold mb-4">{activity.date}</p>
                     <div className="text-gray-600 dark:text-gray-300 mb-6 flex-grow pr-2 overflow-y-auto text-base lg:text-lg leading-relaxed" style={{ scrollbarWidth: 'thin' }}>
                       <p>{activity.description}</p>
                     </div>
@@ -501,7 +501,7 @@ const RecentActivities = () => {
                         href={activity.link} 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="inline-block bg-[#0b3d91] text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 transition-colors shadow-lg"
+                        className="inline-block bg-slate-800 text-white px-8 py-3 rounded-full font-semibold hover:bg-slate-700 dark:bg-[#0b3d91] dark:hover:bg-blue-800 transition-colors shadow-lg"
                       >
                         View More
                       </motion.a>

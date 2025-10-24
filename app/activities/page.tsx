@@ -457,12 +457,12 @@ export default function ActivitiesPage() {
   // Get category badge color
   const getCategoryBadge = (category: string) => {
     const badges: { [key: string]: string } = {
-      workshop: 'bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-500/30',
-      seminar: 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30',
-      'site-visit': 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 border-green-300 dark:border-green-500/30',
-      competition: 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-500/30',
-      edificio: 'bg-amber-100 dark:bg-yellow-500/20 text-amber-700 dark:text-yellow-300 border-amber-300 dark:border-yellow-500/30',
-      other: 'bg-slate-100 dark:bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-500/30',
+      workshop: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-500/50',
+      seminar: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/50',
+      'site-visit': 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-500/50',
+      competition: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-500/50',
+      edificio: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-yellow-300 border-amber-300 dark:border-yellow-500/50',
+      other: 'bg-slate-100 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-500/50',
     };
     return badges[category] || badges.other;
   };
@@ -603,11 +603,11 @@ export default function ActivitiesPage() {
                   {/* Section Header */}
                   <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/30">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30">
                         <Sparkles className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 dark:from-green-400 dark:via-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-slate-600 dark:from-blue-400 dark:via-cyan-400 dark:to-slate-400 bg-clip-text text-transparent">
                           Recent Events
                         </h2>
                         <p className="text-sm text-slate-500 dark:text-slate-300 mt-1">
@@ -615,9 +615,9 @@ export default function ActivitiesPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-500/20 border border-green-300 dark:border-green-500/30">
-                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                    <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-500/20 border border-blue-300 dark:border-blue-500/30">
+                      <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                      <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
                         {recentEvents.length} New {recentEvents.length === 1 ? 'Event' : 'Events'}
                       </span>
                     </div>
@@ -628,11 +628,11 @@ export default function ActivitiesPage() {
                     {recentEvents.map((event, idx) => (
                       <article
                         key={event.id}
-                        className="group relative rounded-2xl border-2 border-green-200 dark:border-green-500/30 bg-white dark:bg-slate-900/80 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-green-500/30 dark:hover:shadow-green-500/20 hover:border-green-400 dark:hover:border-green-500/60 shadow-lg"
+                        className="group relative rounded-2xl border-2 border-blue-200 dark:border-blue-500/30 bg-white dark:bg-slate-900/80 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-500/30 dark:hover:shadow-blue-500/20 hover:border-blue-400 dark:hover:border-blue-500/60 shadow-lg"
                         style={{ animationDelay: `${idx * 100}ms` }}
                       >
                         {/* Spotlight effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-slate-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         
                         {/* Featured badge */}
                         <div className="absolute top-0 right-0 z-10">
@@ -667,7 +667,7 @@ export default function ActivitiesPage() {
                           
                           {/* Category Badge */}
                           <div className="absolute top-4 right-4">
-                            <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-bold backdrop-blur-md ${getCategoryBadge(event.category)}`}>
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-bold ${getCategoryBadge(event.category)}`}>
                               {getCategoryIcon(event.category)}
                               {event.category.replace('-', ' ').toUpperCase()}
                             </span>
@@ -689,7 +689,7 @@ export default function ActivitiesPage() {
                           {/* Action Button */}
                           <button
                             onClick={() => setSelectedId(event.id)}
-                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 py-3 text-sm font-bold text-white transition-all shadow-lg hover:shadow-xl hover:shadow-green-500/40 transform hover:-translate-y-0.5"
+                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-cyan-600 to-slate-600 hover:from-blue-600 hover:via-cyan-700 hover:to-slate-700 py-3 text-sm font-bold text-white transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/40 transform hover:-translate-y-0.5"
                           >
                             <Award className="h-4 w-4" />
                             Explore Event
@@ -698,7 +698,7 @@ export default function ActivitiesPage() {
 
                         {/* Decorative corner accent */}
                         <div className="absolute bottom-0 right-0 w-24 h-24 opacity-10 dark:opacity-20 pointer-events-none">
-                          <Sparkles className="w-full h-full text-green-500" />
+                          <Sparkles className="w-full h-full text-blue-500" />
                         </div>
                       </article>
                     ))}
@@ -729,7 +729,6 @@ export default function ActivitiesPage() {
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredItems.map((card) => {
-                    const isRecent = new Date().getTime() - new Date(card.date).getTime() < 30 * 24 * 60 * 60 * 1000; // Within 30 days
                     return (
                       <article
                         key={card.id}
@@ -759,17 +758,9 @@ export default function ActivitiesPage() {
                             </span>
                           </div>
                           
-                          {/* Recent badge */}
-                          {isRecent && (
-                            <div className="absolute top-4 left-4 flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
-                              <Sparkles className="h-3 w-3" />
-                              Recent
-                            </div>
-                          )}
-                          
                           {/* Category Badge */}
                           <div className="absolute top-4 left-4">
-                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur-sm ${getCategoryBadge(card.category)}`}>
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${getCategoryBadge(card.category)}`}>
                               {getCategoryIcon(card.category)}
                               {card.category.replace('-', ' ').toUpperCase()}
                             </span>
@@ -800,10 +791,6 @@ export default function ActivitiesPage() {
                           </button>
                         </div>
 
-                        {/* Decorative civil engineering pattern */}
-                        <div className="absolute top-0 right-0 w-32 h-32 opacity-5 dark:opacity-10 pointer-events-none">
-                          <Building2 className="w-full h-full text-slate-900 dark:text-white" />
-                        </div>
                       </article>
                     );
                   })}
@@ -823,7 +810,6 @@ export default function ActivitiesPage() {
                       {/* Timeline Events */}
                       <div className="space-y-4 pl-4 border-l-2 border-slate-300 dark:border-slate-800">
                         {events.map((event) => {
-                          const isRecent = new Date().getTime() - new Date(event.date).getTime() < 30 * 24 * 60 * 60 * 1000;
                           return (
                             <div
                               key={event.id}
@@ -861,12 +847,6 @@ export default function ActivitiesPage() {
                                           {getEventStatus(event.date) === 'completed' ? 'Completed' : 
                                            getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
                                         </span>
-                                        {isRecent && (
-                                          <span className="inline-flex items-center gap-1 bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-1 rounded-full text-xs font-semibold border border-green-500/30">
-                                            <Sparkles className="h-3 w-3" />
-                                            Recent
-                                          </span>
-                                        )}
                                         <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
                                           <Clock className="h-3 w-3" />
                                           <time dateTime={event.date}>{new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
@@ -929,7 +909,7 @@ export default function ActivitiesPage() {
 
                   {/* Category badge */}
                   <div className="absolute top-4 left-4">
-                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur-sm ${getCategoryBadge(selected.category)}`}>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${getCategoryBadge(selected.category)}`}>
                       {getCategoryIcon(selected.category)}
                       {selected.category.replace('-', ' ').toUpperCase()}
                     </span>

@@ -147,7 +147,7 @@ const TEAM_DATA = [
       name: "Keshav Saini", 
       role: "Technical Lead", 
       committee: "Technical Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024",
       photo: "/Team images/Keshav.jpeg", 
       bio: "Technical lead managing web development and digital initiatives.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -155,10 +155,10 @@ const TEAM_DATA = [
     { 
       id: "daksh", 
       name: "Daksh", 
-      role: "Technical Committee (PG) / Web Dev Executive", 
+      role: "Tech-Lead (UG)-Web Dev Executive",
       committee: "Technical Committee", 
-      batch: "PG 2024", 
-      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3ED%3C/text%3E%3C/svg%3E", 
+      batch: "UG 2024",
+      photo: "/Other images/1759265474674~3.jpg", 
       bio: "Web dev and technical executive.", 
       socials: { linkedin: "#", email: "#", instagram: "#" }, 
       featured: true 
@@ -473,7 +473,7 @@ interface MemberCardProps {
   };
 }
 
-const MemberCard = ({ member }: MemberCardProps) => (
+const MemberCard = ({ member, setSelectedImage }: MemberCardProps & { setSelectedImage: (image: string | null) => void }) => (
     <motion.div 
         layout
         initial={{ opacity: 0, scale: 0.9 }}
@@ -482,7 +482,13 @@ const MemberCard = ({ member }: MemberCardProps) => (
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className={`bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg border dark:border-gray-700/80 overflow-hidden text-center group flex flex-col p-6 w-full h-full border-t-4 ${committeeColors[member.committee] || 'border-gray-300'}`}
     >
-        <img src={member.photo} alt={member.name} className="w-28 h-28 mx-auto rounded-full object-cover ring-4 ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700" loading="lazy" />
+        <img 
+          src={member.photo} 
+          alt={member.name} 
+          className="w-28 h-28 mx-auto rounded-full object-cover object-[center_30%] ring-4 ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700 cursor-pointer hover:scale-105 transition-transform duration-200" 
+          loading="lazy"
+          onClick={() => setSelectedImage(member.photo)}
+        />
         <div className="mt-4 flex-grow">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
             <p className="text-sm text-slate-700 dark:text-blue-400 font-semibold">{member.role}</p>
@@ -514,12 +520,12 @@ interface TeamGridProps {
   }>;
 }
 
-const TeamGrid = ({ members }: TeamGridProps) => (
+const TeamGrid = ({ members, setSelectedImage }: TeamGridProps & { setSelectedImage: (image: string | null) => void }) => (
     <AnimatePresence>
         <motion.div layout className="flex flex-wrap justify-center items-stretch gap-8 mt-10">
              {members.map(member => (
                 <div key={member.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex-grow" style={{ minWidth: '18rem', maxWidth: '20rem' }}>
-                     <MemberCard member={member} />
+                     <MemberCard member={member} setSelectedImage={setSelectedImage} />
                 </div>
             ))}
         </motion.div>
@@ -535,7 +541,7 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
 );
 
 
-function TeamPageContent() {
+function TeamPageContent({ setSelectedImage }: { setSelectedImage: (image: string | null) => void }) {
     const facultyLeadership = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Faculty Leadership'), []);
     const hodMember = useMemo(() => facultyLeadership.find(m => m.isHOD), [facultyLeadership]);
     const otherFaculty = useMemo(() => facultyLeadership.filter(m => !m.isHOD), [facultyLeadership]);
@@ -581,7 +587,7 @@ function TeamPageContent() {
                 {hodMember && (
                     <div className="mt-10 flex justify-center mb-12">
                         <div className="w-full max-w-sm">
-                            <MemberCard member={hodMember} />
+                            <MemberCard member={hodMember} setSelectedImage={setSelectedImage} />
                         </div>
                     </div>
                 )}
@@ -589,7 +595,7 @@ function TeamPageContent() {
                 {/* Other Faculty Cards */}
                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
                     {otherFaculty.map(member => (
-                         <MemberCard key={member.id} member={member} />
+                         <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
                     ))}
                 </div>
             </section>
@@ -598,7 +604,7 @@ function TeamPageContent() {
                 <SectionTitle>Coordination Committee</SectionTitle>
                  <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
                     {coordinationCommittee.map(member => (
-                        <MemberCard key={member.id} member={member} />
+                        <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
                     ))}
                 </div>
             </section>
@@ -610,7 +616,7 @@ function TeamPageContent() {
                         {groupedAndSortedCommittees.map(([committeeName, members]) => (
                             <div key={committeeName}>
                                 <h3 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">{committeeName.replace(" Committee", "")}</h3>
-                                <TeamGrid members={members} />
+                                <TeamGrid members={members} setSelectedImage={setSelectedImage} />
                             </div>
                         ))}
                     </div>
@@ -628,6 +634,7 @@ export default function TeamPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -657,9 +664,32 @@ export default function TeamPage() {
       <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
       <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isDarkMode={isDarkMode} toggleTheme={toggleTheme} isSticky={isSticky} />
       <main className="pt-24 isolate">
-        <TeamPageContent />
+        <TeamPageContent setSelectedImage={setSelectedImage} />
       </main>
       <Footer />
+      
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] p-4">
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-4 -right-4 z-10 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <X className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+            </button>
+            <img
+              src={selectedImage}
+              alt="Expanded profile"
+              className="max-w-full max-h-full object-contain object-center rounded-lg shadow-2xl"
+              style={{ maxWidth: '90vw', maxHeight: '90vh' }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

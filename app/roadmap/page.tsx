@@ -127,7 +127,7 @@ export default function RoadmapPage() {
       description: 'Community gathering and sports events honoring our faculty members.',
       location: 'IIT Jodhpur Sports Complex',
       attendees: '150+ Participants',
-      images: ['/CIE Design.png']
+      images: ['/Other images/DSC01359.JPG']
     },
     {
       id: '8',
@@ -137,7 +137,7 @@ export default function RoadmapPage() {
       description: 'Annual celebration of engineering excellence with technical competitions and exhibitions.',
       location: 'IIT Jodhpur Campus',
       attendees: '200+ Engineers',
-      images: ['/logo.jpg']
+      images: ['/Other images/1757908205139.jpeg', '/Other images/1757908205720.jpeg']
     },
     {
       id: '9',
@@ -147,7 +147,7 @@ export default function RoadmapPage() {
       description: 'Grand orientation and cultural program for undergraduate freshers.',
       location: 'IIT Jodhpur Auditorium',
       attendees: '120+ Students',
-      images: ['/iitj-logo.png']
+      images: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg']
     },
     {
       id: '10',
@@ -158,7 +158,7 @@ export default function RoadmapPage() {
       location: 'IIT Jodhpur Lecture Hall',
       attendees: '80+ Attendees',
       speaker: 'Prof. Ligy',
-      images: ['/CIE Design.png']
+      images: ['/Other images/1759303624829.jpeg', '/Other images/1760253687978.jpeg']
     },
     {
       id: '11',
@@ -168,7 +168,7 @@ export default function RoadmapPage() {
       description: 'Hands-on workshop on GIS applications and remote sensing for civil engineers.',
       location: 'IIT Jodhpur Computer Lab',
       attendees: '40+ Students',
-      images: ['/logo.jpg']
+      images: ['/Other images/PXL_20251011_075907856.jpg']
     },
     {
       id: '12',

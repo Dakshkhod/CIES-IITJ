@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal, Menu, X, Sun, Moon, ChevronDown, Instagram } from 'lucide-react';
+import Link from 'next/link';
+import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal, Menu, X, Sun, Moon, Instagram } from 'lucide-react';
 
 /* =========================
    SITE-WIDE NAVIGATION DATA (CMS Hook)
@@ -24,7 +25,7 @@ const navItems = [
   { name: 'Events', href: '/#activities', icon: Briefcase },
   { name: 'Edificio', href: '/about#edificio', icon: Briefcase },
   { name: 'Team', href: '/team', icon: Users },
-  { name: 'Roadmap and Calendar', href: '#achievements', icon: Award },
+  { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
   { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
   { name: 'Contact Us', href: '/#contact', icon: Mail },
 ];
@@ -36,7 +37,7 @@ const navItems = [
 // Team data - Replace with CMS/API integration in production
 const TEAM_DATA = [
     { 
-      id: "hod", 
+      id: "hod_main", 
       name: "Dr. A. B. C.", 
       role: "Head of Department", 
       committee: "Faculty Leadership", 
@@ -44,7 +45,8 @@ const TEAM_DATA = [
       photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E", 
       bio: "Head of the Civil & Infrastructure Engineering Department.", 
       socials: { linkedin: "#", email: "#", instagram: "#" }, 
-      featured: true 
+      featured: true,
+      isHOD: true
     },
     { 
       id: "advisor", 
@@ -69,6 +71,17 @@ const TEAM_DATA = [
       featured: true 
     },
     { 
+      id: "advisor3", 
+      name: "Dr. M. N. O.", 
+      role: "Faculty Advisor", 
+      committee: "Faculty Leadership", 
+      batch: "Faculty", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E", 
+      bio: "Faculty advisor for the Civil Engineering Society.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" }, 
+      featured: true 
+    },
+    { 
       id: "ashwani", 
       name: "Ashwani", 
       role: "Secretary", 
@@ -80,16 +93,6 @@ const TEAM_DATA = [
       featured: true 
     },
     { 
-      id: "shashank", 
-      name: "Shashank", 
-      role: "Joint Secretary", 
-      committee: "Coordination Committee", 
-      batch: "UG 2024", 
-      photo: "/Team images/Shashank.jpeg", 
-      bio: "Joint Secretary.", 
-      socials: { linkedin: "#", email: "mailto:shashank@iitj.ac.in", instagram: "#" } 
-    },
-    { 
       id: "mayank", 
       name: "Mayank Tiwari", 
       role: "PG Representative", 
@@ -98,6 +101,16 @@ const TEAM_DATA = [
       photo: "/Team images/Mayank.jpeg", 
       bio: "Postgraduate representative connecting PG students with society activities.", 
       socials: { linkedin: "#", email: "mailto:mayank@iitj.ac.in", instagram: "#" } 
+    },
+    { 
+      id: "shashank", 
+      name: "Shashank", 
+      role: "Joint Secretary", 
+      committee: "Coordination Committee", 
+      batch: "UG 2024", 
+      photo: "/Team images/Shashank.jpeg", 
+      bio: "Joint Secretary.", 
+      socials: { linkedin: "#", email: "mailto:shashank@iitj.ac.in", instagram: "#" } 
     },
     { 
       id: "saurabh", 
@@ -282,7 +295,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }
   return (
     <header id="home" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/90' : 'bg-white/80 backdrop-blur-sm dark:bg-transparent'}`}>
       <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-2 md:px-4 py-2.5 md:py-3">
-        <a href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
+        <Link href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
           <img
             src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
             alt="IIT Jodhpur Logo"
@@ -301,24 +314,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }
               IIT Jodhpur
             </span>
           </div>
-        </a>
+        </Link>
         <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
           {navItems.map((item) => (
-            item.dropdown ? (
-              <div key={item.name} className="group relative">
-                <a href={item.href} className="flex items-center whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700">
-                  {item.name}
-                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
-                </a>
-                <div className="absolute left-0 top-full z-20 mt-3 w-48 rounded-lg border bg-white py-1 shadow-xl opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800" role="menu">
-                  {item.dropdown.map((subItem) => (
-                    <a key={subItem.name} href={subItem.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700" role="menuitem">{subItem.name}</a>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <a key={item.name} href={item.href} className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors ${item.name === 'Team' ? 'bg-[#0b3d91] text-white shadow-md' : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'}`}>{item.name}</a>
-            )
+            <Link key={item.name} href={item.href} className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors ${item.name === 'Team' ? 'bg-[#0b3d91] text-white shadow-md' : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'}`}>
+              {item.name}
+            </Link>
           ))}
         </div>
         <div className="flex items-center space-x-4">
@@ -344,22 +345,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }
 };
 
 const MobileNav = () => {
-    const [openAccordion, setOpenAccordion] = useState<string | null>(null);
     return (
         <div className="flex flex-col px-4 pt-2 pb-4 space-y-1">
             {navItems.map((item) => (
-                <div key={item.name}>
-                    {item.dropdown ? ( <>
-                        <button onClick={() => setOpenAccordion(openAccordion === item.name ? null : item.name)} className="w-full flex justify-between items-center px-4 py-3 rounded-md text-left font-medium">
-                           <span>{item.name}</span> <ChevronDown className={`transition-transform ${openAccordion === item.name ? 'rotate-180' : ''}`} />
-                        </button>
-                        {openAccordion === item.name && (
-                            <div className="pl-8 py-2 space-y-1">
-                              {item.dropdown.map((subItem) => <a key={subItem.name} href={subItem.href} className="block pl-4 pr-2 py-2 rounded-md">{subItem.name}</a>)}
-                            </div>
-                        )} </>
-                    ) : ( <a href={item.href} className="block px-4 py-3 rounded-md font-medium">{item.name}</a>)}
-                </div>
+                <Link key={item.name} href={item.href} className="block px-4 py-3 rounded-md font-medium">
+                    {item.name}
+                </Link>
             ))}
         </div>
     );
@@ -380,32 +371,32 @@ const Footer = () => (
 
                 {/* Quick Links */}
                 <div className="text-center md:col-span-3 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-slate-700">Quick Links</h3>
+                  <h3 className="mb-4 text-lg font-bold text-blue-400 dark:text-blue-400">Quick Links</h3>
                   <ul className="space-y-2 text-sm">
                     <li>
-                      <a href="/" className="transition-colors hover:text-white">
+                      <Link href="/" className="transition-colors hover:text-white">
                         Home
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/team" className="transition-colors hover:text-white">
+                      <Link href="/team" className="transition-colors hover:text-white">
                         Team
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
 
                 {/* Contact Info */}
                 <div className="text-center md:col-span-5 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-slate-700">Contact</h3>
+                  <h3 className="mb-4 text-lg font-bold text-blue-400 dark:text-blue-400">Contact</h3>
                   <p className="text-sm font-semibold">
                     Department of Civil and Infrastructure Engineering
                   </p>
-                  <p className="text-sm text-slate-400">Indian Institute of Technology Jodhpur</p>
-                  <p className="text-sm text-slate-400">NH-62, Nagour Road</p>
-                  <p className="text-sm text-slate-400">Karwar 342030</p>
-                  <p className="text-sm text-slate-400">Jodhpur District</p>
-                  <p className="mt-2 text-sm text-slate-400">eMail: office@civil.iitj.ac.in</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-400">NH-62, Nagour Road</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-400">Karwar 342030</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-400">Jodhpur District</p>
+                  <p className="mt-2 text-sm text-slate-400 dark:text-slate-400">eMail: office@civil.iitj.ac.in</p>
                 </div>
 
                 {/* CIES Logo (Right) */}
@@ -478,6 +469,7 @@ interface MemberCardProps {
       email: string;
       instagram: string;
     };
+    isHOD?: boolean;
   };
 }
 
@@ -518,6 +510,7 @@ interface TeamGridProps {
       email: string;
       instagram: string;
     };
+    isHOD?: boolean;
   }>;
 }
 
@@ -544,6 +537,8 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
 
 function TeamPageContent() {
     const facultyLeadership = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Faculty Leadership'), []);
+    const hodMember = useMemo(() => facultyLeadership.find(m => m.isHOD), [facultyLeadership]);
+    const otherFaculty = useMemo(() => facultyLeadership.filter(m => !m.isHOD), [facultyLeadership]);
     const coordinationCommittee = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Coordination Committee'), []);
     const committeeMembers = useMemo(() => TEAM_DATA.filter(m => m.committee !== 'Faculty Leadership' && m.committee !== 'Coordination Committee'), []);
     
@@ -581,8 +576,19 @@ function TeamPageContent() {
             
             <section className="container mx-auto px-6 py-12">
                 <SectionTitle>Faculty Leadership</SectionTitle>
+                
+                {/* HOD Card - Centered */}
+                {hodMember && (
+                    <div className="mt-10 flex justify-center mb-12">
+                        <div className="w-full max-w-sm">
+                            <MemberCard member={hodMember} />
+                        </div>
+                    </div>
+                )}
+                
+                {/* Other Faculty Cards */}
                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
-                    {facultyLeadership.map(member => (
+                    {otherFaculty.map(member => (
                          <MemberCard key={member.id} member={member} />
                     ))}
                 </div>

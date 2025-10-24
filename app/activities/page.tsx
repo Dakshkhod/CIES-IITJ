@@ -94,7 +94,7 @@ export default function ActivitiesPage() {
         title: 'Freshers (PG)',
         date: '2025-08-31',
         category: 'edificio',
-        imageUrl: '/CIE Design.png',
+        imageUrl: '',
       },
       // September
       {
@@ -102,14 +102,14 @@ export default function ActivitiesPage() {
         title: 'Teacher\'s Day (Community Gathering/Sports Event)',
         date: '2025-09-05',
         category: 'other',
-        imageUrl: '/logo.jpg',
+        imageUrl: '/Other images/DSC01359.JPG',
       },
       {
         id: '12',
         title: 'Engineer\'s Day',
         date: '2025-09-15',
         category: 'other',
-        imageUrl: '/iitj-logo.png',
+        imageUrl: '/Other images/1757908205139.jpeg',
       },
       {
         id: '13',
@@ -145,7 +145,7 @@ export default function ActivitiesPage() {
         title: 'Freshers (UG)',
         date: '2025-10-05',
         category: 'edificio',
-        imageUrl: '/logo.jpg',
+        imageUrl: '/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg',
       },
       {
         id: '18',
@@ -156,10 +156,10 @@ export default function ActivitiesPage() {
       },
       {
         id: '19',
-        title: 'Guest Lecture (Prof. Eiky - IITM)',
+        title: 'Guest Lecture by Prof. Ligy (IITM)',
         date: '2025-10-13',
         category: 'seminar',
-        imageUrl: '/CIE Design.png',
+        imageUrl: '/Other images/1759303624829.jpeg',
       },
       {
         id: '20',
@@ -170,17 +170,17 @@ export default function ActivitiesPage() {
       },
       {
         id: '21',
-        title: 'Yellow Day - Mental Health (Compulsory for Geotechnics Students)',
+        title: 'Workshop on Geospatial (Compulsory for Geoinformatics Students)',
         date: '2025-10-11',
-        category: 'other',
-        imageUrl: '/iitj-logo.png',
+        category: 'workshop',
+        imageUrl: '/Other images/PXL_20251011_075907856.jpg',
       },
       {
         id: '22',
         title: 'Diwali Celebration',
         date: '2025-10-14',
         category: 'other',
-        imageUrl: '/CIE Design.png',
+        imageUrl: '/Other images/DSC03840.JPG',
       },
       // November
       {
@@ -662,11 +662,11 @@ export default function ActivitiesPage() {
                             }}
                             loading="eager"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(event.category)} opacity-25 group-hover:opacity-35 transition-opacity duration-300`} />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(event.category)} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
                           
                           {/* Category Badge */}
-                          <div className="absolute top-4 left-4">
+                          <div className="absolute top-4 right-4">
                             <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-bold backdrop-blur-md ${getCategoryBadge(event.category)}`}>
                               {getCategoryIcon(event.category)}
                               {event.category.replace('-', ' ').toUpperCase()}
@@ -675,10 +675,10 @@ export default function ActivitiesPage() {
 
                           {/* Title overlay */}
                           <div className="absolute bottom-0 left-0 right-0 p-5">
-                            <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 drop-shadow-lg">
+                            <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 drop-shadow-2xl shadow-black/50">
                               {event.title}
                             </h3>
-                            <div className="flex items-center gap-2 text-sm text-white/90">
+                            <div className="flex items-center gap-2 text-sm text-white/95 drop-shadow-lg">
                               <Calendar className="h-4 w-4" />
                               <time dateTime={event.date}>{formatDateShort(event.date)}</time>
                             </div>
@@ -748,8 +748,8 @@ export default function ActivitiesPage() {
                             loading="lazy"
                           />
                           {/* Gradient overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(card.category)} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(card.category)} opacity-15 group-hover:opacity-25 transition-opacity duration-300`} />
                           
                           {/* Status badge */}
                           <div className="absolute top-4 right-4">
@@ -768,7 +768,7 @@ export default function ActivitiesPage() {
                           )}
                           
                           {/* Category Badge */}
-                          <div className="absolute bottom-4 left-4">
+                          <div className="absolute top-4 left-4">
                             <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur-sm ${getCategoryBadge(card.category)}`}>
                               {getCategoryIcon(card.category)}
                               {card.category.replace('-', ' ').toUpperCase()}
@@ -777,7 +777,7 @@ export default function ActivitiesPage() {
 
                           {/* Title overlay on image */}
                           <div className="absolute bottom-0 left-0 right-0 p-4">
-                            <h3 className="text-base font-bold text-white mb-1 line-clamp-2 drop-shadow-lg">
+                            <h3 className="text-base font-bold text-white mb-1 line-clamp-2 drop-shadow-2xl shadow-black/50">
                               {card.title}
                             </h3>
                           </div>

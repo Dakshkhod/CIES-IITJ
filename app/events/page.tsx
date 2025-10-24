@@ -34,7 +34,7 @@ export default function EventsPage() {
         description: 'Welcome session for new postgraduate students joining the Civil & Infrastructure Engineering program.',
         location: 'IIT Jodhpur Campus',
         attendees: '50+ Students',
-        photos: ['/Team images/Deepali.jpeg', '/Team images/Falak.jpeg', '/Team images/Keshav.jpeg'],
+        photos: [],
         status: 'completed'
       },
       {
@@ -45,7 +45,7 @@ export default function EventsPage() {
         description: 'Welcome session for new undergraduate students joining the Civil & Infrastructure Engineering program.',
         location: 'IIT Jodhpur Campus',
         attendees: '100+ Students',
-        photos: ['/Team images/Manish.jpg', '/Team images/Mayank.jpeg', '/Team images/Nishant.jpeg'],
+        photos: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
         status: 'completed'
       },
       {
@@ -67,7 +67,7 @@ export default function EventsPage() {
         description: 'Welcome party for postgraduate students with cultural performances, games, and networking.',
         location: 'IIT Jodhpur Auditorium',
         attendees: '60+ Students',
-        photos: ['/Team images/Ram.jpeg', '/Team images/Saurabh.jpeg', '/Team images/Shashank.jpeg'],
+        photos: [],
         status: 'completed'
       },
       {
@@ -78,7 +78,7 @@ export default function EventsPage() {
         description: 'Annual celebration honoring our faculty members with sports activities and community gathering.',
         location: 'IIT Jodhpur Sports Complex',
         attendees: '150+ Faculty & Students',
-        photos: ['/Team images/Simran Sehgal.jpeg', '/Team images/Simranjit Kaur.jpeg'],
+        photos: ['/Other images/DSC01359.JPG'],
         status: 'completed'
       },
       {
@@ -89,7 +89,7 @@ export default function EventsPage() {
         description: 'Celebration of engineering excellence with technical talks, competitions, and recognition of outstanding engineers.',
         location: 'IIT Jodhpur Campus',
         attendees: '200+ Engineers',
-        photos: ['/Team images/Sri Raghava.jpeg', '/Team images/Vikas.jpeg'],
+        photos: ['/Other images/1757908205139.jpeg', '/Other images/1757908205720.jpeg'],
         status: 'completed'
       },
       {
@@ -100,7 +100,7 @@ export default function EventsPage() {
         description: 'Welcome celebration for undergraduate students featuring cultural performances and interactive sessions.',
         location: 'IIT Jodhpur Auditorium',
         attendees: '120+ Students',
-        photos: ['/Team images/Deepali.jpeg', '/Team images/Faizah.jpeg'],
+        photos: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg'],
         status: 'completed'
       },
       {
@@ -111,7 +111,7 @@ export default function EventsPage() {
         description: 'Expert lecture on advanced topics in civil engineering by distinguished professor from IIT Madras.',
         location: 'IIT Jodhpur Lecture Hall',
         attendees: '80+ Students & Faculty',
-        photos: ['/Team images/Manish.jpg', '/Team images/Mayank.jpeg'],
+        photos: ['/Other images/1759303624829.jpeg', '/Other images/1760253687978.jpeg'],
         status: 'completed'
       },
       {
@@ -122,7 +122,7 @@ export default function EventsPage() {
         description: 'Hands-on workshop covering geospatial technologies, GIS applications, and remote sensing techniques.',
         location: 'IIT Jodhpur Computer Lab',
         attendees: '40+ Students',
-        photos: ['/Team images/Nishant.jpeg', '/Team images/Nitesh.jpeg'],
+        photos: ['/Other images/PXL_20251011_075907856.jpg'],
         status: 'completed'
       },
       {
@@ -133,7 +133,7 @@ export default function EventsPage() {
         description: 'Festive celebration of Diwali with traditional decorations, sweets, and cultural performances.',
         location: 'IIT Jodhpur Campus',
         attendees: '300+ Community Members',
-        photos: ['/Team images/Deepali.jpeg', '/Team images/Falak.jpeg', '/Team images/Keshav.jpeg'],
+        photos: ['/Other images/DSC03840.JPG'],
         status: 'completed'
       }
     ],

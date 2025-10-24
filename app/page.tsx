@@ -17,7 +17,7 @@ export default function HomePage() {
       className={`bg-gray-50 font-sans text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-200`}
     >
       {/* Blueprint background pattern */}
-      <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
+      <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)]"></div>
 
       <main className="isolate pt-24">
         <HeroSection />
@@ -409,6 +409,14 @@ const RecentActivities = () => {
   const recentActivities = [
     {
       id: 1,
+      title: 'UG Departmental Orientation - Batch of 2025',
+      date: 'August 5, 2025',
+      description: 'On 5th August 2025, the Department of Civil & Infrastructure Engineering, IIT Jodhpur, in collaboration with the Civil & Infrastructure Engineering Society (CIES), conducted the Undergraduate Departmental Orientation for the incoming batch.',
+      image: '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
+      link: '#'
+    },
+    {
+      id: 2,
       title: 'Informal Session - for Y24s',
       date: 'August 12, 2025',
       description: 'We conducted an informal session for Y24s, organized by Y23s, on the theme "How to Master the 3rd Semester." We discussed effective time management, balancing academics with extracurriculars, and tips for excelling in core courses.',
@@ -416,7 +424,7 @@ const RecentActivities = () => {
       link: '#'
     },
     {
-      id: 2,
+      id: 3,
       title: 'Site Visit to Jodhpur Metro Project',
       date: 'July 28, 2025',
       description: 'An insightful visit to the ongoing Jodhpur Metro construction site. Students got a firsthand look at tunnel boring machines, station construction, and project management on a large scale.',
@@ -424,7 +432,7 @@ const RecentActivities = () => {
       link: '#'
     },
     {
-      id: 3,
+      id: 4,
       title: 'Workshop on STAAD.Pro',
       date: 'June 15, 2025',
       description: 'A hands-on workshop covering the fundamentals of structural analysis and design using STAAD.Pro. Participants learned to model, analyze, and design a G+3 building from scratch.',

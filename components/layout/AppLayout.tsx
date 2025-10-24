@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
@@ -15,7 +16,6 @@ import {
   X,
   Sun,
   Moon,
-  ChevronDown,
   Building2,
 } from 'lucide-react';
 
@@ -103,8 +103,6 @@ interface HeaderProps {
 }
 
 const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, pathname }: HeaderProps) => {
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
   const isActive = (href: string) => {
     if (!href.startsWith('/')) return false; // ignore hash links
     if (!pathname) return false;
@@ -112,36 +110,14 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
     return pathname.startsWith(href);
   };
 
-  // Enhanced keyboard navigation for dropdowns
-  const handleKeyDown = (event: React.KeyboardEvent, itemName: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      setOpenDropdown(openDropdown === itemName ? null : itemName);
-    } else if (event.key === 'Escape') {
-      setOpenDropdown(null);
-    }
-  };
-
-  const handleDropdownKeyDown = (event: React.KeyboardEvent, href: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      window.location.href = href;
-    } else if (event.key === 'Escape') {
-      setOpenDropdown(null);
-      // Focus back to the dropdown trigger
-      const trigger = (event.target as HTMLElement).closest('[role="menu"]')?.previousElementSibling as HTMLElement;
-      trigger?.focus();
-    }
-  };
-
   return (
     <header
       id="home"
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/90' : 'bg-white/80 backdrop-blur-sm dark:bg-transparent'}`}
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/95' : 'bg-white/80 backdrop-blur-sm dark:bg-gray-900/70'}`}
     >
-      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-2 md:px-4 py-2.5 md:py-3">
+      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-3 md:px-4 py-3 md:py-3">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
+        <Link href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
           <img
             src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
             alt="IIT Jodhpur Logo"
@@ -160,61 +136,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
               IIT Jodhpur
             </span>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
-          {navItems.map(item =>
-            item.dropdown ? (
-              <div
-                key={item.name}
-                className="group relative"
-                onMouseEnter={() => setOpenDropdown(item.name)}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <button
-                  onClick={() => setOpenDropdown(openDropdown === item.name ? null : item.name)}
-                  onKeyDown={e => handleKeyDown(e, item.name)}
-                  className="flex items-center whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700"
-                  aria-haspopup="true"
-                  aria-expanded={openDropdown === item.name}
-                  aria-controls={`dropdown-${item.name.toLowerCase().replace(' ', '-')}`}
-                >
-                  {item.name}
-                  <ChevronDown
-                    className={`ml-1 h-4 w-4 transition-transform duration-200 ${openDropdown === item.name ? 'rotate-180' : 'group-hover:rotate-180'}`}
-                  />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === item.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                      className="absolute left-0 top-full z-20 mt-3 w-48 rounded-lg border bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800"
-                      role="menu"
-                      id={`dropdown-${item.name.toLowerCase().replace(' ', '-')}`}
-                      aria-labelledby={`dropdown-trigger-${item.name.toLowerCase().replace(' ', '-')}`}
-                    >
-                      {item.dropdown.map((subItem) => (
-                        <a
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-700"
-                          role="menuitem"
-                          tabIndex={0}
-                          onKeyDown={e => handleDropdownKeyDown(e, subItem.href)}
-                        >
-                          {subItem.name}
-                        </a>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-            <a
+          {navItems.map(item => (
+            <Link
               key={item.name}
               href={item.href}
               className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] ${
@@ -223,10 +150,9 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
                   : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
             >
-                {item.name}
-              </a>
-            )
-          )}
+              {item.name}
+            </Link>
+          ))}
         </div>
 
         {/* Theme Toggle & Mobile Menu Button */}
@@ -282,7 +208,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
 // --- Mobile Navigation Component ---
 interface MobileNavProps { pathname: string | null }
 const MobileNav = ({ pathname }: MobileNavProps) => {
-  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const isActive = (href: string) => {
     if (!href.startsWith('/')) return false;
     if (!pathname) return false;
@@ -293,59 +218,18 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
   return (
     <div className="flex flex-col space-y-1 px-4 pb-4 pt-2">
       {navItems.map(item => (
-        <div key={item.name}>
-          {item.dropdown ? (
-            <>
-              <button
-                onClick={() => setOpenAccordion(openAccordion === item.name ? null : item.name)}
-                className="flex w-full items-center justify-between rounded-md px-4 py-3 text-left font-medium text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                aria-expanded={openAccordion === item.name}
-              >
-                <div className="flex items-center">
-                  <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
-                  <span>{item.name}</span>
-                </div>
-                <ChevronDown
-                  className={`h-5 w-5 transition-transform duration-300 ${openAccordion === item.name ? 'rotate-180' : ''}`}
-                />
-              </button>
-              <AnimatePresence>
-                {openAccordion === item.name && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden pl-8"
-                  >
-                    <div className="ml-5 space-y-1 border-l-2 border-gray-200 py-2 dark:border-gray-700">
-                      {item.dropdown.map(subItem => (
-                        <a
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block rounded-r-md py-2 pl-4 pr-2 text-gray-600 hover:bg-gray-100 hover:text-[#0b3d91] dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-400"
-                        >
-                          {subItem.name}
-                        </a>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </>
-          ) : (
-            <a
-              href={item.href}
-              className={`flex items-center whitespace-nowrap rounded-md px-4 py-3 font-medium transition-colors ${
-                isActive(item.href)
-                  ? 'text-white bg-[#0b3d91] shadow-md dark:text-white'
-                  : 'text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-              }`}
-            >
-              <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
-              <span>{item.name}</span>
-            </a>
-          )}
-        </div>
+        <Link
+          key={item.name}
+          href={item.href}
+          className={`flex items-center whitespace-nowrap rounded-md px-4 py-3 font-medium transition-colors ${
+            isActive(item.href)
+              ? 'text-white bg-[#0b3d91] shadow-md dark:text-white'
+              : 'text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+          }`}
+        >
+          <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
+          <span>{item.name}</span>
+        </Link>
       ))}
     </div>
   );

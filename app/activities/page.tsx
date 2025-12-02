@@ -209,67 +209,70 @@ export default function ActivitiesPage() {
             </div>
 
         <main className="pt-20">
-          {/* Hero Section - Cleaner & Modern */}
-          <section className="relative px-6 py-16 md:py-24">
+          {/* Hero Section - Mobile Optimized */}
+          <section className="relative px-4 sm:px-6 py-10 sm:py-16 md:py-24">
             <div className="mx-auto max-w-7xl">
               <div className="text-center">
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-400/40 bg-slate-500/10 dark:border-blue-500/30 dark:bg-blue-500/10 px-4 py-2 text-sm text-slate-700 dark:text-blue-300 backdrop-blur-sm shadow-sm">
-                  <Calendar className="h-4 w-4" />
+                <div className="mb-4 sm:mb-6 inline-flex items-center gap-2 rounded-full border border-slate-400/40 bg-slate-500/10 dark:border-blue-500/30 dark:bg-blue-500/10 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-700 dark:text-blue-300 backdrop-blur-sm shadow-sm">
+                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                   <span className="font-medium">Academic Year 2025-26</span>
                 </div>
-                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
                   Activities & Events
                 </h1>
-                <p className="mt-6 mx-auto max-w-2xl text-lg text-slate-500 dark:text-slate-300">
-                  Explore our calendar of workshops, seminars, competitions, site visits, and EDIFICIO initiatives throughout the year.
+                <p className="mt-4 sm:mt-6 mx-auto max-w-2xl text-sm sm:text-lg text-slate-500 dark:text-slate-300 px-2">
+                  Explore our calendar of workshops, seminars, competitions, site visits, and EDIFICIO initiatives.
                 </p>
               </div>
 
-              {/* Stats */}
-              <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 max-w-4xl mx-auto">
-                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-slate-700 dark:text-blue-400">{items.length}</div>
-                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Total Events</div>
+              {/* Stats - Compact on mobile */}
+              <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4 max-w-4xl mx-auto">
+                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-3 sm:p-4 text-center backdrop-blur shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-bold text-slate-700 dark:text-blue-400">{items.length}</div>
+                  <div className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-300">Total</div>
                 </div>
-                <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{items.filter(i => i.category === 'seminar').length}</div>
-                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Seminars</div>
+                <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-3 sm:p-4 text-center backdrop-blur shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400">{items.filter(i => i.category === 'seminar').length}</div>
+                  <div className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-300">Seminars</div>
                 </div>
-                <div className="rounded-xl border border-green-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">{items.filter(i => i.category === 'workshop').length}</div>
-                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">Workshops</div>
+                <div className="rounded-xl border border-green-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-3 sm:p-4 text-center backdrop-blur shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">{items.filter(i => i.category === 'workshop').length}</div>
+                  <div className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-300">Workshops</div>
                 </div>
-                <div className="rounded-xl border border-amber-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-amber-600 dark:text-yellow-400">{items.filter(i => i.category === 'edificio').length}</div>
-                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-300">EDIFICIO</div>
+                <div className="rounded-xl border border-amber-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-3 sm:p-4 text-center backdrop-blur shadow-sm">
+                  <div className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-yellow-400">{items.filter(i => i.category === 'edificio').length}</div>
+                  <div className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-300">EDIFICIO</div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Filter Bar - Sticky & Modern */}
-          <div className="sticky top-16 z-30 border-y border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-sm">
-            <div className="mx-auto max-w-7xl px-6 py-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Filter className="h-4 w-4 text-slate-400 dark:text-slate-300" />
-                  <span className="text-sm text-slate-500 dark:text-slate-300 font-medium">Filter:</span>
-                  {categories.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                        activeCategory === cat
-                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
-                          : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                      }`}
-                    >
-                      {cat === 'all' ? 'All Events' : cat.replace('-', ' ').replace(/^./, s => s.toUpperCase())}
-                    </button>
-                  ))}
-                </div>
+          {/* Filter Bar - Sticky & Mobile-Friendly */}
+          <div className="sticky top-14 sm:top-16 z-30 border-y border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-sm">
+            <div className="mx-auto max-w-7xl px-3 sm:px-6 py-3 sm:py-4">
+              <div className="flex flex-col gap-3 sm:gap-4">
+                {/* Filter buttons - Horizontal scroll on mobile */}
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-500 dark:text-slate-300 font-medium">View:</span>
+                  <Filter className="h-4 w-4 text-slate-400 dark:text-slate-300 flex-shrink-0" />
+                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
+                    {categories.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveCategory(cat)}
+                        className={`rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+                          activeCategory === cat
+                            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
+                            : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
+                        }`}
+                      >
+                        {cat === 'all' ? 'All' : cat.replace('-', ' ').replace(/^./, s => s.toUpperCase())}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* View toggle */}
+                <div className="flex items-center justify-between sm:justify-end gap-2">
+                  <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`rounded-lg p-2 transition-all ${
@@ -307,16 +310,16 @@ export default function ActivitiesPage() {
             if (recentEvents.length === 0) return null;
 
             return (
-              <section className="px-6 py-12 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/20 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-pink-950/5">
+              <section className="px-3 sm:px-6 py-8 sm:py-12 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/20 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-pink-950/5">
                 <div className="mx-auto max-w-7xl">
                   {/* Section Header */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30">
-                        <Sparkles className="h-6 w-6 text-white" />
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30">
+                        <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-slate-600 dark:from-blue-400 dark:via-cyan-400 dark:to-slate-400 bg-clip-text text-transparent">
+                        <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-slate-600 dark:from-blue-400 dark:via-cyan-400 dark:to-slate-400 bg-clip-text text-transparent">
                           Recent Events
                         </h2>
                         <p className="text-sm text-slate-500 dark:text-slate-300 mt-1">

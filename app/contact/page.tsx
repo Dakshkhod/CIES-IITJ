@@ -203,82 +203,82 @@ export default function ContactPage() {
         </div>
 
         {/* Hero Section */}
-        <section className="relative pt-32 pb-16 px-6">
+        <section className="relative pt-24 sm:pt-32 pb-10 sm:pb-16 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
-                <MessageSquare className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Get in Touch
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
                 Contact{' '}
                 <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
                   Us
                 </span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-2">
                 Have questions about our society, events, or want to collaborate? 
-                We&apos;d love to hear from you. Reach out and let&apos;s connect!
+                We&apos;d love to hear from you!
               </p>
             </motion.div>
           </div>
         </section>
 
         {/* Main Content */}
-        <section className="relative pb-24 px-6">
+        <section className="relative pb-16 sm:pb-24 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid lg:grid-cols-5 gap-8 lg:gap-12"
+              className="grid lg:grid-cols-5 gap-6 lg:gap-12"
             >
               {/* Contact Information - Left Side */}
-              <motion.div variants={itemVariants} className="lg:col-span-2 space-y-6">
+              <motion.div variants={itemVariants} className="lg:col-span-2 space-y-4 sm:space-y-6">
                 {/* Info Card */}
-                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
-                      <Building2 className="h-6 w-6" />
+                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
+                  <div className="flex items-start sm:items-center gap-3 mb-5 sm:mb-6">
+                    <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex-shrink-0">
+                      <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="min-w-0">
+                      <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
                         {contactInfo?.department_name}
                       </h2>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
                         {contactInfo?.institution_name}
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-5">
+                  <div className="space-y-4 sm:space-y-5">
                     {/* Address */}
-                    <div className="flex items-start gap-4 group">
-                      <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
-                        <MapPin className="h-5 w-5" />
+                    <div className="flex items-start gap-3 sm:gap-4 group">
+                      <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex-shrink-0">
+                        <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Address</p>
-                        <p className="text-gray-700 dark:text-gray-300">{contactInfo?.address}</p>
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Address</p>
+                        <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo?.address}</p>
                       </div>
                     </div>
 
                     {/* Email */}
-                    <div className="flex items-start gap-4 group">
-                      <div className="p-2.5 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform">
-                        <Mail className="h-5 w-5" />
+                    <div className="flex items-start gap-3 sm:gap-4 group">
+                      <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex-shrink-0">
+                        <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Email</p>
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Email</p>
                         <a 
                           href={`mailto:${contactInfo?.email}`}
-                          className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                          className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors break-all"
                         >
                           {contactInfo?.email}
                         </a>
@@ -287,15 +287,15 @@ export default function ContactPage() {
 
                     {/* Phone */}
                     {contactInfo?.phone && (
-                      <div className="flex items-start gap-4 group">
-                        <div className="p-2.5 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
-                          <Phone className="h-5 w-5" />
+                      <div className="flex items-start gap-3 sm:gap-4 group">
+                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex-shrink-0">
+                          <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Phone</p>
+                        <div className="min-w-0">
+                          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Phone</p>
                           <a 
                             href={`tel:${contactInfo.phone}`}
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                           >
                             {contactInfo.phone}
                           </a>
@@ -305,13 +305,13 @@ export default function ContactPage() {
 
                     {/* Office Hours */}
                     {contactInfo?.office_hours && (
-                      <div className="flex items-start gap-4 group">
-                        <div className="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform">
-                          <Clock className="h-5 w-5" />
+                      <div className="flex items-start gap-3 sm:gap-4 group">
+                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex-shrink-0">
+                          <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Office Hours</p>
-                          <p className="text-gray-700 dark:text-gray-300">{contactInfo.office_hours}</p>
+                        <div className="min-w-0">
+                          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Office Hours</p>
+                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo.office_hours}</p>
                         </div>
                       </div>
                     )}
@@ -319,17 +319,17 @@ export default function ContactPage() {
                 </div>
 
                 {/* Social Links Card */}
-                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white">
-                      <Users className="h-6 w-6" />
+                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
+                  <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+                    <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white">
+                      <Users className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       Connect With Us
                     </h3>
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {contactInfo?.social_links?.linkedin && (
                       <a
                         href={contactInfo.social_links.linkedin}

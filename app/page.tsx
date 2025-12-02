@@ -320,10 +320,10 @@ const AnimatedCIESLogo = () => {
 // --- CIE Hero Design Component ---
 const CIEHeroDesign = () => {
   return (
-    <div className="relative">
-      {/* Decorative diamond in bottom right */}
+    <div className="relative px-4 sm:px-0">
+      {/* Decorative diamond in bottom right - hidden on mobile */}
     <motion.div
-        className="absolute bottom-8 right-8 h-16 w-16 rotate-45 bg-gradient-to-br from-gray-400 to-gray-600 opacity-30"
+        className="absolute bottom-8 right-8 h-16 w-16 rotate-45 bg-gradient-to-br from-gray-400 to-gray-600 opacity-30 hidden sm:block"
         initial={{ opacity: 0, rotate: 0 }}
         animate={{ opacity: 0.3, rotate: 45 }}
         transition={{ duration: 1, delay: 1.2 }}
@@ -332,16 +332,16 @@ const CIEHeroDesign = () => {
         }}
       />
       
-      <div className="space-y-6">
-        {/* Animated CIES Logo at the top - smaller size */}
-        <div className="max-w-2xl mx-auto">
+      <div className="space-y-4 sm:space-y-6">
+        {/* Animated CIES Logo at the top - responsive size */}
+        <div className="max-w-sm sm:max-w-xl md:max-w-2xl mx-auto">
           <AnimatedCIESLogo />
         </div>
 
-        {/* Text content below logo - more compact */}
-        <div className="space-y-3">
+        {/* Text content below logo - responsive */}
+        <div className="space-y-2 sm:space-y-3">
           <motion.h1 
-            className="text-3xl font-bold leading-tight text-gray-900 dark:text-white md:text-4xl lg:text-5xl"
+            className="text-2xl sm:text-3xl font-bold leading-tight text-gray-900 dark:text-white md:text-4xl lg:text-5xl"
             initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -352,7 +352,7 @@ const CIEHeroDesign = () => {
           </motion.h1>
           
           <motion.h2 
-            className="text-2xl font-bold text-slate-800 dark:text-blue-400 md:text-3xl lg:text-4xl"
+            className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-blue-400 md:text-3xl lg:text-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
@@ -361,7 +361,7 @@ const CIEHeroDesign = () => {
           </motion.h2>
           
           <motion.p 
-            className="text-base text-gray-700 dark:text-gray-300 md:text-lg lg:text-xl"
+            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 md:text-lg lg:text-xl px-4 sm:px-0"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
@@ -376,7 +376,7 @@ const CIEHeroDesign = () => {
 
 // --- Hero Section ---
 const HeroSection = () => (
-  <section className="relative mx-auto flex min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-6 pb-12 pt-16">
+  <section className="relative mx-auto flex min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-4 sm:px-6 pb-8 sm:pb-12 pt-12 sm:pt-16">
     {/* Theme-aware background overlay */}
     <div className="absolute inset-0 bg-white dark:bg-slate-900/80 z-0"></div>
     
@@ -510,7 +510,7 @@ const RecentActivities = () => {
   const activity = activitiesToShow[currentIndex];
 
   return (
-    <section id="activities" className="relative overflow-hidden py-16 -mt-4">
+    <section id="activities" className="relative overflow-hidden py-10 sm:py-16 -mt-4">
       {/* Theme-aware overlay to match hero tone */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-b from-white via-gray-50 to-white dark:from-slate-900/80 dark:via-slate-900 dark:to-slate-900/80"></div>
       {/* Theme-aware engineering grid background with dark blue-gray */}
@@ -520,11 +520,11 @@ const RecentActivities = () => {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(11,61,145,0.12)_2px,transparent_2px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(56,189,248,0.12)_2px,transparent_2px)] bg-[size:200px_200px]"></div>
       </div>
 
-      <div className="container mx-auto px-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <FadeInOnScroll>
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
+          <h2 className="mb-8 sm:mb-12 text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
             Recent Activities
-            <span className="mx-auto mt-3 block h-1 w-24 rounded-full bg-[#0b3d91] dark:bg-cyan-400"></span>
+            <span className="mx-auto mt-2 sm:mt-3 block h-1 w-16 sm:w-24 rounded-full bg-[#0b3d91] dark:bg-cyan-400"></span>
           </h2>
         </FadeInOnScroll>
         
@@ -534,10 +534,10 @@ const RecentActivities = () => {
             whileInView={{ opacity: 1, scale: 1 }} 
             viewport={{ once: true }} 
             transition={{ duration: 0.5, delay: 0.3 }} 
-            className="bg-white/90 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-300 dark:border-gray-700/80 p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
+            className="bg-white/90 dark:bg-gray-800/50 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border border-gray-300 dark:border-gray-700/80 p-4 sm:p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
           >
-            <div className="flex flex-col lg:flex-row gap-8 items-center min-h-[28rem]">
-              <div className="w-full lg:w-2/5 flex-shrink-0 h-64 lg:h-80 relative">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-8 items-center min-h-[24rem] sm:min-h-[28rem]">
+              <div className="w-full lg:w-2/5 flex-shrink-0 h-48 sm:h-64 lg:h-80 relative">
                 <AnimatePresence initial={false}>
                   <motion.img 
                     key={activity.id}
@@ -547,11 +547,11 @@ const RecentActivities = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="rounded-xl w-full h-full object-cover absolute top-0 left-0"
+                    className="rounded-lg sm:rounded-xl w-full h-full object-cover absolute top-0 left-0"
                   />
                 </AnimatePresence>
               </div>
-              <div className="w-full lg:w-3/5 relative h-64 lg:h-80 flex flex-col">
+              <div className="w-full lg:w-3/5 relative min-h-[12rem] sm:h-64 lg:h-80 flex flex-col">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activity.id}
@@ -561,9 +561,9 @@ const RecentActivities = () => {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                     className="flex flex-col flex-grow"
                   >
-                    <h3 className="text-2xl lg:text-3xl font-bold mb-3 text-gray-900 dark:text-white">{activity.title}</h3>
-                    <p className="text-sm text-slate-700 dark:text-blue-400 font-semibold mb-4">{activity.date}</p>
-                    <div className="text-gray-600 dark:text-gray-300 mb-6 flex-grow pr-2 overflow-y-auto text-base lg:text-lg leading-relaxed" style={{ scrollbarWidth: 'thin' }}>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 text-gray-900 dark:text-white line-clamp-2">{activity.title}</h3>
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-blue-400 font-semibold mb-3 sm:mb-4">{activity.date}</p>
+                    <div className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 flex-grow pr-2 overflow-y-auto text-sm sm:text-base lg:text-lg leading-relaxed line-clamp-4 sm:line-clamp-none" style={{ scrollbarWidth: 'thin' }}>
                       <p>{activity.description}</p>
                     </div>
                     <div className="mt-auto">
@@ -571,7 +571,7 @@ const RecentActivities = () => {
                         href={activity.link} 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="inline-block bg-slate-800 text-white px-8 py-3 rounded-full font-semibold hover:bg-slate-700 dark:bg-[#0b3d91] dark:hover:bg-blue-800 transition-colors shadow-lg"
+                        className="inline-block bg-slate-800 text-white px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-slate-700 dark:bg-[#0b3d91] dark:hover:bg-blue-800 transition-colors shadow-lg"
                       >
                         View More
                       </motion.a>
@@ -581,30 +581,32 @@ const RecentActivities = () => {
               </div>
             </div>
 
+            {/* Navigation buttons - smaller on mobile */}
             <button 
               onClick={prevActivity} 
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
               aria-label="Previous Activity"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-800 dark:text-gray-300" />
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 text-gray-800 dark:text-gray-300" />
             </button>
             <button 
               onClick={nextActivity} 
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
               aria-label="Next Activity"
             >
-              <ChevronRight className="h-6 w-6 text-gray-800 dark:text-gray-300" />
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-gray-800 dark:text-gray-300" />
             </button>
 
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            {/* Pagination dots */}
+            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
               {activitiesToShow.map((_, index) => (
                 <button 
                   key={index} 
                   onClick={() => goToActivity(index)} 
-                  className={`h-3 rounded-full transition-all duration-300 ${
+                  className={`h-2 sm:h-3 rounded-full transition-all duration-300 ${
                     currentIndex === index 
-                      ? 'bg-[#0b3d91] dark:bg-cyan-400 w-8' 
-                      : 'bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500 w-3'
+                      ? 'bg-[#0b3d91] dark:bg-cyan-400 w-6 sm:w-8' 
+                      : 'bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500 w-2 sm:w-3'
                   }`} 
                   aria-label={`Go to activity ${index + 1}`}
                 />

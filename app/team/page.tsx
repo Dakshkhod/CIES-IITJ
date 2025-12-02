@@ -281,12 +281,12 @@ const committeeColors: Record<string, string> = {
 // Note: Header and Footer are now provided by AppLayout
 
 const TeamHeader = () => (
-    <div className="text-center pt-16 pb-12">
+    <div className="text-center pt-10 sm:pt-16 pb-8 sm:pb-12 px-4">
         <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tighter"
+            className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tighter"
         >
             Meet the Team
         </motion.h1>
@@ -294,7 +294,7 @@ const TeamHeader = () => (
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
+            className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
         >
             The driving force behind the Civil & Infrastructure Engineering Society.
         </motion.p>
@@ -326,24 +326,24 @@ const MemberCard = ({ member, setSelectedImage }: MemberCardProps & { setSelecte
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg border dark:border-gray-700/80 overflow-hidden text-center group flex flex-col p-6 w-full h-full border-t-4 ${committeeColors[member.committee] || 'border-gray-300'}`}
+        className={`bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg border dark:border-gray-700/80 overflow-hidden text-center group flex flex-col p-4 sm:p-6 w-full h-full border-t-4 ${committeeColors[member.committee] || 'border-gray-300'}`}
     >
         <img 
           src={member.photo} 
           alt={member.name} 
-          className="w-28 h-28 mx-auto rounded-full object-cover object-[center_30%] ring-4 ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700 cursor-pointer hover:scale-105 transition-transform duration-200" 
+          className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-full object-cover object-[center_30%] ring-4 ring-offset-2 sm:ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700 cursor-pointer hover:scale-105 transition-transform duration-200" 
           loading="lazy"
           onClick={() => setSelectedImage(member.photo)}
         />
-        <div className="mt-4 flex-grow">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
-            <p className="text-sm text-slate-700 dark:text-blue-400 font-semibold">{member.role}</p>
+        <div className="mt-3 sm:mt-4 flex-grow">
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white line-clamp-2">{member.name}</h3>
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-blue-400 font-semibold mt-0.5">{member.role}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{member.batch}</p>
         </div>
-        <div className="mt-4 flex justify-center space-x-4">
-            <a href={member.socials.linkedin} className="text-gray-400 hover:text-[#0077b5] transition-colors"><Linkedin size={20} /></a>
-            <a href={member.socials.instagram} className="text-gray-400 hover:text-[#E1306C] transition-colors"><Instagram size={20} /></a>
-            <a href={member.socials.email} className="text-gray-400 hover:text-[#9b2b2b] transition-colors"><Mail size={20} /></a>
+        <div className="mt-3 sm:mt-4 flex justify-center space-x-3 sm:space-x-4">
+            <a href={member.socials.linkedin} className="text-gray-400 hover:text-[#0077b5] transition-colors p-1"><Linkedin size={18} /></a>
+            <a href={member.socials.instagram} className="text-gray-400 hover:text-[#E1306C] transition-colors p-1"><Instagram size={18} /></a>
+            <a href={member.socials.email} className="text-gray-400 hover:text-[#9b2b2b] transition-colors p-1"><Mail size={18} /></a>
         </div>
     </motion.div>
 );
@@ -368,11 +368,9 @@ interface TeamGridProps {
 
 const TeamGrid = ({ members, setSelectedImage }: TeamGridProps & { setSelectedImage: (image: string | null) => void }) => (
     <AnimatePresence>
-        <motion.div layout className="flex flex-wrap justify-center items-stretch gap-8 mt-10">
+        <motion.div layout className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6 mt-6 sm:mt-10">
              {members.map(member => (
-                <div key={member.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex-grow" style={{ minWidth: '18rem', maxWidth: '20rem' }}>
-                     <MemberCard member={member} setSelectedImage={setSelectedImage} />
-                </div>
+                <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
             ))}
         </motion.div>
     </AnimatePresence>
@@ -383,7 +381,7 @@ interface SectionTitleProps {
 }
 
 const SectionTitle = ({ children }: SectionTitleProps) => (
-    <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">{children}</h2>
+    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-900 dark:text-white mb-3 sm:mb-4 px-2">{children}</h2>
 );
 
 
@@ -426,42 +424,42 @@ function TeamPageContent({ setSelectedImage, teamData }: { setSelectedImage: (im
         <>
             <TeamHeader />
             
-            <section className="container mx-auto px-6 py-12">
+            <section className="container mx-auto px-3 sm:px-6 py-8 sm:py-12">
                 <SectionTitle>Faculty Leadership</SectionTitle>
                 
                 {/* HOD Card - Centered */}
                 {hodMember && (
-                    <div className="mt-10 flex justify-center mb-12">
-                        <div className="w-full max-w-sm">
+                    <div className="mt-6 sm:mt-10 flex justify-center mb-8 sm:mb-12">
+                        <div className="w-full max-w-[280px] sm:max-w-sm">
                             <MemberCard member={hodMember} setSelectedImage={setSelectedImage} />
                         </div>
                     </div>
                 )}
                 
                 {/* Other Faculty Cards */}
-                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
+                <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
                     {otherFaculty.map(member => (
                          <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
                     ))}
                 </div>
             </section>
 
-            <section className="container mx-auto px-6 py-12 bg-white/50 dark:bg-gray-800/30 rounded-3xl my-12">
+            <section className="container mx-auto px-3 sm:px-6 py-8 sm:py-12 bg-white/50 dark:bg-gray-800/30 rounded-2xl sm:rounded-3xl my-6 sm:my-12 mx-2 sm:mx-auto">
                 <SectionTitle>Coordination Committee</SectionTitle>
-                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: '1100px' }}>
+                 <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
                     {coordinationCommittee.map(member => (
                         <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
                     ))}
                 </div>
             </section>
             
-            <section id="student-committees" className="py-12">
-                 <div className="container mx-auto px-6">
+            <section id="student-committees" className="py-8 sm:py-12">
+                 <div className="container mx-auto px-3 sm:px-6">
                     <SectionTitle>Committee Members</SectionTitle>
-                    <div className="mt-10 space-y-20">
+                    <div className="mt-6 sm:mt-10 space-y-12 sm:space-y-20">
                         {groupedAndSortedCommittees.map(([committeeName, members]) => (
                             <div key={committeeName}>
-                                <h3 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">{committeeName.replace(" Committee", "")}</h3>
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-4 sm:mb-8 px-2">{committeeName.replace(" Committee", "")}</h3>
                                 <TeamGrid members={members} setSelectedImage={setSelectedImage} />
                             </div>
                         ))}

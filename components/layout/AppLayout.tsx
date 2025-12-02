@@ -115,24 +115,24 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
       id="home"
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/95' : 'bg-white/80 backdrop-blur-sm dark:bg-gray-900/70'}`}
     >
-      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-3 md:px-4 py-3 md:py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
+      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3">
+        {/* Logo - More compact on mobile */}
+        <Link href="/" className="flex items-center gap-1.5 sm:gap-2 md:gap-3 group" aria-label="Homepage">
           <img
             src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
             alt="IIT Jodhpur Logo"
-            className="h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+            className="h-9 sm:h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
           />
           <img
             src="/logo.jpg"
             alt="CIES Logo"
-            className="h-12 w-12 rounded-full object-cover shadow-lg"
+            className="h-9 w-9 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full object-cover shadow-lg"
           />
           <div className="flex flex-col justify-center min-w-fit">
-            <span className="text-sm font-bold leading-tight whitespace-nowrap text-gray-800 dark:text-white">
+            <span className="text-xs sm:text-sm font-bold leading-tight whitespace-nowrap text-gray-800 dark:text-white">
               CIES
             </span>
-            <span className="text-xs leading-tight whitespace-nowrap text-gray-500 dark:text-gray-400">
+            <span className="text-[10px] sm:text-xs leading-tight whitespace-nowrap text-gray-500 dark:text-gray-400">
               IIT Jodhpur
             </span>
           </div>
@@ -156,10 +156,10 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
         </div>
 
         {/* Theme Toggle & Mobile Menu Button */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           <button
             onClick={toggleTheme}
-            className="rounded-full p-2 text-gray-800 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] focus-visible:ring-offset-2 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900"
+            className="rounded-full p-1.5 sm:p-2 text-gray-800 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] focus-visible:ring-offset-2 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900"
             aria-label="Toggle dark mode"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -177,12 +177,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="rounded-md p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-md p-1.5 sm:p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-800"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open menu</span>
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
             </button>
           </div>
         </div>
@@ -216,19 +216,19 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
   };
 
   return (
-    <div className="flex flex-col space-y-1 px-4 pb-4 pt-2">
+    <div className="flex flex-col space-y-1 px-3 pb-4 pt-2 max-h-[70vh] overflow-y-auto">
       {navItems.map(item => (
         <Link
           key={item.name}
           href={item.href}
-          className={`flex items-center whitespace-nowrap rounded-md px-4 py-3 font-medium transition-colors ${
+          className={`flex items-center rounded-lg px-3 py-2.5 font-medium transition-colors text-sm ${
             isActive(item.href)
               ? 'text-white bg-[#0b3d91] shadow-md dark:text-white'
               : 'text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
           }`}
         >
-          <item.icon className="mr-3 h-5 w-5 text-[#0b3d91] dark:text-blue-400" />
-          <span>{item.name}</span>
+          <item.icon className={`mr-2.5 h-4 w-4 flex-shrink-0 ${isActive(item.href) ? 'text-white' : 'text-[#0b3d91] dark:text-blue-400'}`} />
+          <span className="truncate">{item.name}</span>
         </Link>
       ))}
     </div>
@@ -238,25 +238,26 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
 // --- Footer Component ---
 const Footer = () => (
   <footer className="border-t-4 border-slate-800 dark:border-[#0b3d91] bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300">
-    <div className="container mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12">
-        {/* IITJ Logo (Left) */}
-        <div className="flex justify-center md:col-span-2 md:justify-start">
+    <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      {/* Mobile: Stack vertically, Desktop: Grid */}
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-12 items-start">
+        {/* IITJ Logo */}
+        <div className="flex justify-center sm:justify-start md:col-span-2">
           <img
             src="/iitj-logo-transparent.png"
             alt="IIT Jodhpur Logo"
-            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 dark:hidden"
+            className="h-16 sm:h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 dark:hidden"
           />
           <img
             src="/iitj-logo-white-outline.png"
             alt="IIT Jodhpur Logo"
-            className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 hidden dark:block"
+            className="h-16 sm:h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 hidden dark:block"
           />
         </div>
 
         {/* Quick Links */}
-        <div className="text-center md:col-span-3 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-blue-400">Quick Links</h3>
+        <div className="text-center sm:text-left md:col-span-3">
+          <h3 className="mb-3 sm:mb-4 text-base sm:text-lg font-bold text-slate-900 dark:text-blue-400">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
               <a href="https://www.iitj.ac.in/main/en/iitj" className="transition-colors hover:text-black dark:hover:text-white" target="_blank" rel="noopener noreferrer">
@@ -272,31 +273,29 @@ const Footer = () => (
         </div>
 
         {/* Contact Info */}
-        <div className="text-center md:col-span-5 md:text-left">
-          <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-blue-400">Contact</h3>
-          <p className="text-sm font-semibold">
+        <div className="text-center sm:text-left md:col-span-5">
+          <h3 className="mb-3 sm:mb-4 text-base sm:text-lg font-bold text-slate-900 dark:text-blue-400">Contact</h3>
+          <p className="text-xs sm:text-sm font-semibold">
             Department of Civil and Infrastructure Engineering
           </p>
-          <p className="text-sm text-slate-800 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
-          <p className="text-sm text-slate-800 dark:text-slate-400">NH-62, Nagour Road</p>
-          <p className="text-sm text-slate-800 dark:text-slate-400">Karwar (342030)</p>
-          <p className="text-sm text-slate-800 dark:text-slate-400">Jodhpur </p>
-          <p className="mt-2 text-sm text-slate-800 dark:text-slate-400">Email: office@civil.iitj.ac.in</p>
-          <p className="text-sm text-slate-800 dark:text-slate-400">Phone:</p>
+          <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
+          <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">NH-62, Nagour Road, Karwar (342030)</p>
+          <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">Jodhpur, Rajasthan</p>
+          <p className="mt-2 text-xs sm:text-sm text-slate-800 dark:text-slate-400">Email: office@civil.iitj.ac.in</p>
         </div>
 
-        {/* CIES Logo (Right) */}
-        <div className="flex justify-center md:col-span-2 md:justify-end">
+        {/* CIES Logo */}
+        <div className="flex justify-center sm:justify-end md:col-span-2">
           <img
             src="/logo.jpg"
             alt="CIES Logo"
-            className="h-20 w-20 rounded-full object-cover"
+            className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover"
           />
         </div>
       </div>
 
       {/* Social Icons */}
-      <div className="mt-12 flex justify-center space-x-6">
+      <div className="mt-8 sm:mt-12 flex justify-center space-x-4 sm:space-x-6">
         <a
           href="https://www.instagram.com/cies_iitj/"
           className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500 dark:hover:text-pink-500"
@@ -321,7 +320,7 @@ const Footer = () => (
         </a>
       </div>
 
-      <div className="mt-8 border-t border-slate-500 dark:border-slate-700 pt-8 text-center text-sm text-slate-800 dark:text-slate-500">
+      <div className="mt-6 sm:mt-8 border-t border-slate-500 dark:border-slate-700 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-slate-800 dark:text-slate-500 px-2">
         <p>
           &copy; {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur.
           All Rights Reserved.

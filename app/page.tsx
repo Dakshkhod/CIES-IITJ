@@ -9,7 +9,7 @@ import {
   ChevronRight,
   Loader2,
 } from 'lucide-react';
-import { getRecentActivities, Activity } from '@/lib/api';
+import { getRecentActivities } from '@/lib/api';
 
 // --- Main Page Component ---
 export default function HomePage() {
@@ -403,6 +403,42 @@ const HeroSection = () => (
   );
 
 
+// Fallback activities data (defined outside component to avoid dependency issues)
+const FALLBACK_ACTIVITIES = [
+  {
+    id: 1,
+    title: 'UG Departmental Orientation - Batch of 2025',
+    date: 'August 5, 2025',
+    description: 'On 5th August 2025, the Department of Civil & Infrastructure Engineering, IIT Jodhpur, in collaboration with the Civil & Infrastructure Engineering Society (CIES), conducted the Undergraduate Departmental Orientation for the incoming batch.',
+    image: '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
+    link: '#'
+  },
+  {
+    id: 2,
+    title: 'Informal Session - for Y24s',
+    date: 'August 12, 2025',
+    description: 'We conducted an informal session for Y24s, organized by Y23s, on the theme "How to Master the 3rd Semester."',
+    image: '/CIE Design.png',
+    link: '#'
+  },
+  {
+    id: 3,
+    title: 'Site Visit to Jodhpur Metro Project',
+    date: 'July 28, 2025',
+    description: 'An insightful visit to the ongoing Jodhpur Metro construction site.',
+    image: '/logo.jpg',
+    link: '#'
+  },
+  {
+    id: 4,
+    title: 'Workshop on STAAD.Pro',
+    date: 'June 15, 2025',
+    description: 'A hands-on workshop covering the fundamentals of structural analysis and design using STAAD.Pro.',
+    image: '/iitj-logo.png',
+    link: '#'
+  }
+];
+
 // --- Recent Activities Section ---
 const RecentActivities = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -447,42 +483,6 @@ const RecentActivities = () => {
     
     fetchRecentActivities();
   }, []);
-
-  // Fallback activities data
-  const FALLBACK_ACTIVITIES = [
-    {
-      id: 1,
-      title: 'UG Departmental Orientation - Batch of 2025',
-      date: 'August 5, 2025',
-      description: 'On 5th August 2025, the Department of Civil & Infrastructure Engineering, IIT Jodhpur, in collaboration with the Civil & Infrastructure Engineering Society (CIES), conducted the Undergraduate Departmental Orientation for the incoming batch.',
-      image: '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
-      link: '#'
-    },
-    {
-      id: 2,
-      title: 'Informal Session - for Y24s',
-      date: 'August 12, 2025',
-      description: 'We conducted an informal session for Y24s, organized by Y23s, on the theme "How to Master the 3rd Semester."',
-      image: '/CIE Design.png',
-      link: '#'
-    },
-    {
-      id: 3,
-      title: 'Site Visit to Jodhpur Metro Project',
-      date: 'July 28, 2025',
-      description: 'An insightful visit to the ongoing Jodhpur Metro construction site.',
-      image: '/logo.jpg',
-      link: '#'
-    },
-    {
-      id: 4,
-      title: 'Workshop on STAAD.Pro',
-      date: 'June 15, 2025',
-      description: 'A hands-on workshop covering the fundamentals of structural analysis and design using STAAD.Pro.',
-      image: '/iitj-logo.png',
-      link: '#'
-    }
-  ];
 
   // Show loading state
   if (loading) {

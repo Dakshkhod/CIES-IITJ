@@ -2,35 +2,9 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from 'next/link';
-import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal, Menu, X, Sun, Moon, Instagram, Loader2 } from 'lucide-react';
+import { Linkedin, Mail, Instagram, Loader2, X } from 'lucide-react';
 import { getTeamMembers, fetchAllPages, TeamMember } from '@/lib/api';
 import AppLayout from '@/components/layout/AppLayout';
-
-/* =========================
-   SITE-WIDE NAVIGATION DATA (CMS Hook)
-   ========================= */
-const navItems = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'About', href: '/about', icon: Info },
-  {
-    name: 'Activities',
-    href: '/#activities',
-    icon: Briefcase,
-    dropdown: [
-      { name: 'Workshops', href: '#/workshops' },
-      { name: 'Site Visits', href: '#/site-visits' },
-      { name: 'Competitions', href: '#/competitions' },
-      { name: 'Seminars', href: '#/seminars' },
-    ],
-  },
-  { name: 'Events', href: '/#activities', icon: Briefcase },
-  { name: 'Edificio', href: '/about#edificio', icon: Briefcase },
-  { name: 'Team', href: '/team', icon: Users },
-  { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
-  { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
-  { name: 'Contact Us', href: '/#contact', icon: Mail },
-];
 
 
 /* =========================
@@ -301,160 +275,10 @@ const committeeColors: Record<string, string> = {
 };
 
 /* =========================
-   SHARED COMPONENTS (Header/Footer)
-   ========================= */
-
-interface HeaderProps {
-  isMenuOpen: boolean;
-  setIsMenuOpen: (open: boolean) => void;
-  isDarkMode: boolean;
-  toggleTheme: () => void;
-  isSticky: boolean;
-}
-
-const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky }: HeaderProps) => {
-
-  return (
-    <header id="home" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/90' : 'bg-white/80 backdrop-blur-sm dark:bg-transparent'}`}>
-      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-2 md:px-4 py-2.5 md:py-3">
-        <Link href="/" className="flex items-center gap-2 md:gap-3 group -ml-2 md:-ml-2 lg:-ml-2" aria-label="Homepage">
-          <img
-            src={isDarkMode ? "/iitj-logo-white-outline.png" : "/iitj-logo-transparent.png"}
-            alt="IIT Jodhpur Logo"
-            className="h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-          />
-          <img
-            src="/logo.jpg"
-            alt="CIES Logo"
-            className="h-12 w-12 rounded-full object-cover shadow-lg"
-          />
-          <div className="flex flex-col justify-center min-w-fit">
-            <span className="text-sm font-bold leading-tight whitespace-nowrap text-gray-800 dark:text-white">
-              CIES
-            </span>
-            <span className="text-xs leading-tight whitespace-nowrap text-gray-500 dark:text-gray-400">
-              IIT Jodhpur
-            </span>
-          </div>
-        </Link>
-        <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
-          {navItems.map((item) => (
-            <Link key={item.name} href={item.href} className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors ${item.name === 'Team' ? 'bg-[#0b3d91] text-white shadow-md' : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'}`}>
-              {item.name}
-            </Link>
-          ))}
-        </div>
-        <div className="flex items-center space-x-4">
-          <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700" aria-label="Toggle dark mode">
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
-          <div className="lg:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2" aria-label="Open menu">
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="lg:hidden bg-white dark:bg-gray-900/95">
-            <MobileNav />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-};
-
-const MobileNav = () => {
-    return (
-        <div className="flex flex-col px-4 pt-2 pb-4 space-y-1">
-            {navItems.map((item) => (
-                <Link key={item.name} href={item.href} className="block px-4 py-3 rounded-md font-medium">
-                    {item.name}
-                </Link>
-            ))}
-        </div>
-    );
-};
-
-const Footer = () => (
-    <footer className="bg-slate-900 text-slate-300 border-t-4 border-[#0b3d91]">
-        <div className="container mx-auto px-6 py-12">
-            <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12">
-                {/* IITJ Logo (Left) */}
-                <div className="flex justify-center md:col-span-2 md:justify-start">
-                  <img
-                    src="/iitj-logo-white-outline.png"
-                    alt="IIT Jodhpur Logo"
-                    className="h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-
-                {/* Quick Links */}
-                <div className="text-center md:col-span-3 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-blue-400 dark:text-blue-400">Quick Links</h3>
-                  <ul className="space-y-2 text-sm">
-                    <li>
-                      <Link href="/" className="transition-colors hover:text-white">
-                        Home
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/team" className="transition-colors hover:text-white">
-                        Team
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Contact Info */}
-                <div className="text-center md:col-span-5 md:text-left">
-                  <h3 className="mb-4 text-lg font-bold text-blue-400 dark:text-blue-400">Contact</h3>
-                  <p className="text-sm font-semibold">
-                    Department of Civil and Infrastructure Engineering
-                  </p>
-                  <p className="text-sm text-slate-400 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
-                  <p className="text-sm text-slate-400 dark:text-slate-400">NH-62, Nagour Road</p>
-                  <p className="text-sm text-slate-400 dark:text-slate-400">Karwar 342030</p>
-                  <p className="text-sm text-slate-400 dark:text-slate-400">Jodhpur District</p>
-                  <p className="mt-2 text-sm text-slate-400 dark:text-slate-400">eMail: office@civil.iitj.ac.in</p>
-                </div>
-
-                {/* CIES Logo (Right) */}
-                <div className="flex justify-center md:col-span-2 md:justify-end">
-                  <img
-                    src="/logo.jpg"
-                    alt="CIES Logo"
-                    className="h-20 w-20 rounded-full object-cover"
-                  />
-                </div>
-            </div>
-
-            {/* Social Icons */}
-            <div className="mt-12 flex justify-center space-x-6">
-                <a href="#" aria-label="Instagram" className="text-slate-400 transition-transform hover:scale-110 hover:text-white">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919 4.919 1.266-.058 1.644-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"/>
-                    </svg>
-                </a>
-                <a href="#" aria-label="LinkedIn" className="text-slate-400 transition-transform hover:scale-110 hover:text-white">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.98v16h4.98v-8.396c0-2.002 1.806-3.604 3.968-3.604 2.162 0 3.968 1.602 3.968 3.604v8.396h4.98v-10.396c0-6.002-4.168-10.604-9.95-10.604-4.52 0-7.232 2.704-8.982 4.396v-3.396z" />
-                    </svg>
-                </a>
-            </div>
-
-            <div className="mt-8 border-t border-slate-700 pt-8 text-center text-sm text-slate-500">
-                <p>&copy; {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-);
-
-/* =========================
    TEAM PAGE COMPONENTS
    ========================= */
+
+// Note: Header and Footer are now provided by AppLayout
 
 const TeamHeader = () => (
     <div className="text-center pt-16 pb-12">
@@ -653,9 +477,6 @@ function TeamPageContent({ setSelectedImage, teamData }: { setSelectedImage: (im
    MAIN PAGE WRAPPER
    ========================= */
 export default function TeamPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [teamData, setTeamData] = useState<TeamMemberLocal[]>([]);
   const [loading, setLoading] = useState(true);
@@ -705,29 +526,6 @@ export default function TeamPage() {
     
     fetchTeamData();
   }, []);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      document.documentElement.classList.add('dark');
-      setIsDarkMode(true);
-    }
-    const handleScroll = () => setIsSticky(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (!isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   // Loading state
   if (loading) {

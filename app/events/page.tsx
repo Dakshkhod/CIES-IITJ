@@ -50,6 +50,7 @@ export default function EventsPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<{ eventId: string; photoIndex: number } | null>(null);
   const [events, setEvents] = useState<EventItem[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
 
   const categories = ['all', 'orientation', 'celebration', 'academic', 'cultural', 'workshop'];
@@ -136,120 +137,6 @@ export default function EventsPage() {
       </AppLayout>
     );
   }
-
-  // Remove the old FALLBACK_EVENTS array that was inside the component
-  const _legacyEvents: EventItem[] = [
-      {
-        id: '1-legacy',
-        title: 'Orientation of Batch 25 (PG)',
-        date: '2025-07-15',
-        category: 'orientation',
-        description: 'Welcome session for new postgraduate students joining the Civil & Infrastructure Engineering program.',
-        location: 'IIT Jodhpur Campus',
-        attendees: '50+ Students',
-        photos: [],
-        status: 'completed'
-      },
-      {
-        id: '2',
-        title: 'Orientation of Batch 25 (UG)',
-        date: '2025-07-20',
-        category: 'orientation',
-        description: 'Welcome session for new undergraduate students joining the Civil & Infrastructure Engineering program.',
-        location: 'IIT Jodhpur Campus',
-        attendees: '100+ Students',
-        photos: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
-        status: 'completed'
-      },
-      {
-        id: '3',
-        title: 'Merchandise Release for Students, Staff and Faculties',
-        date: '2025-08-12',
-        category: 'celebration',
-        description: 'Launch of new CIES merchandise including t-shirts, hoodies, and accessories for the CIES community.',
-        location: 'CIES Office',
-        attendees: '200+ Members',
-        photos: ['/logo.jpg', '/CIE Design.png'],
-        status: 'completed'
-      },
-      {
-        id: '4',
-        title: 'Freshers (PG)',
-        date: '2025-08-31',
-        category: 'cultural',
-        description: 'Welcome party for postgraduate students with cultural performances, games, and networking.',
-        location: 'IIT Jodhpur Auditorium',
-        attendees: '60+ Students',
-        photos: [],
-        status: 'completed'
-      },
-      {
-        id: '5',
-        title: 'Teacher\'s Day (Community Gathering/Sports Event)',
-        date: '2025-09-05',
-        category: 'celebration',
-        description: 'Annual celebration honoring our faculty members with sports activities and community gathering.',
-        location: 'IIT Jodhpur Sports Complex',
-        attendees: '150+ Faculty & Students',
-        photos: ['/Other images/DSC01359.JPG'],
-        status: 'completed'
-      },
-      {
-        id: '6',
-        title: 'Engineer\'s Day',
-        date: '2025-09-15',
-        category: 'celebration',
-        description: 'Celebration of engineering excellence with technical talks, competitions, and recognition of outstanding engineers.',
-        location: 'IIT Jodhpur Campus',
-        attendees: '200+ Engineers',
-        photos: ['/Other images/1757908205139.jpeg', '/Other images/1757908205720.jpeg'],
-        status: 'completed'
-      },
-      {
-        id: '7',
-        title: 'Freshers (UG)',
-        date: '2025-10-05',
-        category: 'cultural',
-        description: 'Welcome celebration for undergraduate students featuring cultural performances and interactive sessions.',
-        location: 'IIT Jodhpur Auditorium',
-        attendees: '120+ Students',
-        photos: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg'],
-        status: 'completed'
-      },
-      {
-        id: '8',
-        title: 'Guest Lecture by Prof. Ligy (IITM)',
-        date: '2025-10-13',
-        category: 'academic',
-        description: 'Expert lecture on advanced topics in civil engineering by distinguished professor from IIT Madras.',
-        location: 'IIT Jodhpur Lecture Hall',
-        attendees: '80+ Students & Faculty',
-        photos: ['/Other images/1759303624829.jpeg', '/Other images/1760253687978.jpeg'],
-        status: 'completed'
-      },
-      {
-        id: '9',
-        title: 'Workshop on Geospatial (Compulsory for Geoinformatics Students)',
-        date: '2025-10-11',
-        category: 'workshop',
-        description: 'Hands-on workshop covering geospatial technologies, GIS applications, and remote sensing techniques.',
-        location: 'IIT Jodhpur Computer Lab',
-        attendees: '40+ Students',
-        photos: ['/Other images/PXL_20251011_075907856.jpg'],
-        status: 'completed'
-      },
-      {
-        id: '10-legacy',
-        title: 'Diwali Celebration',
-        date: '2025-10-14',
-        category: 'cultural',
-        description: 'Festive celebration of Diwali with traditional decorations, sweets, and cultural performances.',
-        location: 'IIT Jodhpur Campus',
-        attendees: '300+ Community Members',
-        photos: ['/Other images/DSC03840.JPG'],
-        status: 'completed'
-      }
-  ];
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {

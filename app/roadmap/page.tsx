@@ -245,18 +245,18 @@ export default function RoadmapPage() {
         </div>
 
         {/* Header */}
-        <header className="relative pt-24 pb-16 px-6 z-20">
+        <header className="relative pt-20 sm:pt-24 pb-8 sm:pb-16 px-4 sm:px-6 z-20">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8 }}
             >
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <motion.div 
-                  className="relative p-4 rounded-xl bg-yellow-500/10 dark:bg-cyan-500/10 border-2 border-yellow-500/40 dark:border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-yellow-500/10 dark:shadow-cyan-500/20"
+                  className="relative p-3 sm:p-4 rounded-xl bg-yellow-500/10 dark:bg-cyan-500/10 border-2 border-yellow-500/40 dark:border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-yellow-500/10 dark:shadow-cyan-500/20"
                 >
-                  <Zap className="h-8 w-8 text-slate-700 dark:text-cyan-400" />
+                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-slate-700 dark:text-cyan-400" />
                   <motion.div
                     className="absolute inset-0 rounded-xl bg-yellow-400/20 dark:bg-cyan-400/20"
                     animate={{
@@ -271,25 +271,25 @@ export default function RoadmapPage() {
                   />
                 </motion.div>
                 <div>
-                  <h1 className="text-6xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
                     Roadmap and Calendar
                   </h1>
-                  <p className="text-slate-600 dark:text-cyan-300/70 mt-2 flex items-center gap-2">
-                    <Activity className="h-4 w-4" />
+                  <p className="text-slate-600 dark:text-cyan-300/70 mt-1 sm:mt-2 flex items-center gap-2 text-sm sm:text-base">
+                    <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
                      Academic Year 2025-26
                   </p>
                 </div>
               </div>
 
               {/* Time Status Indicator */}
-              <div className="flex items-center gap-4 mt-8">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 sm:mt-8">
+                <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
                   <div className="h-2 w-2 rounded-full bg-green-500 dark:bg-cyan-400 animate-pulse" />
-                  <span className="text-sm text-slate-700 dark:text-cyan-300 font-medium">System Online</span>
+                  <span className="text-xs sm:text-sm text-slate-700 dark:text-cyan-300 font-medium">System Online</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
-                  <Clock className="h-4 w-4 text-slate-600 dark:text-cyan-400" />
-                  <span className="text-sm text-slate-700 dark:text-cyan-300 font-medium">
+                <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
+                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-slate-600 dark:text-cyan-400" />
+                  <span className="text-xs sm:text-sm text-slate-700 dark:text-cyan-300 font-medium">
                     {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
                 </div>
@@ -299,34 +299,35 @@ export default function RoadmapPage() {
         </header>
 
         {/* Timeline Beam with Current Month Events */}
-        <section className="relative px-6 py-8 overflow-hidden">
+        <section className="relative px-4 sm:px-6 py-6 sm:py-8 overflow-hidden">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-4 sm:mb-6">
               <motion.h2 
-                className="text-3xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-1"
+                className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-1"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 {getCurrentMonthName()} Timeline
               </motion.h2>
-              <p className="text-slate-600 dark:text-cyan-400/70 mb-3 font-medium">
+              <p className="text-slate-600 dark:text-cyan-400/70 mb-2 sm:mb-3 font-medium text-sm sm:text-base">
                 {currentMonthEvents.length} {currentMonthEvents.length === 1 ? 'Event' : 'Events'} This Month
               </p>
               {currentMonthEvents.length > 0 && (
                 <motion.p 
-                  className="text-slate-500 dark:text-cyan-500/60 text-sm flex items-center justify-center gap-2"
+                  className="text-slate-500 dark:text-cyan-500/60 text-xs sm:text-sm flex items-center justify-center gap-2"
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Activity className="h-4 w-4" />
-                  Hover over events for details • Click to view full information
+                  <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Hover over events for details • Click to view full information</span>
+                  <span className="sm:hidden">Tap events for details</span>
                 </motion.p>
               )}
             </div>
 
-            {/* Diagonal Beam - Connecting Line Through Events */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
+            {/* Diagonal Beam - Connecting Line Through Events (Desktop only) */}
+            <div className="hidden md:block absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
               {/* Main connecting beam */}
               <motion.div 
                 className="w-[150%] h-[2px] bg-gradient-to-r from-transparent via-yellow-400 dark:via-cyan-400 to-transparent relative shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
@@ -365,8 +366,76 @@ export default function RoadmapPage() {
               />
             </div>
 
-            {/* Event Nodes Along Timeline */}
-            <div className="relative h-[360px]">
+            {/* Event Nodes - Mobile: Horizontal scroll, Desktop: Positioned along beam */}
+            {/* Mobile Layout - Horizontal Scroll */}
+            <div className="md:hidden">
+              {currentMonthEvents.length > 0 ? (
+                <div className="flex overflow-x-auto pb-4 gap-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4">
+                  {currentMonthEvents.map((event, index) => {
+                    const config = categoryConfig[event.category];
+                    const Icon = config.icon;
+                    const status = getEventStatus(event.date);
+
+                    return (
+                      <motion.div
+                        key={event.id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                        onClick={() => setSelectedEvent(event)}
+                        className="flex-shrink-0 w-[200px] snap-center cursor-pointer"
+                      >
+                        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-xl p-4 border border-slate-200 dark:border-cyan-500/30 shadow-lg h-full">
+                          {/* Icon */}
+                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center mb-3 shadow-lg mx-auto`}>
+                            <Icon className="h-6 w-6 text-white" />
+                            {status === 'present' && (
+                              <motion.div
+                                className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-green-400 border-2 border-white dark:border-slate-800"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
+                              />
+                            )}
+                          </div>
+                          
+                          {/* Title */}
+                          <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-2 text-center line-clamp-2">
+                            {event.title}
+                          </h4>
+                          
+                          {/* Date Badge */}
+                          <div className={`px-3 py-1 rounded-full text-xs font-semibold text-center ${
+                            status === 'present'
+                              ? 'bg-green-500/20 border border-green-500/50 text-green-700 dark:text-green-300'
+                              : status === 'past'
+                              ? 'bg-slate-200 border border-slate-300 text-slate-600 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-400'
+                              : 'bg-blue-500/20 border border-blue-500/50 text-blue-700 dark:text-blue-300'
+                          }`}>
+                            {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </div>
+                          
+                          {/* Location */}
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">{event.location}</span>
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center py-12">
+                  <div className="text-center">
+                    <Calendar className="h-12 w-12 text-slate-400 dark:text-cyan-500/30 mx-auto mb-3" />
+                    <p className="text-slate-600 dark:text-cyan-400/60 text-base font-medium">No events this month</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Layout - Positioned along diagonal beam */}
+            <div className="hidden md:block relative h-[360px]">
               {currentMonthEvents.length > 0 ? (
                 currentMonthEvents.map((event, index) => {
                   const config = categoryConfig[event.category];
@@ -374,16 +443,11 @@ export default function RoadmapPage() {
                   const status = getEventStatus(event.date);
                   
                   // Position events along the diagonal beam
-                  // First event at bottom-left, progressing to top-right
                   const totalEvents = currentMonthEvents.length;
                   const progressPercent = index / Math.max(totalEvents - 1, 1);
                   
-                  // Calculate position along diagonal beam
-                  // For -8 degree rotation: tan(-8°) ≈ -0.14, so vertical change should be less than horizontal
-                  const leftPercent = 10 + progressPercent * 70; // 10% to 80%
-                  // For -8 degree slope, vertical movement = horizontal * 0.14
-                  // Adjusted to match the rightmost node alignment
-                  const bottomPercent = 36.5 + progressPercent * (70 * 0.14); // Following the -8deg beam slope
+                  const leftPercent = 10 + progressPercent * 70;
+                  const bottomPercent = 36.5 + progressPercent * (70 * 0.14);
 
                   return (
                     <motion.div
@@ -545,22 +609,22 @@ export default function RoadmapPage() {
             {/* Legend */}
             {currentMonthEvents.length > 0 && (
               <motion.div 
-                className="mt-6 flex justify-center gap-4 flex-wrap"
+                className="mt-4 sm:mt-6 flex justify-center gap-2 sm:gap-4 flex-wrap px-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600/30 shadow-sm">
-                  <div className="w-3 h-3 rounded-full bg-slate-400 dark:bg-slate-600"></div>
-                  <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Past Event</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600/30 shadow-sm">
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-slate-400 dark:bg-slate-600"></div>
+                  <span className="text-[10px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium">Past Event</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/20 dark:bg-green-500/10 border border-green-500/50 dark:border-green-400/50 shadow-sm">
-                  <div className="w-3 h-3 rounded-full bg-green-500 dark:bg-green-400 animate-pulse"></div>
-                  <span className="text-xs text-green-800 dark:text-green-300 font-medium">Happening Now</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-green-500/20 dark:bg-green-500/10 border border-green-500/50 dark:border-green-400/50 shadow-sm">
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500 dark:bg-green-400 animate-pulse"></div>
+                  <span className="text-[10px] sm:text-xs text-green-800 dark:text-green-300 font-medium">Happening Now</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-100 dark:bg-cyan-500/10 border border-blue-400 dark:border-cyan-400/50 shadow-sm">
-                  <div className="w-3 h-3 rounded-full bg-blue-500 dark:bg-cyan-400"></div>
-                  <span className="text-xs text-slate-800 dark:text-cyan-300 font-medium">Upcoming Event</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-blue-100 dark:bg-cyan-500/10 border border-blue-400 dark:border-cyan-400/50 shadow-sm">
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-blue-500 dark:bg-cyan-400"></div>
+                  <span className="text-[10px] sm:text-xs text-slate-800 dark:text-cyan-300 font-medium">Upcoming Event</span>
                 </div>
               </motion.div>
             )}
@@ -569,11 +633,11 @@ export default function RoadmapPage() {
 
         {/* Filter Chips */}
         <div className="sticky top-16 z-30 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-y border-slate-200 dark:border-cyan-500/20 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex flex-wrap gap-2">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4">
+            <div className="flex overflow-x-auto gap-2 scrollbar-hide pb-1 -mx-1 px-1">
               <button
                 onClick={() => setActiveFilter('all')}
-                className={`px-4 py-2 rounded-lg border transition-all ${
+                className={`flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${
                   activeFilter === 'all'
                     ? 'bg-cyan-500/20 dark:bg-cyan-500/20 border-cyan-500/70 dark:border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-lg shadow-cyan-500/30'
                     : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
@@ -587,14 +651,14 @@ export default function RoadmapPage() {
                   <button
                     key={key}
                     onClick={() => setActiveFilter(key)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
+                    className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${
                       activeFilter === key
                         ? `bg-gradient-to-r ${config.color} border-transparent text-white shadow-lg ${config.glow}`
                         : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm capitalize">{key.replace('-', ' ')}</span>
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="capitalize whitespace-nowrap">{key.replace('-', ' ')}</span>
                   </button>
                 );
               })}
@@ -756,9 +820,9 @@ export default function RoadmapPage() {
         )}
 
         {/* Timeline */}
-        <main className="relative px-6 py-16 z-20" ref={timelineRef}>
+        <main className="relative px-4 sm:px-6 py-8 sm:py-16 z-20" ref={timelineRef}>
           <div className="max-w-7xl mx-auto">
-            <div className="space-y-12">
+            <div className="space-y-6 sm:space-y-12">
               {filteredEvents.map((event, index) => {
                 const status = getEventStatus(event.date);
                 const config = categoryConfig[event.category];
@@ -767,24 +831,24 @@ export default function RoadmapPage() {
                 return (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0, x: -50 }}
+                    initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: shouldReduceMotion ? 0 : index * 0.1 }}
                     className="relative"
                   >
                     {/* Timeline connector */}
                     {index < filteredEvents.length - 1 && (
-                      <div className="absolute left-8 top-24 bottom-[-48px] w-px bg-gradient-to-b from-yellow-500/50 dark:from-cyan-500/50 via-yellow-500/20 dark:via-cyan-500/20 to-transparent" />
+                      <div className="absolute left-5 sm:left-8 top-20 sm:top-24 bottom-[-24px] sm:bottom-[-48px] w-px bg-gradient-to-b from-yellow-500/50 dark:from-cyan-500/50 via-yellow-500/20 dark:via-cyan-500/20 to-transparent" />
                     )}
 
                     {/* Event Card */}
                     <motion.button
                       onClick={() => setSelectedEvent(event)}
-                      className="relative w-full group"
+                      className="relative w-full group text-left"
                       whileHover={{ scale: shouldReduceMotion ? 1 : 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className={`relative rounded-2xl border-2 overflow-hidden transition-all duration-500 ${
+                      <div className={`relative rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all duration-500 ${
                         status === 'past'
                           ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl'
                           : status === 'future'
@@ -823,14 +887,14 @@ export default function RoadmapPage() {
                           />
                         )}
 
-                        <div className="relative p-6 flex items-start gap-6">
+                        <div className="relative p-4 sm:p-6 flex items-start gap-3 sm:gap-6">
                           {/* Icon */}
-                          <div className={`relative p-4 rounded-xl ${
+                          <div className={`relative p-2.5 sm:p-4 rounded-lg sm:rounded-xl flex-shrink-0 ${
                             status === 'past'
                               ? `bg-gradient-to-br ${config.color} shadow-lg`
                               : `bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`
                           }`}>
-                            <Icon className="h-8 w-8 text-white" />
+                            <Icon className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
                             
                             {/* Pulse effect for present */}
                             {status === 'present' && (
@@ -850,10 +914,10 @@ export default function RoadmapPage() {
                           </div>
 
                           {/* Content */}
-                          <div className="flex-1 text-left">
-                            <div className="flex items-start justify-between gap-4 mb-3">
-                              <div>
-                                <h3 className={`text-xl font-bold mb-2 ${
+                          <div className="flex-1 text-left min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
+                              <div className="min-w-0">
+                                <h3 className={`text-base sm:text-xl font-bold mb-1 sm:mb-2 line-clamp-2 ${
                                   status === 'past'
                                     ? 'text-slate-500 dark:text-slate-500'
                                     : status === 'future'
@@ -862,28 +926,28 @@ export default function RoadmapPage() {
                                 }`}>
                                   {event.title}
                                 </h3>
-                                <div className="flex items-center gap-4 text-sm">
-                                  <span className={`flex items-center gap-2 ${
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm">
+                                  <span className={`flex items-center gap-1 sm:gap-2 ${
                                     status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
                                   }`}>
-                                    <Calendar className="h-4 w-4" />
+                                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                                     {new Date(event.date).toLocaleDateString('en-US', { 
                                       month: 'short', 
                                       day: 'numeric', 
                                       year: 'numeric' 
                                     })}
                                   </span>
-                                  <span className={`flex items-center gap-2 ${
+                                  <span className={`flex items-center gap-1 sm:gap-2 truncate ${
                                     status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
                                   }`}>
-                                    <MapPin className="h-4 w-4" />
-                                    {event.location}
+                                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                    <span className="truncate">{event.location}</span>
                                   </span>
                                 </div>
                               </div>
 
                               {/* Status badge */}
-                              <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                              <div className={`self-start flex-shrink-0 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${
                                 status === 'past'
                                   ? 'bg-slate-200 dark:bg-slate-800/30 border-slate-400 dark:border-slate-700/30 text-slate-600 dark:text-slate-600'
                                   : status === 'future'
@@ -894,18 +958,18 @@ export default function RoadmapPage() {
                               </div>
                             </div>
 
-                            <p className={`text-sm leading-relaxed ${
+                            <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-none ${
                               status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-300/60'
                             }`}>
                               {event.description}
                             </p>
 
                             {event.speaker && (
-                              <div className={`mt-3 flex items-center gap-2 text-sm ${
+                              <div className={`mt-2 sm:mt-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm ${
                                 status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/80'
                               }`}>
-                                <Users className="h-4 w-4" />
-                                {event.speaker}
+                                <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                <span className="truncate">{event.speaker}</span>
                               </div>
                             )}
                           </div>
@@ -943,22 +1007,22 @@ export default function RoadmapPage() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: shouldReduceMotion ? 'tween' : 'spring', damping: 30, stiffness: 300 }}
-                className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-white dark:bg-slate-900 border-l-2 border-cyan-500/60 dark:border-cyan-500 shadow-2xl z-50 overflow-y-auto"
+                className="fixed right-0 top-0 bottom-0 w-full sm:max-w-2xl bg-white dark:bg-slate-900 border-l-2 border-cyan-500/60 dark:border-cyan-500 shadow-2xl z-50 overflow-y-auto"
               >
                 <div className="relative">
                   {/* Animated background */}
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none" />
 
-                  <div className="relative p-6">
+                  <div className="relative p-4 sm:p-6">
                     {/* Header */}
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex items-start gap-4 flex-1">
+                    <div className="flex items-start justify-between mb-4 sm:mb-6 gap-3">
+                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
                         {(() => {
                           const config = categoryConfig[selectedEvent.category];
                           const Icon = config.icon;
                           return (
                             <motion.div 
-                              className={`p-4 rounded-xl bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`}
+                              className={`p-3 sm:p-4 rounded-xl bg-gradient-to-br ${config.color} shadow-lg ${config.glow} flex-shrink-0`}
                               animate={{
                                 boxShadow: [
                                   `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' : 
@@ -987,12 +1051,12 @@ export default function RoadmapPage() {
                                 ease: 'easeInOut'
                               }}
                             >
-                              <Icon className="h-6 w-6 text-white" />
+                              <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                             </motion.div>
                           );
                         })()}
-                        <div>
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 ${
+                        <div className="min-w-0">
+                          <span className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-1 sm:mb-2 ${
                             categoryConfig[selectedEvent.category].color.includes('purple') ? 'bg-purple-500/30 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/60 dark:border-purple-500/50' :
                             categoryConfig[selectedEvent.category].color.includes('blue') ? 'bg-slate-500/30 dark:bg-blue-500/20 text-slate-700 dark:text-blue-300 border border-slate-500/60 dark:border-blue-500/50' :
                             categoryConfig[selectedEvent.category].color.includes('green') ? 'bg-green-500/30 dark:bg-green-500/20 text-green-700 dark:text-green-300 border border-green-500/60 dark:border-green-500/50' :
@@ -1002,15 +1066,15 @@ export default function RoadmapPage() {
                           }`}>
                             {selectedEvent.category.replace('-', ' ').toUpperCase()}
                           </span>
-                          <h2 className="text-2xl font-bold text-slate-800 dark:text-cyan-200">{selectedEvent.title}</h2>
+                          <h2 className="text-lg sm:text-2xl font-bold text-slate-800 dark:text-cyan-200 line-clamp-2">{selectedEvent.title}</h2>
                         </div>
                       </div>
                       <button
                         onClick={() => setSelectedEvent(null)}
-                        className="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-cyan-500/20 text-slate-700 dark:text-cyan-300 transition-all"
+                        className="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-cyan-500/20 text-slate-700 dark:text-cyan-300 transition-all flex-shrink-0"
                         aria-label="Close panel"
                       >
-                        <X className="h-6 w-6" />
+                        <X className="h-5 w-5 sm:h-6 sm:w-6" />
                       </button>
                     </div>
 

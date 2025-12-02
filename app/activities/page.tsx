@@ -16,13 +16,26 @@ type GalleryItem = {
   status?: 'completed' | 'upcoming' | 'ongoing';
 };
 
+// Fallback data when API is unavailable
+const FALLBACK_ACTIVITIES: GalleryItem[] = [
+  { id: '1', title: 'Research Presentation - Saran Kumar Aatrey', date: '2025-05-09', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '2', title: 'Research Presentation - Aparna Singh', date: '2025-05-23', category: 'seminar', imageUrl: '/logo.jpg' },
+  { id: '3', title: 'Seminar by Prof. Ravindra Gettu', date: '2025-06-10', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '4', title: 'Workshop on Geospatial Technologies', date: '2025-10-11', category: 'workshop', imageUrl: '/iitj-logo.png' },
+  { id: '5', title: 'Guest Lecture by Prof. Ligy (IITM)', date: '2025-10-13', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '6', title: 'Diwali Celebration', date: '2025-10-14', category: 'other', imageUrl: '/logo.jpg' },
+  { id: '7', title: "Teacher's Day Celebration", date: '2025-09-05', category: 'other', imageUrl: '/iitj-logo.png' },
+  { id: '8', title: "Engineer's Day", date: '2025-09-15', category: 'other', imageUrl: '/CIE Design.png' },
+  { id: '9', title: 'EDIFICIO - Hackathon & Ideathon', date: '2025-12-01', category: 'edificio', imageUrl: '/logo.jpg' },
+  { id: '10', title: 'Industry Visit', date: '2026-03-20', category: 'site-visit', imageUrl: '/iitj-logo.png' },
+];
+
 export default function ActivitiesPage() {
   const categories = ['all', 'upcoming', 'workshop', 'seminar', 'site-visit', 'competition', 'edificio'];
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
-  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [items, setItems] = useState<GalleryItem[]>(FALLBACK_ACTIVITIES);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Fetch activities from API
@@ -30,7 +43,6 @@ export default function ActivitiesPage() {
     async function fetchActivities() {
       try {
         setLoading(true);
-        setError(null);
         
         // Fetch all activities
         const allActivities = await fetchAllPages<Activity>(
@@ -48,10 +60,13 @@ export default function ActivitiesPage() {
           status: activity.status,
         }));
         
-        setItems(transformedItems);
+        if (transformedItems.length > 0) {
+          setItems(transformedItems);
+        }
+        // If API fails or returns empty, keep using FALLBACK_ACTIVITIES
       } catch (err) {
-        console.error('Failed to fetch activities:', err);
-        setError('Failed to load activities. Please try again later.');
+        console.error('Failed to fetch activities, using fallback data:', err);
+        // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);
       }
@@ -121,24 +136,6 @@ export default function ActivitiesPage() {
     );
   }
 
-  // Show error state
-  if (error) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-red-500 mb-4">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </AppLayout>
-    );
-  }
 
   // Get category icon
   const getCategoryIcon = (category: string) => {

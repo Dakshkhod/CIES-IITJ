@@ -81,8 +81,6 @@ export default function RoadmapPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [events, setEvents] = useState<TimelineEvent[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +101,6 @@ export default function RoadmapPage() {
     async function fetchRoadmapData() {
       try {
         setLoading(true);
-        setError(null);
         
         const allActivities = await fetchAllPages<ApiActivity>(
           (params) => getActivities({ ...params }),
@@ -135,8 +132,8 @@ export default function RoadmapPage() {
           setEvents(transformedEvents);
         }
       } catch (err) {
-        console.error('Failed to fetch roadmap data:', err);
-        setError('Failed to load roadmap.');
+        console.error('Failed to fetch roadmap data, using fallback:', err);
+        // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);
       }

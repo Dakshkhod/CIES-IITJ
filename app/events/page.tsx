@@ -50,8 +50,6 @@ export default function EventsPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<{ eventId: string; photoIndex: number } | null>(null);
   const [events, setEvents] = useState<EventItem[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string | null>(null);
 
   const categories = ['all', 'orientation', 'celebration', 'academic', 'cultural', 'workshop'];
 
@@ -81,7 +79,6 @@ export default function EventsPage() {
     async function fetchEventsData() {
       try {
         setLoading(true);
-        setError(null);
         
         const allEvents = await fetchAllPages<ApiEvent>(
           (params) => getEvents({ ...params, type: 'event' }),
@@ -114,8 +111,8 @@ export default function EventsPage() {
           setEvents(transformedEvents);
         }
       } catch (err) {
-        console.error('Failed to fetch events:', err);
-        setError('Failed to load events.');
+        console.error('Failed to fetch events, using fallback data:', err);
+        // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);
       }

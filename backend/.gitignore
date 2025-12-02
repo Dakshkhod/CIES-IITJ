@@ -1,0 +1,78 @@
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+
+# Ignore folders named __pycache__ anywhere
+**/__pycache__/
+
+# Virtual environments
+venv/
+.env/
+.venv/
+ENV/
+env/
+
+# Ignore .env files anywhere
+**/.env
+*.env
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+.pyre/
+ruff_cache/
+
+# ==========================
+# Django
+# ==========================
+# Ignore all migration files except __init__.py
+**/migrations/*
+!**/migrations/__init__.py
+
+# Django logs
+*.log
+*.sqlite3
+
+# Static and media (if generated)
+staticfiles/
+media/
+static/
+build/
+
+# ==========================
+# IDE / Editor
+# ==========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==========================
+# System Files
+# ==========================
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Certificates
+# ==========================
+cert.pem
+key.pem
+
+# ==========================
+# Redis dump
+# ==========================
+dump.rdb
+
+# ==========================
+# Poetry & UV
+# ==========================
+poetry.lock
+uv.lock
+.uv/

@@ -321,7 +321,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
 
-# Logging Configuration
+# Logging Configuration - Use console only for production/Render compatibility
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -337,14 +337,6 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
-        },
-        "file": {
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs" / "django.log",
-            "formatter": "verbose",
-        } if not DEBUG else {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
@@ -368,7 +360,12 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_SSL_REDIRECT = True
+    # Only enable HSTS and SSL redirect if explicitly set (Render handles SSL at load balancer)
+    if os.environ.get("ENABLE_HSTS", "False").lower() == "true":
+        SECURE_HSTS_SECONDS = 31536000
+        SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+        SECURE_HSTS_PRELOAD = True
+    # Render handles SSL termination, so we don't redirect at Django level
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "False").lower() == "true"
+    # Trust Render's proxy headers
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

@@ -335,7 +335,7 @@ const CIEHeroDesign = () => {
       
       <div className="w-full flex flex-col items-center space-y-4 sm:space-y-6">
         {/* Animated CIES Logo at the top - responsive size */}
-        <div className="w-full max-w-[320px] sm:max-w-xl md:max-w-2xl mx-auto px-4 sm:px-0">
+        <div className="w-full max-w-[90vw] sm:max-w-xl md:max-w-2xl mx-auto px-2 sm:px-0">
           <AnimatedCIESLogo />
         </div>
 
@@ -377,7 +377,7 @@ const CIEHeroDesign = () => {
 
 // --- Hero Section ---
 const HeroSection = () => (
-  <section className="relative mx-auto flex min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-2 sm:px-6 pb-8 sm:pb-12 pt-8 sm:pt-16">
+  <section className="relative mx-auto flex min-h-[70vh] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-2 sm:px-6 pb-6 sm:pb-12 pt-4 sm:pt-16">
     {/* Theme-aware background overlay */}
     <div className="absolute inset-0 bg-white dark:bg-slate-900/80 z-0"></div>
     

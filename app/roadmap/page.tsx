@@ -326,46 +326,6 @@ export default function RoadmapPage() {
               )}
             </div>
 
-            {/* Diagonal Beam - Connecting Line Through Events (Desktop only) */}
-            <div className="hidden md:block absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
-              {/* Main connecting beam */}
-              <motion.div 
-                className="w-[150%] h-[2px] bg-gradient-to-r from-transparent via-yellow-400 dark:via-cyan-400 to-transparent relative shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
-                style={{ transform: 'rotate(-8deg) translateY(40%)' }}
-              >
-                {/* Traveling light */}
-                <motion.div
-                  className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80"
-                  animate={{
-                    x: ['-100%', '1000%']
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: 'linear',
-                    repeatDelay: 1
-                  }}
-                  style={{
-                    filter: 'blur(2px)',
-                    boxShadow: '0 0 30px rgba(255,255,255,0.8)'
-                  }}
-                />
-              </motion.div>
-              {/* Glow layer */}
-              <motion.div 
-                className="absolute w-[150%] h-8 bg-gradient-to-r from-transparent via-yellow-400/30 dark:via-cyan-400/30 to-transparent blur-xl"
-                style={{ transform: 'rotate(-8deg) translateY(40%)' }}
-                animate={{
-                  opacity: [0.4, 0.7, 0.4]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'easeInOut'
-                }}
-              />
-            </div>
-
             {/* Event Nodes - Mobile: Horizontal scroll, Desktop: Positioned along beam */}
             {/* Mobile Layout - Horizontal Scroll */}
             <div className="md:hidden">
@@ -436,6 +396,54 @@ export default function RoadmapPage() {
 
             {/* Desktop Layout - Positioned along diagonal beam */}
             <div className="hidden md:block relative h-[360px]">
+              {/* Diagonal Beam - Connecting Line Through Events */}
+              <div className="absolute inset-0 flex items-center pointer-events-none overflow-hidden z-0">
+                {/* Main connecting beam */}
+                <motion.div 
+                  className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-yellow-400 dark:via-cyan-400 to-transparent shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
+                  style={{ 
+                    left: '-10%',
+                    top: '58%',
+                    transform: 'rotate(-8deg)'
+                  }}
+                >
+                  {/* Traveling light */}
+                  <motion.div
+                    className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80"
+                    animate={{
+                      x: ['-100%', '1000%']
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      repeatDelay: 1
+                    }}
+                    style={{
+                      filter: 'blur(2px)',
+                      boxShadow: '0 0 30px rgba(255,255,255,0.8)'
+                    }}
+                  />
+                </motion.div>
+                {/* Glow layer */}
+                <motion.div 
+                  className="absolute w-[120%] h-8 bg-gradient-to-r from-transparent via-yellow-400/30 dark:via-cyan-400/30 to-transparent blur-xl"
+                  style={{ 
+                    left: '-10%',
+                    top: '58%',
+                    transform: 'rotate(-8deg)'
+                  }}
+                  animate={{
+                    opacity: [0.4, 0.7, 0.4]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                />
+              </div>
+
               {currentMonthEvents.length > 0 ? (
                 currentMonthEvents.map((event, index) => {
                   const config = categoryConfig[event.category];

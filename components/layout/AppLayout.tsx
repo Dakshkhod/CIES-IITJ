@@ -26,7 +26,7 @@ const navItems = [
   { name: 'About', href: '/about', icon: Info },
   { name: 'Activities', href: '/activities', icon: Briefcase },
   { name: 'Events', href: '/events', icon: Briefcase },
-  { name: 'Edificio', href: '/about#edificio', icon: Building2 },
+  { name: 'Edificio', href: '/edificio', icon: Building2 },
   { name: 'Team', href: '/team', icon: Users },
   { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
   { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },

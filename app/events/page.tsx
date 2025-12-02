@@ -207,7 +207,7 @@ export default function EventsPage() {
           </section>
 
           {/* Filter Bar */}
-          <div className="sticky top-16 z-30 border-y border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-sm" style={{ zIndex: 30 }}>
+          <div className="sm:sticky sm:top-16 z-30 border-y border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-sm" style={{ zIndex: 30 }}>
             <div className="mx-auto max-w-7xl px-6 py-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-2 flex-wrap">

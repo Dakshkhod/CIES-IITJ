@@ -25,10 +25,32 @@ export default function AboutPage() {
         <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
         <main className="pt-20">
+          {/* About Us Section */}
           <HeroSection />
           <Block1Section />
+          
+          {/* Mobile Divider - About to Pillars */}
+          <div className="block sm:hidden py-6 px-4 bg-white dark:bg-gray-900">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t-2 border-dashed border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white dark:bg-gray-900 px-6 py-2 text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                  Our Pillars
+                </span>
+              </div>
+            </div>
+          </div>
+          
           <PillarPanelsSection />
-          <EdificioPhotoEssay />
+          
+          {/* Edificio Section - Hidden on Mobile (shown in separate Edificio page) */}
+          <div className="hidden sm:block">
+            <EdificioPhotoEssay />
+          </div>
+          
+          
           <PartnerLogoStrip />
         </main>
       </div>
@@ -38,7 +60,7 @@ export default function AboutPage() {
 
 // --- Hero Section with Large Photo ---
 const HeroSection = () => (
-  <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
+  <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] sm:min-h-[600px] overflow-hidden">
     {/* Background Image - CMS Placeholder */}
     <div className="absolute inset-0">
       {/* Primary gradient background - works for both light and dark mode */}
@@ -75,11 +97,16 @@ const HeroSection = () => (
     {/* Overlay for Readability */}
     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50 dark:from-black/50 dark:via-black/30 dark:to-black/60"></div>
 
-    {/* Decorative corner frames */}
-    <div className="absolute left-8 top-8 h-24 w-24 border-l-4 border-t-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
-    <div className="absolute right-8 top-8 h-24 w-24 border-r-4 border-t-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
-    <div className="absolute bottom-8 left-8 h-24 w-24 border-b-4 border-l-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
-    <div className="absolute bottom-8 right-8 h-24 w-24 border-b-4 border-r-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    {/* Decorative corner frames - Hidden on mobile */}
+    <div className="hidden sm:block absolute left-8 top-8 h-24 w-24 border-l-4 border-t-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="hidden sm:block absolute right-8 top-8 h-24 w-24 border-r-4 border-t-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="hidden sm:block absolute bottom-8 left-8 h-24 w-24 border-b-4 border-l-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="hidden sm:block absolute bottom-8 right-8 h-24 w-24 border-b-4 border-r-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    {/* Mobile corner frames - Smaller */}
+    <div className="sm:hidden absolute left-4 top-4 h-12 w-12 border-l-2 border-t-2 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="sm:hidden absolute right-4 top-4 h-12 w-12 border-r-2 border-t-2 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="sm:hidden absolute bottom-4 left-4 h-12 w-12 border-b-2 border-l-2 border-cyan-300/60 dark:border-cyan-400/50"></div>
+    <div className="sm:hidden absolute bottom-4 right-4 h-12 w-12 border-b-2 border-r-2 border-cyan-300/60 dark:border-cyan-400/50"></div>
 
     {/* Hero Content */}
     <div className="relative z-10 flex h-full items-center justify-center px-6">
@@ -101,7 +128,7 @@ const HeroSection = () => (
             </span>
           </motion.div>
 
-          <h1 className="mb-6 text-5xl font-extrabold leading-tight text-white drop-shadow-lg md:text-7xl lg:text-8xl">
+          <h1 className="mb-4 sm:mb-6 text-4xl sm:text-5xl font-extrabold leading-tight text-white drop-shadow-lg md:text-7xl lg:text-8xl">
             About <span className="text-white dark:from-cyan-400 dark:to-blue-400 dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">CIES</span>
           </h1>
           
@@ -118,24 +145,24 @@ const HeroSection = () => (
             <span className="font-semibold text-slate-200 dark:text-cyan-300">Cementing Community with Compassion</span>
           </motion.p>
 
-          {/* Statistics Row */}
+          {/* Statistics Row - Scrollable on mobile */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="mt-12 grid grid-cols-3 gap-6 text-white"
+            className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 gap-3 sm:gap-6 text-white overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide"
           >
-            <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">500+</div>
-              <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Active Members</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">500+</div>
+              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Active Members</div>
             </div>
-            <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">50+</div>
-              <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Events Annually</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">50+</div>
+              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Events Annually</div>
             </div>
-            <div className="rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">100+</div>
-              <div className="mt-1 text-sm text-gray-100 md:text-base dark:text-gray-300">Industry Partners</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">100+</div>
+              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Industry Partners</div>
             </div>
           </motion.div>
         </motion.div>
@@ -156,7 +183,7 @@ const HeroSection = () => (
 
 // --- Block 1: Two-Column About Section ---
 const Block1Section = () => (
-  <section className="relative overflow-hidden bg-white py-20 dark:bg-gray-900 lg:py-32">
+  <section className="relative overflow-hidden bg-white py-12 sm:py-20 dark:bg-gray-900 lg:py-32">
     {/* Subtle background pattern */}
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
     
@@ -373,14 +400,14 @@ const PillarPanelsSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 sm:py-20 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <FadeInOnScroll>
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
+          <div className="mb-8 sm:mb-16 text-center">
+            <h2 className="mb-3 sm:mb-4 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
               Our <span className="text-slate-700">Pillars</span>
             </h2>
-            <div className="mx-auto h-1.5 w-24 rounded-full bg-blue-600"></div>
+            <div className="mx-auto h-1 sm:h-1.5 w-20 sm:w-24 rounded-full bg-blue-600"></div>
           </div>
         </FadeInOnScroll>
 
@@ -412,14 +439,14 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
   <FadeInOnScroll delay={index * 0.1}>
     <motion.div
       layout
-      className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl transition-all hover:shadow-2xl hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
+      className="group overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 bg-white shadow-xl transition-all hover:shadow-2xl hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
     >
       {/* Main Content */}
-      <div className="grid grid-cols-1 gap-8 p-8 lg:grid-cols-12 lg:gap-10">
+      <div className="grid grid-cols-1 gap-4 sm:gap-8 p-4 sm:p-8 lg:grid-cols-12 lg:gap-10">
         {/* Image Section */}
         <div className="lg:col-span-4">
           <motion.div 
-            className={`relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-br ${pillar.image} shadow-lg`}
+            className={`relative aspect-[16/9] sm:aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${pillar.image} shadow-lg`}
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.3 }}
           >
@@ -430,6 +457,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 }}
+                  className="[&>svg]:h-6 [&>svg]:w-6 sm:[&>svg]:h-8 sm:[&>svg]:w-8"
                 >
                   {pillar.icon}
                 </motion.div>
@@ -438,10 +466,10 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="mt-6"
+                  className="mt-3 sm:mt-6"
                 >
-                  <div className="text-5xl font-extrabold tracking-tight">{pillar.stat}</div>
-                  <div className="mt-2 text-base font-medium opacity-95">{pillar.statLabel}</div>
+                  <div className="text-3xl sm:text-5xl font-extrabold tracking-tight">{pillar.stat}</div>
+                  <div className="mt-1 sm:mt-2 text-sm sm:text-base font-medium opacity-95">{pillar.statLabel}</div>
                 </motion.div>
               </div>
             </div>
@@ -464,10 +492,10 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
         {/* Text Content */}
         <div className="flex flex-col lg:col-span-8">
           <div className="flex-1">
-            <h3 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white lg:text-4xl">
+            <h3 className="mb-2 sm:mb-4 text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white lg:text-4xl">
               {pillar.title}
             </h3>
-            <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            <p className="text-sm sm:text-lg leading-relaxed text-gray-700 dark:text-gray-300">
               {pillar.shortDescription}
             </p>
           </div>
@@ -475,7 +503,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
           {/* Expand Button */}
           <button
             onClick={onToggle}
-            className="group/btn mt-8 inline-flex items-center gap-2 self-start rounded-full border-2 border-[#0b3d91] bg-transparent px-8 py-3 font-semibold text-slate-800 transition-all hover:bg-[#0b3d91] hover:text-white hover:shadow-lg dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
+            className="group/btn mt-4 sm:mt-8 inline-flex items-center gap-2 self-start rounded-full border-2 border-[#0b3d91] bg-transparent px-5 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-semibold text-slate-800 transition-all hover:bg-[#0b3d91] hover:text-white hover:shadow-lg dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
             aria-expanded={isExpanded}
             aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${pillar.title}`}
           >
@@ -484,7 +512,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              <ChevronDown className="h-5 w-5 transition-transform group-hover/btn:translate-y-0.5" />
+              <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover/btn:translate-y-0.5" />
             </motion.div>
           </button>
         </div>
@@ -527,7 +555,7 @@ const EdificioPhotoEssay = () => {
   ];
 
   return (
-    <section id="edificio" className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100 py-24 text-gray-900 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900 dark:text-white">
+    <section id="edificio" className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100 py-12 sm:py-24 text-gray-900 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900 dark:text-white">
       {/* Background Pattern - Enhanced */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_2px,transparent_2px)] bg-[size:50px_50px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_2px,transparent_2px)]"></div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.03)_1px,transparent_1px)] bg-[size:20px_20px] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.05)_1px,transparent_1px)]"></div>
@@ -536,32 +564,32 @@ const EdificioPhotoEssay = () => {
       <div className="absolute left-1/4 top-20 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl dark:bg-cyan-600/10"></div>
       <div className="absolute bottom-20 right-1/4 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl dark:bg-blue-600/10"></div>
 
-      <div className="container relative mx-auto max-w-7xl px-6">
+      <div className="container relative mx-auto max-w-7xl px-4 sm:px-6">
         <FadeInOnScroll>
-          <div className="mb-20 text-center">
+          <div className="mb-10 sm:mb-20 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block rounded-full border-2 border-[#0b3d91]/30 bg-[#0b3d91]/10 px-6 py-2 text-sm font-semibold text-slate-800 backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
+              <span className="inline-block rounded-full border-2 border-[#0b3d91]/30 bg-[#0b3d91]/10 px-4 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-slate-800 backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
                 Our Flagship Event
               </span>
             </motion.div>
             
-            <h2 className="mb-6 mt-6 text-5xl font-extrabold md:text-6xl">
+            <h2 className="mb-4 sm:mb-6 mt-4 sm:mt-6 text-3xl sm:text-5xl font-extrabold md:text-6xl">
               <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-slate-800 bg-clip-text text-transparent dark:from-white dark:via-cyan-200 dark:to-blue-200">
                 EDIFICIO:
               </span>{' '}
-              <span className="bg-gradient-to-r from-[#0b3d91] to-blue-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">
+              <span className="block sm:inline mt-1 sm:mt-0 bg-gradient-to-r from-[#0b3d91] to-blue-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">
                 A Visual Journey
               </span>
             </h2>
             
-            <div className="mx-auto mb-8 h-1.5 w-40 rounded-full bg-gradient-to-r from-transparent via-[#0b3d91] to-transparent dark:via-cyan-400"></div>
+            <div className="mx-auto mb-4 sm:mb-8 h-1 sm:h-1.5 w-28 sm:w-40 rounded-full bg-gradient-to-r from-transparent via-[#0b3d91] to-transparent dark:via-cyan-400"></div>
             
-            <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300">
+            <p className="mx-auto max-w-3xl text-sm sm:text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300 px-2 sm:px-0">
               Explore the highlights of our flagship technical festival through this curated photo essay. 
               EDIFICIO brings together innovation, learning, and collaboration in civil engineering.
             </p>
@@ -570,7 +598,7 @@ const EdificioPhotoEssay = () => {
 
         {/* Photo Grid - Enhanced */}
         <FadeInOnScroll delay={0.2}>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
             {photos.map((photo, index) => (
               <motion.div
                 key={photo.id}
@@ -579,40 +607,40 @@ const EdificioPhotoEssay = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
-                className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+                className="group relative aspect-square sm:aspect-[4/3] overflow-hidden rounded-xl sm:rounded-2xl shadow-lg sm:shadow-2xl"
               >
                 {/* CMS Placeholder: Replace with actual images */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${photo.gradient}`}>
                   {/* Engineering grid pattern */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:16px_16px] sm:bg-[size:24px_24px]"></div>
                   
-                  {/* Icon */}
-                  <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                  {/* Icon - Smaller on mobile */}
+                  <div className="absolute inset-0 flex items-center justify-center text-white/20 [&>svg]:h-10 [&>svg]:w-10 sm:[&>svg]:h-20 sm:[&>svg]:w-20">
                     {photo.icon}
                   </div>
 
-                  {/* Corner frames */}
-                  <div className="absolute left-3 top-3 h-12 w-12 border-l-2 border-t-2 border-white/30"></div>
-                  <div className="absolute bottom-3 right-3 h-12 w-12 border-b-2 border-r-2 border-white/30"></div>
+                  {/* Corner frames - Smaller on mobile */}
+                  <div className="absolute left-2 top-2 sm:left-3 sm:top-3 h-6 w-6 sm:h-12 sm:w-12 border-l sm:border-l-2 border-t sm:border-t-2 border-white/30"></div>
+                  <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 h-6 w-6 sm:h-12 sm:w-12 border-b sm:border-b-2 border-r sm:border-r-2 border-white/30"></div>
                 </div>
                 
-                {/* Overlay on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b3d91]/90 via-blue-900/60 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100 dark:from-black/80 dark:via-black/50">
-                  <div className="flex h-full flex-col items-center justify-center p-6 text-center text-white">
+                {/* Overlay on Hover/Tap - Always visible on mobile */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b3d91]/90 via-blue-900/60 to-transparent opacity-100 sm:opacity-0 transition-all duration-300 sm:group-hover:opacity-100 dark:from-black/80 dark:via-black/50">
+                  <div className="flex h-full flex-col items-center justify-end sm:justify-center p-3 sm:p-6 text-center text-white">
                     <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       whileInView={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.1 }}
                     >
-                      <p className="text-2xl font-bold">{photo.alt}</p>
-                      <p className="mt-2 text-sm text-gray-200 dark:text-gray-300">Click to view gallery</p>
+                      <p className="text-sm sm:text-2xl font-bold">{photo.alt}</p>
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-200 dark:text-gray-300 hidden sm:block">Click to view gallery</p>
                     </motion.div>
                   </div>
                 </div>
 
                 {/* Shine effect on hover */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent hidden sm:block"
                   initial={{ x: '-100%' }}
                   whileHover={{ x: '100%' }}
                   transition={{ duration: 0.6 }}
@@ -624,20 +652,20 @@ const EdificioPhotoEssay = () => {
 
         {/* PDF Download - Enhanced */}
         <FadeInOnScroll delay={0.4}>
-          <div className="mt-20 text-center">
+          <div className="mt-10 sm:mt-20 text-center">
             <motion.a
               href="#"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#0b3d91] to-blue-600 px-10 py-5 text-lg font-bold text-white shadow-2xl transition-all hover:shadow-blue-500/50 dark:from-cyan-500 dark:to-blue-500 dark:hover:shadow-cyan-500/50"
+              className="group inline-flex items-center gap-2 sm:gap-3 rounded-full bg-gradient-to-r from-[#0b3d91] to-blue-600 px-6 sm:px-10 py-3 sm:py-5 text-sm sm:text-lg font-bold text-white shadow-xl sm:shadow-2xl transition-all hover:shadow-blue-500/50 dark:from-cyan-500 dark:to-blue-500 dark:hover:shadow-cyan-500/50"
               aria-label="Download EDIFICIO Brochure PDF"
             >
-              <Download className="h-6 w-6 transition-transform group-hover:translate-y-1" />
-              Download EDIFICIO Brochure
+              <Download className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-y-1" />
+              Download Brochure
             </motion.a>
-            <p className="mt-5 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-3 sm:mt-5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {/* CMS Placeholder: PDF size and format */}
-              <span className="font-semibold text-slate-800 dark:text-cyan-400">PDF</span> · 5.2 MB · Complete Event Highlights & Gallery
+              <span className="font-semibold text-slate-800 dark:text-cyan-400">PDF</span> · 5.2 MB · Event Highlights
             </p>
           </div>
         </FadeInOnScroll>
@@ -659,38 +687,38 @@ const PartnerLogoStrip = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden border-t-2 border-gray-200 bg-gradient-to-b from-white to-gray-50 py-20 dark:border-gray-700 dark:from-gray-900 dark:to-gray-800">
+    <section className="relative overflow-hidden border-t-2 border-gray-200 bg-gradient-to-b from-white to-gray-50 py-12 sm:py-20 dark:border-gray-700 dark:from-gray-900 dark:to-gray-800">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
-      <div className="container relative mx-auto max-w-7xl px-6">
+      <div className="container relative mx-auto max-w-7xl px-4 sm:px-6">
         <FadeInOnScroll>
-          <div className="mb-16 text-center">
+          <div className="mb-8 sm:mb-16 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-5 py-2 text-sm font-bold text-slate-800 dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
+              <span className="inline-block rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-slate-800 dark:from-blue-900/50 dark:to-cyan-900/50 dark:text-cyan-300">
                 Our Network
               </span>
             </motion.div>
             
-            <h2 className="mb-6 mt-6 text-4xl font-extrabold text-gray-900 dark:text-white md:text-5xl">
+            <h2 className="mb-4 sm:mb-6 mt-4 sm:mt-6 text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white md:text-5xl">
               Trusted <span className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">Partners</span>
             </h2>
             
-            <div className="mx-auto mb-6 h-1.5 w-32 rounded-full bg-gradient-to-r from-transparent via-slate-600 to-transparent dark:via-cyan-400"></div>
+            <div className="mx-auto mb-4 sm:mb-6 h-1 sm:h-1.5 w-24 sm:w-32 rounded-full bg-gradient-to-r from-transparent via-slate-600 to-transparent dark:via-cyan-400"></div>
             
-            <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+            <p className="mx-auto max-w-2xl text-sm sm:text-lg text-gray-600 dark:text-gray-400 px-2 sm:px-0">
               Collaborating with industry leaders, academic institutions, and innovators to drive excellence in civil engineering.
             </p>
           </div>
         </FadeInOnScroll>
 
         <FadeInOnScroll delay={0.2}>
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 lg:grid-cols-6">
             {partners.map((partner, index) => (
               <motion.div
                 key={partner.id}
@@ -702,28 +730,28 @@ const PartnerLogoStrip = () => {
                 className="group flex items-center justify-center"
               >
                 {/* CMS Placeholder: Replace with actual partner logos */}
-                <div className="relative flex h-32 w-full flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-gray-200 bg-white p-5 shadow-lg transition-all hover:border-[#0b3d91] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:border-cyan-400">
+                <div className="relative flex h-24 sm:h-32 w-full flex-col items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl border sm:border-2 border-gray-200 bg-white p-2 sm:p-5 shadow-md sm:shadow-lg transition-all hover:border-[#0b3d91] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:border-cyan-400">
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#0b3d91]/5 to-cyan-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-cyan-400/10 dark:to-blue-400/10"></div>
                   
                   {/* Partner icon placeholder */}
-                  <div className="relative z-10 mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] to-cyan-600 dark:from-cyan-400 dark:to-blue-400">
-                    <Building2 className="h-6 w-6 text-white dark:text-gray-900" />
+                  <div className="relative z-10 mb-1 sm:mb-2 flex h-8 w-8 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] to-cyan-600 dark:from-cyan-400 dark:to-blue-400">
+                    <Building2 className="h-4 w-4 sm:h-6 sm:w-6 text-white dark:text-gray-900" />
                   </div>
                   
-                  {/* Partner name */}
-                  <span className="relative z-10 text-center text-xs font-bold text-gray-700 dark:text-gray-300">
-                    {partner.name}
+                  {/* Partner name - Hidden on mobile to save space */}
+                  <span className="relative z-10 text-center text-[10px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 line-clamp-1">
+                    {partner.name.split(' ').slice(0, 2).join(' ')}
                   </span>
                   
-                  {/* Category badge */}
-                  <span className="relative z-10 mt-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                  {/* Category badge - Hidden on mobile */}
+                  <span className="relative z-10 mt-1 rounded-full bg-gray-100 px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400 hidden sm:block">
                     {partner.category}
                   </span>
 
-                  {/* Corner accents */}
-                  <div className="absolute left-2 top-2 h-4 w-4 border-l-2 border-t-2 border-gray-300 opacity-50 transition-colors group-hover:border-[#0b3d91] dark:border-gray-600 dark:group-hover:border-cyan-400"></div>
-                  <div className="absolute bottom-2 right-2 h-4 w-4 border-b-2 border-r-2 border-gray-300 opacity-50 transition-colors group-hover:border-[#0b3d91] dark:border-gray-600 dark:group-hover:border-cyan-400"></div>
+                  {/* Corner accents - Hidden on mobile */}
+                  <div className="hidden sm:block absolute left-2 top-2 h-4 w-4 border-l-2 border-t-2 border-gray-300 opacity-50 transition-colors group-hover:border-[#0b3d91] dark:border-gray-600 dark:group-hover:border-cyan-400"></div>
+                  <div className="hidden sm:block absolute bottom-2 right-2 h-4 w-4 border-b-2 border-r-2 border-gray-300 opacity-50 transition-colors group-hover:border-[#0b3d91] dark:border-gray-600 dark:group-hover:border-cyan-400"></div>
                 </div>
               </motion.div>
             ))}
@@ -732,28 +760,28 @@ const PartnerLogoStrip = () => {
 
         {/* Partnership CTA */}
         <FadeInOnScroll delay={0.4}>
-          <div className="mt-16 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-10 text-center backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/50">
+          <div className="mt-8 sm:mt-16 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 sm:p-10 text-center backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/50">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] to-cyan-600 dark:from-cyan-400 dark:to-blue-400">
-                <Users className="h-8 w-8 text-white dark:text-gray-900" />
+              <div className="mx-auto mb-3 sm:mb-4 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0b3d91] to-cyan-600 dark:from-cyan-400 dark:to-blue-400">
+                <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white dark:text-gray-900" />
               </div>
               
-              <h3 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
-                Interested in Partnering with Us?
+              <h3 className="mb-2 sm:mb-3 text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
+                Interested in Partnering?
               </h3>
               
-              <p className="mb-6 text-gray-600 dark:text-gray-400">
-                Join our network of industry leaders and academic institutions shaping the future of civil engineering.
+              <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                Join our network of industry leaders shaping the future of civil engineering.
               </p>
               
               <Link
                 href="/#contact"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0b3d91] to-blue-700 px-8 py-4 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0b3d91] to-blue-700 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
               >
                 Get in Touch
                 <ExternalLink className="h-4 w-4" />

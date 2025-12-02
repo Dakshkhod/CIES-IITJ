@@ -8,6 +8,9 @@ from apps.events.api.v1.views import (
 )
 
 urlpatterns = [
+    # Root events endpoint (same as events list)
+    path("", EventsAV.as_view(), name="events_root"),
+    
     # Main events endpoint
     path("events/", EventsAV.as_view(), name="events_list"),
     path("events/<str:uuid>/", EventsAV.as_view(), name="event_detail"),

@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.http import JsonResponse
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -24,14 +25,45 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+
+# Root view for health check
+def root_view(request):
+    return JsonResponse({
+        "status": "ok",
+        "message": "CIES IITJ Backend API",
+        "version": "1.0.0",
+        "endpoints": {
+            "admin": "/admin/",
+            "api_docs": "/api/docs/",
+            "api_v1": "/api/v1/",
+        }
+    })
+
+
+# API v1 root view
+def api_v1_root(request):
+    return JsonResponse({
+        "status": "ok",
+        "endpoints": {
+            "team": "/api/v1/team/",
+            "events": "/api/v1/events/",
+            "core": "/api/v1/core/",
+        }
+    })
+
+
 # API v1 URL patterns
 api_v1_patterns = [
+    path("", api_v1_root, name="api-v1-root"),
     path("core/", include("apps.core.api.v1.urls")),
     path("events/", include("apps.events.api.v1.urls")),
     path("team/", include("apps.team.api.v1.urls")),
 ]
 
 urlpatterns = [
+    # Root endpoint
+    path("", root_view, name="root"),
+    
     # Admin
     path("admin/", admin.site.urls),
     
@@ -42,11 +74,6 @@ urlpatterns = [
     
     # API v1 endpoints
     path("api/v1/", include(api_v1_patterns)),
-    
-    # Legacy endpoints (for backward compatibility - can be removed later)
-    path("core/", include("apps.core.api.v1.urls")),
-    path("activity/", include("apps.events.api.v1.urls")),
-    path("team/", include("apps.team.api.v1.urls")),
 ]
 
 # Serve media files in development

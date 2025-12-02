@@ -7,6 +7,9 @@ from apps.team.api.v1.views import (
 )
 
 urlpatterns = [
+    # Root team endpoint (same as members list)
+    path("", TeamMemberAV.as_view(), name="team_list"),
+    
     # Main team endpoints
     path("members/", TeamMemberAV.as_view(), name="team_members_list"),
     path("members/<str:uuid>/", TeamMemberAV.as_view(), name="team_member_detail"),

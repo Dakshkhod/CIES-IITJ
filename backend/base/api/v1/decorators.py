@@ -1,23 +1,20 @@
-from typing import Any
-
-from drf_spectacular.utils import extend_schema, OpenApiResponse
-
-from base.api.v1.constants import STATUS_MAPPING
-
-# Write your decorators here
+from functools import wraps
+from drf_spectacular.utils import extend_schema
 
 
-def extend_schema_response(type: Any | None):
-    def wrapper(func):
-        method = getattr(func, "__name__")
-        status_code = STATUS_MAPPING.get(method)
-        return extend_schema(
-            responses={
-                status_code: OpenApiResponse(
-                    response=type,
-                    description="Indicates that the operation is successfull.",
-                )
-            }
-        )(func)
-
-    return wrapper
+def extend_schema_response(type=None, many=False, **kwargs):
+    """
+    Decorator to extend schema with response type.
+    
+    Usage:
+        @extend_schema_response(type=MySerializer)
+        def get(self, request):
+            ...
+    """
+    def decorator(func):
+        @wraps(func)
+        @extend_schema(responses={200: type}, **kwargs)
+        def wrapper(*args, **inner_kwargs):
+            return func(*args, **inner_kwargs)
+        return wrapper
+    return decorator

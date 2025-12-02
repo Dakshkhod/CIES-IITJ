@@ -1,117 +1,137 @@
-# CIES IIT Jodhpur - Homepage
+# CIES IIT Jodhpur
 
-Official homepage for the Civil & Infrastructure Engineering Society at IIT Jodhpur.
+Official website for the **Civil & Infrastructure Engineering Society** at IIT Jodhpur.
+
+![Next.js]
+![Django]
+![TypeScript]
+![Tailwind CSS]
+
+## 🌐 Live Demo
+
+- **Frontend**: [cies-iitj.vercel.app](https://cies-iitj.vercel.app) 
+- **Backend API**: [cies-backend.onrender.com](https://cies-backend.onrender.com) 
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+
-- npm or yarn
+- Python 3.11+
+- PostgreSQL (or use SQLite for development)
 
-### Installation
+### Frontend Setup
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd cies-iitj
-
 # Install dependencies
 npm install
+
+# Create environment file
+cp .env.example .env.local
+# Edit .env.local with your API URL
 
 # Start development server
 npm run dev
 ```
 
+### Backend Setup
+
+```bash
+cd backend
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create environment file
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Run migrations
+python manage.py migrate
+
+# Create admin user
+python manage.py createsuperuser
+
+# Start server
+python manage.py runserver
+```
+
+---
+
 ## 🏗️ Tech Stack
 
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Language**: TypeScript
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | Next.js 14, TypeScript, Tailwind CSS, Framer Motion |
+| **Backend** | Django 5.1, Django REST Framework |
+| **Database** | PostgreSQL |
+| **Auth** | JWT (SimpleJWT) |
+| **Hosting** | Vercel (Frontend), Render (Backend) |
+
+---
 
 ## 📁 Project Structure
 
 ```
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout with metadata
+CIES-IITJ/
+├── app/                    # Next.js pages
 │   ├── page.tsx           # Homepage
-│   └── team/              # Team page
-├── components/            # Reusable components
-│   ├── layout/           # Layout components
-│   └── ui/               # UI components
-├── lib/                  # Utility functions
-├── types/                # TypeScript definitions
-└── public/               # Static assets
+│   ├── activities/        # Activities page
+│   ├── events/            # Events page
+│   ├── team/              # Team page
+│   ├── roadmap/           # Roadmap page
+│   └── contact/           # Contact page
+├── components/            # React components
+├── lib/                   # API service & utilities
+├── public/                # Static assets
+├── backend/               # Django backend
+│   ├── apps/
+│   │   ├── core/          # Core models (User, Contact, etc.)
+│   │   ├── events/        # Events & Activities
+│   │   └── team/          # Team members
+│   └── config/            # Django settings
+└── README.md
 ```
+
+---
 
 ## 🎨 Features
 
-- **Responsive Design**: Mobile-first approach
-- **Dark/Light Mode**: Theme switching with persistence
-- **SEO Optimized**: Meta tags and structured data
-- **Accessibility**: WCAG compliant
-- **Performance**: Optimized images and animations
+- ✅ Responsive design (mobile-first)
+- ✅ Dark/Light mode with persistence
+- ✅ Dynamic content from API
+- ✅ Admin panel for content management
+- ✅ SEO optimized
+- ✅ Accessibility compliant
+- ✅ Smooth animations
 
-## 🖼️ Required Assets
+---
 
-Add these files to the `public/` directory:
+## 🔌 API Endpoints
 
-```
-public/
-├── iitj-logo-transparent.png    # Light mode logo
-├── iitj-logo-white-outline.png  # Dark mode logo
-├── logo.jpg                     # CIES logo
-├── favicon.ico                  # Favicon
-├── Team images/                 # Team member photos
-│   ├── Shashank.jpeg
-│   ├── Mayank.jpeg
-│   └── ... (other team photos)
-└── manifest.json               # PWA manifest
-```
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/v1/events/activities/` | List all activities |
+| `GET /api/v1/events/events/` | List all events |
+| `GET /api/v1/team/members/` | List team members |
+| `GET /api/v1/core/contact/info/` | Get contact information |
+| `POST /api/v1/core/contact/submit/` | Submit contact form |
+| `GET /api/v1/core/announcements/` | List announcements |
 
-### Customization
+Full API documentation available at `/api/docs/` (Swagger UI).
 
-- **Colors**: Update `tailwind.config.js` for brand colors
-- **Content**: Modify data in components for team info, activities
-- **Images**: Replace logos and team photos in `public/`
-```
+---
+## 👥 Team
 
-### Build for Production
-```bash
-npm run build
-npm run start
-```
+Developed by the **CIES Technical Committee**, IIT Jodhpur.
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit changes: `git commit -m 'Add your feature'`
-4. Push to branch: `git push origin feature/your-feature`
-5. Submit a pull request
-
-### Development Guidelines
-
-- Use TypeScript for all new code
-- Follow existing code style and formatting
-- Test on multiple devices and browsers
-- Ensure accessibility compliance
-- Update documentation for significant changes
-
-## 📝 Available Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript checking
-npm run format       # Format code with Prettier
-```
+---
 
 ## 📄 License
 
-© 2024 Civil & Infrastructure Engineering Society, IIT Jodhpur. All Rights Reserved.
+© 2025 Civil & Infrastructure Engineering Society, IIT Jodhpur. All Rights Reserved.

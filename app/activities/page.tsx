@@ -3,25 +3,145 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { formatDateShort, generateICS } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Filter, Grid, List, Users, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles } from 'lucide-react';
+import { Calendar, Clock, MapPin, Filter, Grid, List, Users, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { getActivities, fetchAllPages, Activity } from '@/lib/api';
+
+type GalleryItem = {
+  id: string;
+  title: string;
+  date: string;
+  category: 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'other';
+  imageUrl: string;
+  colorUrl?: string;
+  status?: 'completed' | 'upcoming' | 'ongoing';
+};
 
 export default function ActivitiesPage() {
   const categories = ['all', 'upcoming', 'workshop', 'seminar', 'site-visit', 'competition', 'edificio'];
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  type GalleryItem = {
-    id: string;
-    title: string;
-    date: string;
-    category: 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'other';
-    imageUrl: string;
-    colorUrl?: string; // full-color image for peel effect
-    status?: 'completed' | 'upcoming' | 'ongoing';
-  };
+  // Fetch activities from API
+  useEffect(() => {
+    async function fetchActivities() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch all activities
+        const allActivities = await fetchAllPages<Activity>(
+          (params) => getActivities({ ...params }),
+          100
+        );
+        
+        // Transform API data to component format
+        const transformedItems: GalleryItem[] = allActivities.map((activity) => ({
+          id: activity.uuid,
+          title: activity.title,
+          date: activity.date,
+          category: activity.category as GalleryItem['category'],
+          imageUrl: activity.image_url || '/CIE Design.png',
+          status: activity.status,
+        }));
+        
+        setItems(transformedItems);
+      } catch (err) {
+        console.error('Failed to fetch activities:', err);
+        setError('Failed to load activities. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchActivities();
+  }, []);
 
-  const items: GalleryItem[] = useMemo(
-    () => [
+  // All hooks must be called before any conditional returns
+  const filteredItems = useMemo(() => {
+    let filtered = items;
+    
+    if (activeCategory === 'all') {
+      filtered = items;
+    } else if (activeCategory === 'upcoming') {
+      const now = new Date();
+      filtered = items.filter(i => new Date(i.date) >= now);
+    } else {
+      filtered = items.filter(i => i.category === (activeCategory as GalleryItem['category']));
+    }
+    
+    // Sort by date - most recent first
+    return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [activeCategory, items]);
+
+  const selected = useMemo(() => items.find(i => i.id === selectedId) || null, [items, selectedId]);
+  const close = () => setSelectedId(null);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (selected) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selected]);
+
+  // Group items by month for timeline view
+  const groupedByMonth = useMemo(() => {
+    const groups: { [key: string]: typeof filteredItems } = {};
+    filteredItems.forEach(item => {
+      const date = new Date(item.date);
+      const monthYear = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      if (!groups[monthYear]) {
+        groups[monthYear] = [];
+      }
+      groups[monthYear].push(item);
+    });
+    return groups;
+  }, [filteredItems]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">Loading activities...</p>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  // Original hardcoded data removed - now using API data
+  const _legacyItems: GalleryItem[] = [
       // May
       {
         id: '1',
@@ -377,56 +497,7 @@ export default function ActivitiesPage() {
         category: 'seminar',
         imageUrl: '/CIE Design.png',
       },
-    ],
-    []
-  );
-
-  const filteredItems = useMemo(() => {
-    let filtered = items;
-    
-    if (activeCategory === 'all') {
-      filtered = items;
-    } else if (activeCategory === 'upcoming') {
-      const now = new Date();
-      filtered = items.filter(i => new Date(i.date) >= now);
-    } else {
-      filtered = items.filter(i => i.category === (activeCategory as GalleryItem['category']));
-    }
-    
-    // Sort by date - most recent first
-    return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [activeCategory, items]);
-
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = useMemo(() => items.find(i => i.id === selectedId) || null, [items, selectedId]);
-  const close = () => setSelectedId(null);
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (selected) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selected]);
-
-  // Group items by month for timeline view
-  const groupedByMonth = useMemo(() => {
-    const groups: { [key: string]: typeof filteredItems } = {};
-    filteredItems.forEach(item => {
-      const date = new Date(item.date);
-      const monthYear = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-      if (!groups[monthYear]) {
-        groups[monthYear] = [];
-      }
-      groups[monthYear].push(item);
-    });
-    return groups;
-  }, [filteredItems]);
+  ];
 
   // Get category icon
   const getCategoryIcon = (category: string) => {

@@ -3,7 +3,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from 'next/link';
-import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal, Menu, X, Sun, Moon, Instagram } from 'lucide-react';
+import { Linkedin, Mail, Users, Home, Info, Briefcase, Award, GalleryHorizontal, Menu, X, Sun, Moon, Instagram, Loader2 } from 'lucide-react';
+import { getTeamMembers, fetchAllPages, TeamMember } from '@/lib/api';
+import AppLayout from '@/components/layout/AppLayout';
 
 /* =========================
    SITE-WIDE NAVIGATION DATA (CMS Hook)
@@ -32,10 +34,30 @@ const navItems = [
 
 
 /* =========================
-   SAMPLE TEAM DATA (CMS Hook)
+   TEAM MEMBER TYPE
    ========================= */
-// Team data - Replace with CMS/API integration in production
-const TEAM_DATA = [
+type TeamMemberLocal = {
+  id: string;
+  name: string;
+  role: string;
+  committee: string;
+  batch: string;
+  photo: string;
+  bio: string;
+  socials: {
+    linkedin: string;
+    email: string;
+    instagram: string;
+  };
+  featured?: boolean;
+  isHOD?: boolean;
+  is_faculty?: boolean;
+};
+
+/* =========================
+   LEGACY TEAM DATA (Fallback)
+   ========================= */
+const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     { 
       id: "hod_main", 
       name: "Dr. A. B. C.", 
@@ -541,12 +563,12 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
 );
 
 
-function TeamPageContent({ setSelectedImage }: { setSelectedImage: (image: string | null) => void }) {
-    const facultyLeadership = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Faculty Leadership'), []);
+function TeamPageContent({ setSelectedImage, teamData }: { setSelectedImage: (image: string | null) => void; teamData: TeamMemberLocal[] }) {
+    const facultyLeadership = useMemo(() => teamData.filter(m => m.committee === 'Faculty Leadership'), [teamData]);
     const hodMember = useMemo(() => facultyLeadership.find(m => m.isHOD), [facultyLeadership]);
     const otherFaculty = useMemo(() => facultyLeadership.filter(m => !m.isHOD), [facultyLeadership]);
-    const coordinationCommittee = useMemo(() => TEAM_DATA.filter(m => m.committee === 'Coordination Committee'), []);
-    const committeeMembers = useMemo(() => TEAM_DATA.filter(m => m.committee !== 'Faculty Leadership' && m.committee !== 'Coordination Committee'), []);
+    const coordinationCommittee = useMemo(() => teamData.filter(m => m.committee === 'Coordination Committee'), [teamData]);
+    const committeeMembers = useMemo(() => teamData.filter(m => m.committee !== 'Faculty Leadership' && m.committee !== 'Coordination Committee'), [teamData]);
     
     const groupedAndSortedCommittees = useMemo(() => {
         const committeeOrder = [
@@ -635,6 +657,54 @@ export default function TeamPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [teamData, setTeamData] = useState<TeamMemberLocal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch team data from API
+  useEffect(() => {
+    async function fetchTeamData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const allMembers = await fetchAllPages<TeamMember>(
+          (params) => getTeamMembers({ ...params }),
+          100
+        );
+        
+        // Transform API data to component format
+        const transformedData: TeamMemberLocal[] = allMembers.map((member) => ({
+          id: member.uuid,
+          name: member.name,
+          role: member.role_label || 'Member',
+          committee: member.committee_label || 'Other',
+          batch: member.batch || '',
+          photo: member.photo || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E",
+          bio: member.bio || '',
+          socials: {
+            linkedin: member.socials?.linkedin || '#',
+            email: member.socials?.email || '#',
+            instagram: member.socials?.instagram || '#',
+          },
+          featured: member.featured,
+          isHOD: member.is_hod,
+          is_faculty: member.is_faculty,
+        }));
+        
+        setTeamData(transformedData);
+      } catch (err) {
+        console.error('Failed to fetch team data:', err);
+        setError('Failed to load team data.');
+        // Fallback to legacy data
+        setTeamData(LEGACY_TEAM_DATA);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchTeamData();
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -659,37 +729,56 @@ export default function TeamPage() {
     }
   };
 
-  return (
-    <div className={`bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans`}>
-      <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
-      <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isDarkMode={isDarkMode} toggleTheme={toggleTheme} isSticky={isSticky} />
-      <main className="pt-24 isolate">
-        <TeamPageContent setSelectedImage={setSelectedImage} />
-      </main>
-      <Footer />
-      
-      {/* Image Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-[90vh] p-4">
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute -top-4 -right-4 z-10 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <X className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-            </button>
-            <img
-              src={selectedImage}
-              alt="Expanded profile"
-              className="max-w-full max-h-full object-contain object-center rounded-lg shadow-2xl"
-              style={{ maxWidth: '90vw', maxHeight: '90vh' }}
-            />
+  // Loading state
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">Loading team...</p>
           </div>
         </div>
-      )}
-    </div>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <div className={`bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans`}>
+        <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
+        <main className="pt-24 isolate">
+          {error && (
+            <div className="text-center py-4 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200">
+              <p>{error} Using cached data.</p>
+            </div>
+          )}
+          <TeamPageContent setSelectedImage={setSelectedImage} teamData={teamData} />
+        </main>
+
+        {/* Image Modal */}
+        {selectedImage && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedImage(null)}
+          >
+            <div className="relative max-w-4xl max-h-[90vh] p-4">
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-4 -right-4 z-10 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <X className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+              </button>
+              <img
+                src={selectedImage}
+                alt="Expanded profile"
+                className="max-w-full max-h-full object-contain object-center rounded-lg shadow-2xl"
+                style={{ maxWidth: '90vw', maxHeight: '90vh' }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </AppLayout>
   );
 }

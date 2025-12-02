@@ -2,32 +2,145 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Users, Camera, ChevronRight, Filter, Grid, List } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, Camera, ChevronRight, Filter, Grid, List, Loader2 } from 'lucide-react';
+import { getEvents, fetchAllPages, Event as ApiEvent } from '@/lib/api';
+
+type EventItem = {
+  id: string;
+  title: string;
+  date: string;
+  category: 'orientation' | 'celebration' | 'academic' | 'cultural' | 'workshop';
+  description: string;
+  location: string;
+  attendees?: string;
+  photos: string[];
+  status: 'completed' | 'upcoming';
+};
+
+// Fallback events data (defined outside component to avoid recreation)
+const FALLBACK_EVENTS: EventItem[] = [
+  {
+    id: '1',
+    title: 'Orientation of Batch 25 (PG)',
+    date: '2025-07-15',
+    category: 'orientation',
+    description: 'Welcome session for new postgraduate students joining the Civil & Infrastructure Engineering program.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '50+ Students',
+    photos: ['/Other images/DSC01359.JPG'],
+    status: 'completed'
+  },
+  {
+    id: '2',
+    title: 'Orientation of Batch 25 (UG)',
+    date: '2025-08-05',
+    category: 'orientation',
+    description: 'Welcome session for new undergraduate students.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '80+ Students',
+    photos: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
+    status: 'completed'
+  }
+];
 
 export default function EventsPage() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<{ eventId: string; photoIndex: number } | null>(null);
+  const [events, setEvents] = useState<EventItem[]>(FALLBACK_EVENTS);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const categories = ['all', 'orientation', 'celebration', 'academic', 'cultural', 'workshop'];
 
-  type EventItem = {
-    id: string;
-    title: string;
-    date: string;
-    category: 'orientation' | 'celebration' | 'academic' | 'cultural' | 'workshop';
-    description: string;
-    location: string;
-    attendees?: string;
-    photos: string[];
-    status: 'completed' | 'upcoming';
-  };
+  // All hooks must be called before any conditional returns
+  const filteredEvents = useMemo(() => {
+    if (activeCategory === 'all') return events;
+    return events.filter(event => event.category === activeCategory);
+  }, [activeCategory, events]);
 
-  const events: EventItem[] = useMemo(
-    () => [
+  const selected = useMemo(() => events.find(e => e.id === selectedEvent) || null, [events, selectedEvent]);
+
+  // Prevent body scroll when modals are open
+  useEffect(() => {
+    if (selected || selectedPhoto) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selected, selectedPhoto]);
+
+  // Fetch events from API
+  useEffect(() => {
+    async function fetchEventsData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const allEvents = await fetchAllPages<ApiEvent>(
+          (params) => getEvents({ ...params, type: 'event' }),
+          100
+        );
+        
+        // Map API category to frontend category
+        const categoryMap: Record<string, EventItem['category']> = {
+          'other': 'celebration',
+          'edificio': 'cultural',
+          'seminar': 'academic',
+          'workshop': 'workshop',
+          'site-visit': 'orientation',
+          'competition': 'celebration',
+        };
+        
+        const transformedEvents: EventItem[] = allEvents.map((event) => ({
+          id: event.uuid,
+          title: event.title,
+          date: event.date,
+          category: categoryMap[event.category] || 'celebration',
+          description: event.description || '',
+          location: event.location || 'IIT Jodhpur Campus',
+          attendees: event.attendees_count ? `${event.attendees_count}+ Attendees` : undefined,
+          photos: event.images?.map(img => img.image?.url).filter(Boolean) as string[] || [],
+          status: event.status as 'completed' | 'upcoming',
+        }));
+        
+        if (transformedEvents.length > 0) {
+          setEvents(transformedEvents);
+        }
+      } catch (err) {
+        console.error('Failed to fetch events:', err);
+        setError('Failed to load events.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchEventsData();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">Loading events...</p>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  // Remove the old FALLBACK_EVENTS array that was inside the component
+  const _legacyEvents: EventItem[] = [
       {
-        id: '1',
+        id: '1-legacy',
         title: 'Orientation of Batch 25 (PG)',
         date: '2025-07-15',
         category: 'orientation',
@@ -126,7 +239,7 @@ export default function EventsPage() {
         status: 'completed'
       },
       {
-        id: '10',
+        id: '10-legacy',
         title: 'Diwali Celebration',
         date: '2025-10-14',
         category: 'cultural',
@@ -136,29 +249,7 @@ export default function EventsPage() {
         photos: ['/Other images/DSC03840.JPG'],
         status: 'completed'
       }
-    ],
-    []
-  );
-
-  const filteredEvents = useMemo(() => {
-    if (activeCategory === 'all') return events;
-    return events.filter(event => event.category === activeCategory);
-  }, [activeCategory, events]);
-
-  const selected = useMemo(() => events.find(e => e.id === selectedEvent) || null, [events, selectedEvent]);
-
-  // Prevent body scroll when modals are open
-  useEffect(() => {
-    if (selected || selectedPhoto) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selected, selectedPhoto]);
+  ];
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {

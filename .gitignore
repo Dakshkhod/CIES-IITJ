@@ -1,38 +1,36 @@
-
-# dependencies
-/node_modules
+# Dependencies
+node_modules/
 /.pnp
 .pnp.js
 
-# testing
+# Testing
 /coverage
 
-# next.js
-/.next/
+# Next.js
+.next/
 /out/
 
-# production
+# Production
 /build
 
-# misc
+# Misc
 .DS_Store
 *.pem
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# Local env files
 .env*.local
 .env
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts
 
 # IDE
 .vscode/
@@ -44,7 +42,7 @@ next-env.d.ts
 Thumbs.db
 
 # Logs
-logs
+logs/
 *.log
 
 # Runtime data
@@ -61,3 +59,9 @@ pids
 
 # Yarn Integrity file
 .yarn-integrity
+
+# Python virtual environment (root level)
+venv/
+
+# Internal dev documents
+API_DYNAMIC_DATA_REQUIREMENTS.txt

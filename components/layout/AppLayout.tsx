@@ -30,7 +30,7 @@ const navItems = [
   { name: 'Team', href: '/team', icon: Users },
   { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
   { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
-  { name: 'Contact Us', href: '/#contact', icon: Mail },
+  { name: 'Contact Us', href: '/contact', icon: Mail },
 ];
 
 interface AppLayoutProps {

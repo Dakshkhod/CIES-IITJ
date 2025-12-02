@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
 import AppLayout from '@/components/layout/AppLayout';
 import {
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from 'lucide-react';
+import { getRecentActivities, Activity } from '@/lib/api';
 
 // --- Main Page Component ---
 export default function HomePage() {
@@ -404,9 +406,50 @@ const HeroSection = () => (
 // --- Recent Activities Section ---
 const RecentActivities = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [recentActivities, setRecentActivities] = useState<Array<{
+    id: number;
+    title: string;
+    date: string;
+    description: string;
+    image: string;
+    link: string;
+  }>>([]);
+  const [loading, setLoading] = useState(true);
 
-  // CMS Hook: Data for Recent Activities
-  const recentActivities = [
+  // Fetch recent activities from API
+  useEffect(() => {
+    async function fetchRecentActivities() {
+      try {
+        setLoading(true);
+        const response = await getRecentActivities(5);
+        
+        const transformedActivities = response.data.map((activity, index) => ({
+          id: index + 1,
+          title: activity.title,
+          date: new Date(activity.date).toLocaleDateString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+          }),
+          description: activity.description || 'Details coming soon.',
+          image: activity.image_url || '/CIE Design.png',
+          link: `/activities#${activity.uuid}`,
+        }));
+        
+        setRecentActivities(transformedActivities.length > 0 ? transformedActivities : FALLBACK_ACTIVITIES);
+      } catch (err) {
+        console.error('Failed to fetch recent activities:', err);
+        setRecentActivities(FALLBACK_ACTIVITIES);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchRecentActivities();
+  }, []);
+
+  // Fallback activities data
+  const FALLBACK_ACTIVITIES = [
     {
       id: 1,
       title: 'UG Departmental Orientation - Batch of 2025',
@@ -419,33 +462,52 @@ const RecentActivities = () => {
       id: 2,
       title: 'Informal Session - for Y24s',
       date: 'August 12, 2025',
-      description: 'We conducted an informal session for Y24s, organized by Y23s, on the theme "How to Master the 3rd Semester." We discussed effective time management, balancing academics with extracurriculars, and tips for excelling in core courses.',
-      image: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%230b3d91;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%239b2b2b;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='600' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial, sans-serif' font-size='48' fill='white' text-anchor='middle' dy='.3em'%3EInformal Session%3C/text%3E%3C/svg%3E`,
+      description: 'We conducted an informal session for Y24s, organized by Y23s, on the theme "How to Master the 3rd Semester."',
+      image: '/CIE Design.png',
       link: '#'
     },
     {
       id: 3,
       title: 'Site Visit to Jodhpur Metro Project',
       date: 'July 28, 2025',
-      description: 'An insightful visit to the ongoing Jodhpur Metro construction site. Students got a firsthand look at tunnel boring machines, station construction, and project management on a large scale.',
-      image: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Cdefs%3E%3ClinearGradient id='g2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%234a5568;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%232d3748;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='600' fill='url(%23g2)'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial, sans-serif' font-size='48' fill='white' text-anchor='middle' dy='.3em'%3ESite Visit%3C/text%3E%3C/svg%3E`,
+      description: 'An insightful visit to the ongoing Jodhpur Metro construction site.',
+      image: '/logo.jpg',
       link: '#'
     },
     {
       id: 4,
       title: 'Workshop on STAAD.Pro',
       date: 'June 15, 2025',
-      description: 'A hands-on workshop covering the fundamentals of structural analysis and design using STAAD.Pro. Participants learned to model, analyze, and design a G+3 building from scratch.',
-      image: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Cdefs%3E%3ClinearGradient id='g3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23718096;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23a0aec0;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='600' fill='url(%23g3)'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial, sans-serif' font-size='48' fill='white' text-anchor='middle' dy='.3em'%3ESTAAD.Pro Workshop%3C/text%3E%3C/svg%3E`,
+      description: 'A hands-on workshop covering the fundamentals of structural analysis and design using STAAD.Pro.',
+      image: '/iitj-logo.png',
       link: '#'
     }
   ];
 
-  const nextActivity = () => setCurrentIndex((prev) => (prev + 1) % recentActivities.length);
-  const prevActivity = () => setCurrentIndex((prev) => (prev - 1 + recentActivities.length) % recentActivities.length);
+  // Show loading state
+  if (loading) {
+    return (
+      <section id="activities" className="relative overflow-hidden py-16 -mt-4">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">Loading activities...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Use fallback if no activities
+  const activitiesToShow = recentActivities.length > 0 ? recentActivities : FALLBACK_ACTIVITIES;
+
+  const nextActivity = () => setCurrentIndex((prev) => (prev + 1) % activitiesToShow.length);
+  const prevActivity = () => setCurrentIndex((prev) => (prev - 1 + activitiesToShow.length) % activitiesToShow.length);
   const goToActivity = (index: number) => setCurrentIndex(index);
 
-  const activity = recentActivities[currentIndex];
+  const activity = activitiesToShow[currentIndex];
 
   return (
     <section id="activities" className="relative overflow-hidden py-16 -mt-4">
@@ -535,7 +597,7 @@ const RecentActivities = () => {
             </button>
 
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-              {recentActivities.map((_, index) => (
+              {activitiesToShow.map((_, index) => (
                 <button 
                   key={index} 
                   onClick={() => goToActivity(index)} 

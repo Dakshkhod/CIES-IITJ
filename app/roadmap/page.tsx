@@ -18,8 +18,10 @@ import {
   TrendingUp,
   Sparkles,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from 'lucide-react';
+import { getActivities, fetchAllPages, Activity as ApiActivity } from '@/lib/api';
 
 // Types
 type EventCategory = 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'research';
@@ -36,13 +38,111 @@ interface TimelineEvent {
   images: string[];
 }
 
+// Fallback events data (defined outside component)
+const FALLBACK_EVENTS: TimelineEvent[] = [
+  {
+    id: '1',
+    title: 'Research Presentation - Saran Kumar Aatrey',
+    category: 'research',
+    date: '2025-05-09',
+    description: 'Research presentation by P21CI002 on advanced civil engineering methodologies.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '50+ Faculty & Students',
+    speaker: 'Saran Kumar Aatrey (P21CI002)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '2',
+    title: 'Seminar by Prof. Ravindra Gettu',
+    category: 'seminar',
+    date: '2025-06-10',
+    description: 'Expert talk on sustainable concrete technology.',
+    location: 'IIT Jodhpur Auditorium',
+    attendees: '100+ Attendees',
+    speaker: 'Prof. Ravindra Gettu (IIT Madras)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '3',
+    title: 'EDIFICIO - Hackathon & Ideathon',
+    category: 'edificio',
+    date: '2025-12-01',
+    description: 'Annual technical festival featuring hackathon, ideathon, and competitions.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '500+ Participants',
+    images: ['/CIE Design.png']
+  }
+];
+
 export default function RoadmapPage() {
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState<EventCategory | 'all'>('all');
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [events, setEvents] = useState<TimelineEvent[]>(FALLBACK_EVENTS);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const timelineRef = useRef<HTMLDivElement>(null);
+
+  // All hooks must be called before any conditional returns
+  // Sort events by date
+  const sortedEvents = useMemo(() => {
+    return [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [events]);
+
+  // Filter events
+  const filteredEvents = useMemo(() => {
+    if (activeFilter === 'all') return sortedEvents;
+    return sortedEvents.filter(e => e.category === activeFilter);
+  }, [sortedEvents, activeFilter]);
+
+  // Fetch roadmap data from API
+  useEffect(() => {
+    async function fetchRoadmapData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const allActivities = await fetchAllPages<ApiActivity>(
+          (params) => getActivities({ ...params }),
+          100
+        );
+        
+        // Map API category to roadmap category
+        const categoryMap: Record<string, EventCategory> = {
+          'workshop': 'workshop',
+          'seminar': 'seminar',
+          'site-visit': 'site-visit',
+          'competition': 'competition',
+          'edificio': 'edificio',
+          'other': 'research',
+        };
+        
+        const transformedEvents: TimelineEvent[] = allActivities.map((activity) => ({
+          id: activity.uuid,
+          title: activity.title,
+          category: categoryMap[activity.category] || 'research',
+          date: activity.date,
+          description: activity.description || 'Details coming soon.',
+          location: activity.location || 'IIT Jodhpur Campus',
+          attendees: activity.attendees_count ? `${activity.attendees_count}+ Participants` : undefined,
+          images: activity.image_url ? [activity.image_url] : ['/CIE Design.png'],
+        }));
+        
+        if (transformedEvents.length > 0) {
+          setEvents(transformedEvents);
+        }
+      } catch (err) {
+        console.error('Failed to fetch roadmap data:', err);
+        setError('Failed to load roadmap.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchRoadmapData();
+  }, []);
 
   // Auto-update current month
   useEffect(() => {
@@ -53,8 +153,66 @@ export default function RoadmapPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Events data
-  const events: TimelineEvent[] = useMemo(() => [
+  // Get current month events
+  const currentMonthEvents = useMemo(() => {
+    return sortedEvents.filter(event => {
+      const eventDate = new Date(event.date);
+      return eventDate.getMonth() === currentMonth.getMonth() && 
+             eventDate.getFullYear() === currentMonth.getFullYear();
+    });
+  }, [sortedEvents, currentMonth]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedEvent) return;
+      
+      if (e.key === 'Escape') {
+        setSelectedEvent(null);
+      } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+        setCurrentImageIndex(prev => prev - 1);
+      } else if (e.key === 'ArrowRight' && selectedEvent.images && currentImageIndex < selectedEvent.images.length - 1) {
+        setCurrentImageIndex(prev => prev + 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEvent, currentImageIndex]);
+
+  // Reset image index
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [selectedEvent]);
+
+  // Lock body scroll when modal open
+  useEffect(() => {
+    if (selectedEvent) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedEvent]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">Loading roadmap...</p>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  // Legacy fallback events data (kept for reference)
+  const _legacyEvents: TimelineEvent[] = [
     {
       id: '1',
       title: 'Research Presentation - Saran Kumar Aatrey',
@@ -220,18 +378,7 @@ export default function RoadmapPage() {
       attendees: '300+ Community Members',
       images: ['/CIE Design.png']
     }
-  ], []);
-
-  // Sort events by date
-  const sortedEvents = useMemo(() => {
-    return [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  }, [events]);
-
-  // Filter events
-  const filteredEvents = useMemo(() => {
-    if (activeFilter === 'all') return sortedEvents;
-    return sortedEvents.filter(e => e.category === activeFilter);
-  }, [sortedEvents, activeFilter]);
+  ];
 
   // Check if event is in past, present, or future
   const getEventStatus = (eventDate: string) => {
@@ -243,15 +390,6 @@ export default function RoadmapPage() {
     if (daysDiff > 7) return 'future';
     return 'present';
   };
-
-  // Get current month events
-  const currentMonthEvents = useMemo(() => {
-    return sortedEvents.filter(event => {
-      const eventDate = new Date(event.date);
-      return eventDate.getMonth() === currentMonth.getMonth() && 
-             eventDate.getFullYear() === currentMonth.getFullYear();
-    });
-  }, [sortedEvents, currentMonth]);
 
   // Get month name
   const getCurrentMonthName = () => {
@@ -267,42 +405,6 @@ export default function RoadmapPage() {
     edificio: { icon: TrendingUp, color: 'from-yellow-500 to-amber-500', glow: 'shadow-yellow-500/50' },
     research: { icon: Sparkles, color: 'from-indigo-500 to-violet-500', glow: 'shadow-indigo-500/50' }
   };
-
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!selectedEvent) return;
-      
-      if (e.key === 'Escape') {
-        setSelectedEvent(null);
-      } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
-        setCurrentImageIndex(prev => prev - 1);
-      } else if (e.key === 'ArrowRight' && selectedEvent.images && currentImageIndex < selectedEvent.images.length - 1) {
-        setCurrentImageIndex(prev => prev + 1);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedEvent, currentImageIndex]);
-
-  // Reset image index
-  useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [selectedEvent]);
-
-  // Lock body scroll when modal open
-  useEffect(() => {
-    if (selectedEvent) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedEvent]);
 
   return (
     <AppLayout>

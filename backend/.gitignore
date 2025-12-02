@@ -1,78 +1,89 @@
-# ==========================
 # Python
-# ==========================
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.pdb
+*$py.class
 *.so
-
-# Ignore folders named __pycache__ anywhere
-**/__pycache__/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # Virtual environments
 venv/
-.env/
-.venv/
 ENV/
 env/
+.venv/
 
-# Ignore .env files anywhere
-**/.env
-*.env
-
-# Python cache
-.pytest_cache/
-.mypy_cache/
-.pyre/
-ruff_cache/
-
-# ==========================
 # Django
-# ==========================
-# Ignore all migration files except __init__.py
-**/migrations/*
-!**/migrations/__init__.py
-
-# Django logs
 *.log
-*.sqlite3
+local_settings.py
+db.sqlite3
+*.pot
+*.pyc
 
-# Static and media (if generated)
-staticfiles/
+# Media and static files
 media/
-static/
-build/
+staticfiles/
 
-# ==========================
-# IDE / Editor
-# ==========================
-.vscode/
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
 .idea/
+.vscode/
 *.swp
 *.swo
+*~
+.project
+.pydevproject
+.settings/
 
-# ==========================
-# System Files
-# ==========================
+# OS
 .DS_Store
 Thumbs.db
 
-# ==========================
-# Certificates
-# ==========================
-cert.pem
-key.pem
+# Logs
+logs/
+*.log
 
-# ==========================
-# Redis dump
-# ==========================
-dump.rdb
+# Coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
 
-# ==========================
-# Poetry & UV
-# ==========================
-poetry.lock
-uv.lock
-.uv/
+# Jupyter
+.ipynb_checkpoints
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Secrets
+*.pem
+*.key

@@ -89,14 +89,15 @@ const AnimatedCIESLogo = () => {
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 700 320"
-      className="mx-auto h-auto w-full text-slate-800 dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(30,41,59,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+      className="mx-auto h-auto w-full max-w-[90vw] sm:max-w-none text-slate-800 dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(30,41,59,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       aria-hidden="true"
+      preserveAspectRatio="xMidYMid meet"
     >
-      {/* Shift the CIES lettering slightly to the right for centering */}
-      <motion.g transform="translate(20,0)">
+      {/* Center the CIES lettering */}
+      <motion.g transform="translate(25,0)">
       {/* Letter C - Enhanced with detailed internal systems */}
       <motion.path
         className="text-slate-800 dark:text-cyan-200"
@@ -320,9 +321,9 @@ const AnimatedCIESLogo = () => {
 // --- CIE Hero Design Component ---
 const CIEHeroDesign = () => {
   return (
-    <div className="relative px-4 sm:px-0">
+    <div className="relative w-full flex flex-col items-center justify-center">
       {/* Decorative diamond in bottom right - hidden on mobile */}
-    <motion.div
+      <motion.div
         className="absolute bottom-8 right-8 h-16 w-16 rotate-45 bg-gradient-to-br from-gray-400 to-gray-600 opacity-30 hidden sm:block"
         initial={{ opacity: 0, rotate: 0 }}
         animate={{ opacity: 0.3, rotate: 45 }}
@@ -332,18 +333,18 @@ const CIEHeroDesign = () => {
         }}
       />
       
-      <div className="space-y-4 sm:space-y-6">
+      <div className="w-full flex flex-col items-center space-y-4 sm:space-y-6">
         {/* Animated CIES Logo at the top - responsive size */}
-        <div className="max-w-sm sm:max-w-xl md:max-w-2xl mx-auto">
+        <div className="w-full max-w-[320px] sm:max-w-xl md:max-w-2xl mx-auto px-4 sm:px-0">
           <AnimatedCIESLogo />
         </div>
 
         {/* Text content below logo - responsive */}
-        <div className="space-y-2 sm:space-y-3">
+        <div className="w-full text-center space-y-2 sm:space-y-3 px-4 sm:px-0">
           <motion.h1 
             className="text-2xl sm:text-3xl font-bold leading-tight text-gray-900 dark:text-white md:text-4xl lg:text-5xl"
             initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             Civil & Infrastructure Engineering
@@ -357,11 +358,11 @@ const CIEHeroDesign = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
           >
-          IIT Jodhpur
+            IIT Jodhpur
           </motion.h2>
           
           <motion.p 
-            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 md:text-lg lg:text-xl px-4 sm:px-0"
+            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 md:text-lg lg:text-xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
@@ -376,7 +377,7 @@ const CIEHeroDesign = () => {
 
 // --- Hero Section ---
 const HeroSection = () => (
-  <section className="relative mx-auto flex min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-4 sm:px-6 pb-8 sm:pb-12 pt-12 sm:pt-16">
+  <section className="relative mx-auto flex min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-2 sm:px-6 pb-8 sm:pb-12 pt-8 sm:pt-16">
     {/* Theme-aware background overlay */}
     <div className="absolute inset-0 bg-white dark:bg-slate-900/80 z-0"></div>
     
@@ -396,11 +397,11 @@ const HeroSection = () => (
       <div className="absolute left-1/4 top-1/3 h-[40rem] w-[40rem] animate-pulse rounded-full bg-slate-900/6 dark:bg-cyan-500/8 blur-3xl [animation-delay:-3s]"></div>
     </div>
     
-    <div className="relative z-10 w-full max-w-6xl text-center">
+    <div className="relative z-10 w-full max-w-6xl flex items-center justify-center">
       <CIEHeroDesign />
-      </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 
 
 // Fallback activities data (defined outside component to avoid dependency issues)

@@ -368,9 +368,11 @@ interface TeamGridProps {
 
 const TeamGrid = ({ members, setSelectedImage }: TeamGridProps & { setSelectedImage: (image: string | null) => void }) => (
     <AnimatePresence>
-        <motion.div layout className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6 mt-6 sm:mt-10">
+        <motion.div layout className="flex flex-wrap justify-center gap-3 sm:gap-6 mt-6 sm:mt-10">
              {members.map(member => (
-                <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
+                <div key={member.id} className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)] xl:w-[calc(20%-1.2rem)] max-w-[280px]">
+                    <MemberCard member={member} setSelectedImage={setSelectedImage} />
+                </div>
             ))}
         </motion.div>
     </AnimatePresence>
@@ -437,18 +439,22 @@ function TeamPageContent({ setSelectedImage, teamData }: { setSelectedImage: (im
                 )}
                 
                 {/* Other Faculty Cards */}
-                <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
+                <div className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
                     {otherFaculty.map(member => (
-                         <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
+                        <div key={member.id} className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] max-w-[320px]">
+                            <MemberCard member={member} setSelectedImage={setSelectedImage} />
+                        </div>
                     ))}
                 </div>
             </section>
 
             <section className="container mx-auto px-3 sm:px-6 py-8 sm:py-12 bg-white/50 dark:bg-gray-800/30 rounded-2xl sm:rounded-3xl my-6 sm:my-12 mx-2 sm:mx-auto">
                 <SectionTitle>Coordination Committee</SectionTitle>
-                 <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
+                 <div className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
                     {coordinationCommittee.map(member => (
-                        <MemberCard key={member.id} member={member} setSelectedImage={setSelectedImage} />
+                        <div key={member.id} className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] max-w-[320px]">
+                            <MemberCard member={member} setSelectedImage={setSelectedImage} />
+                        </div>
                     ))}
                 </div>
             </section>

@@ -61,20 +61,17 @@ export default function AboutPage() {
 // --- Hero Section with Large Photo ---
 const HeroSection = () => (
   <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] sm:min-h-[600px] overflow-hidden">
-    {/* Background Image - CMS Placeholder */}
+    {/* Background Image */}
     <div className="absolute inset-0">
-      {/* Primary gradient background - works for both light and dark mode */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0b3d91] via-blue-800 to-blue-900 dark:via-blue-900 dark:to-slate-900"></div>
-      
-      {/* CIE Design background image */}
+      {/* Campus background image in natural colours */}
       <div 
-        className="absolute inset-0 bg-[url('/CIE%20Design.png')] bg-cover bg-center opacity-20 mix-blend-overlay"
+        className="absolute inset-0 bg-[url('/Other%20images/abt%20us.png')] bg-cover bg-center"
         style={{ backgroundPosition: 'center' }}
       ></div>
       
-      {/* Engineering Grid Overlay - Enhanced */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_2px,transparent_2px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_2px,transparent_2px)] bg-[size:60px_60px]"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+      {/* Subtle engineering grid overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.12)_2px,transparent_2px),linear-gradient(to_bottom,rgba(15,23,42,0.12)_2px,transparent_2px)] bg-[size:60px_60px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
       
       {/* Animated particles/floating elements */}
       <motion.div
@@ -94,8 +91,8 @@ const HeroSection = () => (
       />
     </div>
 
-    {/* Overlay for Readability */}
-    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50 dark:from-black/50 dark:via-black/30 dark:to-black/60"></div>
+    {/* Overlay for Readability – keep very subtle so colors stay natural */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/40 dark:from-black/40 dark:via-black/20 dark:to-black/60"></div>
 
     {/* Decorative corner frames - Hidden on mobile */}
     <div className="hidden sm:block absolute left-8 top-8 h-24 w-24 border-l-4 border-t-4 border-cyan-300/60 dark:border-cyan-400/50"></div>
@@ -123,13 +120,30 @@ const HeroSection = () => (
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mb-6 inline-block"
           >
-            <span className="rounded-full border-2 border-slate-300/60 bg-slate-300/15 px-6 py-2 text-sm font-semibold text-slate-800 backdrop-blur-sm dark:border-cyan-400/50 dark:bg-cyan-400/10 dark:text-cyan-300">
+            <span className="rounded-full border-2 border-white/40 bg-transparent px-6 py-2 text-sm font-semibold text-white drop-shadow-lg">
               IIT Jodhpur
             </span>
           </motion.div>
 
-          <h1 className="mb-4 sm:mb-6 text-4xl sm:text-5xl font-extrabold leading-tight text-white drop-shadow-lg md:text-7xl lg:text-8xl">
-            About <span className="text-white dark:from-cyan-400 dark:to-blue-400 dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">CIES</span>
+          <h1 className="mb-4 sm:mb-6 text-4xl sm:text-5xl font-extrabold leading-tight text-white md:text-7xl lg:text-8xl">
+            <span style={{
+              textShadow: '0 2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.3), 0 6px 12px rgba(0,0,0,0.25)',
+            }}>About </span>
+            <span className="relative inline-block">
+              {/* Faded background glow effect */}
+              <span className="absolute inset-0 blur-md opacity-40" style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                transform: 'translate(2px, 2px)',
+              }}>CIES</span>
+              {/* Main text with 3D effect */}
+              <span className="relative z-10" style={{
+                textShadow: '0 1px 0 rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4), 0 6px 12px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
+              }}>CIES</span>
+            </span>
           </h1>
           
           <div className="mx-auto mb-8 h-1.5 w-40 rounded-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent dark:via-cyan-400"></div>
@@ -152,17 +166,17 @@ const HeroSection = () => (
             transition={{ duration: 0.8, delay: 0.9 }}
             className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 gap-3 sm:gap-6 text-white overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide"
           >
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">500+</div>
-              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Active Members</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">500+</div>
+              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Active Members</div>
             </div>
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">50+</div>
-              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Events Annually</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">50+</div>
+              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Events Annually</div>
             </div>
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/20 bg-white/10 p-3 sm:p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div className="text-2xl sm:text-3xl font-bold text-slate-200 drop-shadow-md md:text-4xl dark:text-cyan-400">100+</div>
-              <div className="mt-1 text-xs sm:text-sm text-gray-100 md:text-base dark:text-gray-300">Industry Partners</div>
+            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">100+</div>
+              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Industry Partners</div>
             </div>
           </motion.div>
         </motion.div>

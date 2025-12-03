@@ -85,22 +85,100 @@ const AnimatedCIESLogo = () => {
     },
   };
 
+  const fadeBackgroundVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 0.3,
+      transition: { duration: 0.8, ease: 'easeInOut', delay: 3.0 } // Start after main animation completes (~1.2 + 1.8)
+    },
+  };
+
   return (
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 700 320"
-      className="mx-auto h-auto w-full max-w-[90vw] sm:max-w-none text-slate-800 dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(30,41,59,0.3)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+      className="mx-auto h-auto w-full max-w-[90vw] sm:max-w-none text-black dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       aria-hidden="true"
       preserveAspectRatio="xMidYMid meet"
     >
+      {/* SVG Filters for 3D faded background effect */}
+      <defs>
+        <filter id="fadedGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur"/>
+          <feOffset in="blur" dx="2" dy="4" result="offsetBlur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.3"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="deepShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+          <feOffset in="blur" dx="2" dy="2" result="offsetBlur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.5"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Faded background layer for 3D effect - appears after animation */}
+      <motion.g 
+        transform="translate(25,0)" 
+        filter="url(#fadedGlow)"
+        variants={fadeBackgroundVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Letter C background */}
+        <path
+          d="M90 90 Q35 90 35 160 Q35 230 90 230 L130 230"
+          strokeWidth="10"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* Letter I background */}
+        <path
+          d="M200 90 L200 230 M165 90 L235 90 M165 230 L235 230"
+          strokeWidth="10"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* Letter E background */}
+        <path
+          d="M300 90 L300 230 M300 90 L390 90 M300 160 L370 160 M300 230 L390 230"
+          strokeWidth="10"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* Letter S background (with transform) */}
+        <g transform="translate(20,0) translate(450,160) scale(1.12) translate(-450,-160)">
+          <path
+            d="M480 110 Q445 90 410 110 Q390 130 410 150 Q430 165 455 165 Q480 165 490 185 Q500 205 480 220 Q445 235 410 215"
+            strokeWidth="10"
+            stroke="currentColor"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+      </motion.g>
+      
       {/* Center the CIES lettering */}
-      <motion.g transform="translate(25,0)">
+      <motion.g transform="translate(25,0)" filter="url(#deepShadow)">
       {/* Letter C - Enhanced with detailed internal systems */}
       <motion.path
-        className="text-slate-800 dark:text-cyan-200"
+        className="text-black dark:text-cyan-200"
         variants={letterVariants}
         d="M90 90 Q35 90 35 160 Q35 230 90 230 L130 230"
         strokeWidth="8"
@@ -137,7 +215,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter I - Enhanced tower with complex truss system */}
       <motion.path
-        className="text-slate-800 dark:text-cyan-200"
+        className="text-black dark:text-cyan-200"
         variants={letterVariants}
         d="M200 90 L200 230 M165 90 L235 90 M165 230 L235 230"
         strokeWidth="8"
@@ -177,7 +255,7 @@ const AnimatedCIESLogo = () => {
 
       {/* Letter E - Enhanced with complex structural grid */}
       <motion.path
-        className="text-slate-800 dark:text-cyan-200"
+        className="text-black dark:text-cyan-200"
         variants={letterVariants}
         d="M300 90 L300 230 M300 90 L390 90 M300 160 L370 160 M300 230 L390 230"
         strokeWidth="8"
@@ -214,7 +292,7 @@ const AnimatedCIESLogo = () => {
       {/* Letter S - Enhanced with complex curved systems (scaled up slightly) */}
       <motion.g transform="translate(20,0) translate(450,160) scale(1.12) translate(-450,-160)">
         <motion.path
-          className="text-slate-800 dark:text-cyan-200"
+          className="text-black dark:text-cyan-200"
           variants={letterVariants}
           d="M480 110 Q445 90 410 110 Q390 130 410 150 Q430 165 455 165 Q480 165 490 185 Q500 205 480 220 Q445 235 410 215"
           strokeWidth="8"

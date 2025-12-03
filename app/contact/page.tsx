@@ -425,10 +425,10 @@ export default function ContactPage() {
                       <h3 className="text-xl font-bold">Find Us</h3>
                     </div>
                     <p className="text-blue-100 mb-4">
-                      Located at the beautiful IIT Jodhpur campus in the heart of Rajasthan.
+                      Located at the Department of Civil and Infrastructure Engineering, IIT Jodhpur campus in the heart of Rajasthan.
                     </p>
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contactInfo?.address || 'IIT Jodhpur')}`}
+                      href="https://maps.app.goo.gl/A1Y2Yn4UXAfJ8VqS9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"

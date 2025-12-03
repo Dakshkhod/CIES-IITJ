@@ -35,10 +35,21 @@ const FALLBACK_EVENTS: EventItem[] = [
     title: 'Orientation of Batch 25 (UG)',
     date: '2025-08-05',
     category: 'orientation',
-    description: 'Welcome session for new undergraduate students.',
+    description: 'Welcome session for new undergraduate students joining the Civil & Infrastructure Engineering program.',
     location: 'IIT Jodhpur Campus',
     attendees: '80+ Students',
     photos: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
+    status: 'completed'
+  },
+  {
+    id: '3',
+    title: 'Freshers (UG)',
+    date: '2025-10-05',
+    category: 'cultural',
+    description: 'Welcome celebration for undergraduate students featuring cultural performances and interactive activities.',
+    location: 'IIT Jodhpur Auditorium',
+    attendees: '120+ Attendees',
+    photos: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg'],
     status: 'completed'
   }
 ];

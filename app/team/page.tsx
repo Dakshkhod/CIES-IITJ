@@ -264,7 +264,6 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
 // Fallback photos for team members when API doesn't provide one
 const TEAM_FALLBACK_PHOTOS: Record<string, string> = {
   // Coordination & core
-  'Ashwani': '/Other images/1759265474674~3.jpg',
   'Mayank Tiwari': '/Team images/Mayank.jpeg',
   'Shashank': '/Team images/Shashank.jpeg',
 

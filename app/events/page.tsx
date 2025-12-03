@@ -85,6 +85,24 @@ export default function EventsPage() {
     };
   }, [selected, selectedPhoto]);
 
+  // Fallback images for specific events when API doesn't provide images
+  const EVENT_FALLBACK_IMAGES: Record<string, string> = {
+    // Orientations & Freshers
+    'Orientation of Batch 25 (UG)': '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
+    'Freshers (UG)': '/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg',
+
+    // Teacher\'s / Engineer\'s Day
+    "Teacher's Day (Community Gathering/Sports Event)": '/Other images/DSC01359.JPG',
+    "Engineer's Day": '/Other images/1757908205139.jpeg',
+
+    // Guest lecture & workshop
+    "Guest Lecture by Prof. Ligy (IITM)": '/Other images/1759303624829.jpeg',
+    'Workshop on Geospatial (Compulsory for Geoinformatics Students)': '/Other images/PXL_20251011_075907856.jpg',
+
+    // Diwali
+    'Diwali Celebration': '/Other images/DSC03840.JPG',
+  };
+
   // Fetch events from API
   useEffect(() => {
     async function fetchEventsData() {
@@ -106,17 +124,29 @@ export default function EventsPage() {
           'competition': 'celebration',
         };
         
-        const transformedEvents: EventItem[] = allEvents.map((event) => ({
-          id: event.uuid,
-          title: event.title,
-          date: event.date,
-          category: categoryMap[event.category] || 'celebration',
-          description: event.description || '',
-          location: event.location || 'IIT Jodhpur Campus',
-          attendees: event.attendees_count ? `${event.attendees_count}+ Attendees` : undefined,
-          photos: event.images?.map(img => img.image?.url).filter(Boolean) as string[] || [],
-          status: event.status as 'completed' | 'upcoming',
-        }));
+        const transformedEvents: EventItem[] = allEvents.map((event) => {
+          const apiPhotos = (event.images?.map(img => img.image?.url).filter(Boolean) as string[]) || [];
+          const titleKey = (event.title || '').trim();
+          const fallbackImage = EVENT_FALLBACK_IMAGES[titleKey];
+          
+          const photos = apiPhotos.length > 0
+            ? apiPhotos
+            : fallbackImage
+              ? [fallbackImage]
+              : ['/logo.jpg'];
+
+          return {
+            id: event.uuid,
+            title: event.title,
+            date: event.date,
+            category: categoryMap[event.category] || 'celebration',
+            description: event.description || '',
+            location: event.location || 'IIT Jodhpur Campus',
+            attendees: event.attendees_count ? `${event.attendees_count}+ Attendees` : undefined,
+            photos,
+            status: event.status as 'completed' | 'upcoming',
+          };
+        });
         
         if (transformedEvents.length > 0) {
           setEvents(transformedEvents);

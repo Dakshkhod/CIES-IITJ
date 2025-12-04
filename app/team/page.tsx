@@ -113,7 +113,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Saurabh", 
       role: "Events & Community Engagement Lead", 
       committee: "Events & Community Engagement Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Saurabh.jpeg", 
       bio: "Leading events and community outreach initiatives.", 
       socials: { linkedin: "#", email: "mailto:saurabh@iitj.ac.in", instagram: "#" } 
@@ -164,7 +164,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Falak Khan", 
       role: "Seminars & Academic Engagement", 
       committee: "Seminars & Academic Engagement Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Falak.jpeg", 
       bio: "Organizing seminars and academic engagement programs.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -182,9 +182,9 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     { 
       id: "sri", 
       name: "Sri Raghava", 
-      role: "PG Lead", 
+      role: "Executive", 
       committee: "Seminars & Academic Engagement Committee", 
-      batch: "PG 2024", 
+      batch: "UG 2024", 
       photo: "/Team images/Sri Raghava.jpeg", 
       bio: "PG lead coordinating academic and research activities.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -194,7 +194,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Deepali", 
       role: "Media & Design Lead", 
       committee: "Media & Design Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Deepali.jpeg", 
       bio: "Leading design and media content creation for the society.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -224,7 +224,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Simran Sehgal", 
       role: "Media & Design Executive", 
       committee: "Media & Design Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Simran Sehgal.jpeg", 
       bio: "Creative executive handling visual content and media.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -234,7 +234,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Simranjit Kaur", 
       role: "Media & Design Executive", 
       committee: "Media & Design Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Simranjit Kaur.jpeg", 
       bio: "Supporting media and design activities for society outreach.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
@@ -244,7 +244,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       name: "Ram Kunawar", 
       role: "Outreach & Publicity Lead", 
       committee: "Outreach & Publicity Committee", 
-      batch: "UG 2024", 
+      batch: "PG 2024", 
       photo: "/Team images/Ram.jpeg", 
       bio: "Leading outreach and publicity efforts for society events.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 

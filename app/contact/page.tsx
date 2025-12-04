@@ -17,7 +17,6 @@ import {
   Twitter,
   Youtube,
   Facebook,
-  Globe,
   Building2,
   Users,
   MessageSquare

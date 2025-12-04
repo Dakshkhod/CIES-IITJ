@@ -46,14 +46,18 @@ export default function AppLayout({ children }: AppLayoutProps) {
   useEffect(() => {
     // CMS Hook: Check user's saved theme preference from a CMS or localStorage
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    // Default to light mode if no saved preference exists
+    if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark');
       setIsDarkMode(true);
     } else {
       document.documentElement.classList.remove('dark');
       setIsDarkMode(false);
+      // Set light mode as default if no preference exists
+      if (!savedTheme) {
+        localStorage.setItem('theme', 'light');
+      }
     }
 
     const handleScroll = () => {

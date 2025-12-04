@@ -60,7 +60,7 @@ export default function AboutPage() {
 
 // --- Hero Section with Large Photo ---
 const HeroSection = () => (
-  <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] sm:min-h-[600px] overflow-hidden">
+  <section className="relative min-h-[100vh] sm:h-[80vh] sm:min-h-[600px] overflow-hidden">
     {/* Background Image */}
     <div className="absolute inset-0">
       {/* Campus background image in natural colours */}
@@ -106,8 +106,8 @@ const HeroSection = () => (
     <div className="sm:hidden absolute bottom-4 right-4 h-12 w-12 border-b-2 border-r-2 border-cyan-300/60 dark:border-cyan-400/50"></div>
 
     {/* Hero Content */}
-    <div className="relative z-10 flex h-full items-center justify-center px-6">
-      <div className="max-w-6xl text-center">
+    <div className="relative z-10 flex min-h-[100vh] sm:h-full items-center justify-center px-4 sm:px-6 py-12 sm:py-0">
+      <div className="max-w-6xl text-center w-full">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,14 +118,14 @@ const HeroSection = () => (
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mb-6 inline-block"
+            className="mb-3 sm:mb-6 inline-block"
           >
-            <span className="rounded-full border-2 border-white/40 bg-transparent px-6 py-2 text-sm font-semibold text-white drop-shadow-lg">
+            <span className="rounded-full border-2 border-white/40 bg-transparent px-4 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white drop-shadow-lg">
               IIT Jodhpur
             </span>
           </motion.div>
 
-          <h1 className="mb-4 sm:mb-6 text-4xl sm:text-5xl font-extrabold leading-tight text-white md:text-7xl lg:text-8xl">
+          <h1 className="mb-2 sm:mb-6 text-3xl sm:text-5xl font-extrabold leading-tight text-white md:text-7xl lg:text-8xl">
             <span style={{
               textShadow: '0 2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.3), 0 6px 12px rgba(0,0,0,0.25)',
             }}>About </span>
@@ -146,13 +146,13 @@ const HeroSection = () => (
             </span>
           </h1>
           
-          <div className="mx-auto mb-8 h-1.5 w-40 rounded-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent dark:via-cyan-400"></div>
+          <div className="mx-auto mb-4 sm:mb-8 h-1 sm:h-1.5 w-32 sm:w-40 rounded-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent dark:via-cyan-400"></div>
           
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-100 drop-shadow-md md:text-xl lg:text-2xl dark:text-gray-200"
+            className="mx-auto max-w-3xl text-sm sm:text-lg leading-relaxed text-gray-100 drop-shadow-md md:text-xl lg:text-2xl dark:text-gray-200 px-2"
           >
             Constructing a Better Future: <span className="font-semibold text-slate-200 dark:text-cyan-300">Integrity in Design</span>,{' '}
             <span className="font-semibold text-slate-200 dark:text-cyan-300">Sustainability in Action</span>,{' '}
@@ -164,19 +164,19 @@ const HeroSection = () => (
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 gap-3 sm:gap-6 text-white overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide"
+            className="mt-4 sm:mt-12 flex sm:grid sm:grid-cols-3 gap-2 sm:gap-6 text-white overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide"
           >
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">500+</div>
-              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Active Members</div>
+            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">500+</div>
+              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Active Members</div>
             </div>
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">50+</div>
-              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Events Annually</div>
+            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">50+</div>
+              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Events Annually</div>
             </div>
-            <div className="flex-shrink-0 w-[140px] sm:w-auto rounded-xl border border-white/30 bg-transparent p-3 sm:p-4 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">100+</div>
-              <div className="mt-1 text-xs sm:text-sm text-white drop-shadow-md md:text-base font-medium">Industry Partners</div>
+            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">100+</div>
+              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Industry Partners</div>
             </div>
           </motion.div>
         </motion.div>
@@ -185,7 +185,7 @@ const HeroSection = () => (
 
     {/* Scroll Indicator */}
     <motion.div
-      className="absolute bottom-12 left-1/2 -translate-x-1/2"
+      className="absolute bottom-4 sm:bottom-12 left-1/2 -translate-x-1/2 hidden sm:block"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 1.2, repeat: Infinity, repeatType: 'reverse' }}
@@ -351,7 +351,7 @@ const Block1Section = () => (
                 <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 rounded-full border-2 border-[#0b3d91] px-7 py-3.5 font-semibold text-slate-800 transition-all hover:bg-[#0b3d91] hover:text-white dark:border-cyan-400 dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-gray-900"
               >
                 Get in Touch

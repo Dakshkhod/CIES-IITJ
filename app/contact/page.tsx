@@ -390,17 +390,6 @@ export default function ContactPage() {
                       </a>
                     )}
                     
-                    {contactInfo?.social_links?.website && (
-                      <a
-                        href={contactInfo.social_links.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-600 transition-all duration-300"
-                      >
-                        <Globe className="h-5 w-5" />
-                        <span className="font-medium">Website</span>
-                      </a>
-                    )}
                   </div>
                 </div>
 
@@ -431,7 +420,7 @@ export default function ContactPage() {
                       href="https://maps.app.goo.gl/A1Y2Yn4UXAfJ8VqS9"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/90 hover:bg-emerald-600 text-white rounded-xl transition-colors"
                     >
                       <MapPin className="h-4 w-4" />
                       View on Google Maps

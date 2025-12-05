@@ -329,29 +329,25 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-2 sm:gap-3">
-                    {contactInfo?.social_links?.linkedin && (
-                      <a
-                        href={contactInfo.social_links.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all duration-300"
-                      >
-                        <Linkedin className="h-5 w-5" />
-                        <span className="font-medium">LinkedIn</span>
-                      </a>
-                    )}
+                    <a
+                      href={contactInfo?.social_links?.linkedin || 'https://www.linkedin.com/company/cies-iitj'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all duration-300"
+                    >
+                      <Linkedin className="h-5 w-5" />
+                      <span className="font-medium">LinkedIn</span>
+                    </a>
                     
-                    {contactInfo?.social_links?.instagram && (
-                      <a
-                        href={contactInfo.social_links.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-pink-600 hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300"
-                      >
-                        <Instagram className="h-5 w-5" />
-                        <span className="font-medium">Instagram</span>
-                      </a>
-                    )}
+                    <a
+                      href={contactInfo?.social_links?.instagram || 'https://www.instagram.com/cies_iitj/'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-pink-600 hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300"
+                    >
+                      <Instagram className="h-5 w-5" />
+                      <span className="font-medium">Instagram</span>
+                    </a>
                     
                     {contactInfo?.social_links?.twitter && (
                       <a

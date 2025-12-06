@@ -35,47 +35,50 @@ export async function PATCH(
 
     const client = getDbClient()
 
-    // Build update query dynamically
-    const updates: string[] = []
-    const values: (boolean | string | number)[] = []
-    let paramIndex = 1
-
-    if (typeof is_read === 'boolean') {
-      updates.push(`is_read = $${paramIndex++}`)
-      values.push(is_read)
-    }
-
-    if (typeof is_replied === 'boolean') {
-      updates.push(`is_replied = $${paramIndex++}`)
-      values.push(is_replied)
-      if (is_replied) {
-        updates.push(`replied_at = CURRENT_TIMESTAMP`)
-      }
-    }
-
-    if (typeof notes === 'string') {
-      updates.push(`notes = $${paramIndex++}`)
-      values.push(notes)
-    }
-
-    if (updates.length === 0) {
+    // Check if any valid fields to update
+    if (typeof is_read !== 'boolean' && typeof is_replied !== 'boolean' && typeof notes !== 'string') {
       return NextResponse.json(
         { success: false, message: 'No valid fields to update' },
         { status: 400 }
       )
     }
 
-    updates.push('updated_at = CURRENT_TIMESTAMP')
-    values.push(submissionId)
-
-    const query = `
+    // Build update query - update only provided fields
+    let result
+    
+    // First, get current record
+    const current = await client`
+      SELECT * FROM contact_submissions WHERE id = ${submissionId}
+    `
+    
+    if (current.length === 0) {
+      return NextResponse.json(
+        { success: false, message: 'Submission not found' },
+        { status: 404 }
+      )
+    }
+    
+    const currentRecord = current[0]
+    
+    // Update only provided fields
+    const finalIsRead = typeof is_read === 'boolean' ? is_read : currentRecord.is_read
+    const finalIsReplied = typeof is_replied === 'boolean' ? is_replied : currentRecord.is_replied
+    const finalNotes = typeof notes === 'string' ? notes : currentRecord.notes
+    const finalRepliedAt = (typeof is_replied === 'boolean' && is_replied) 
+      ? new Date() 
+      : (currentRecord.replied_at || null)
+    
+    result = await client`
       UPDATE contact_submissions 
-      SET ${updates.join(', ')}
-      WHERE id = $${paramIndex}
+      SET 
+        is_read = ${finalIsRead},
+        is_replied = ${finalIsReplied},
+        replied_at = ${finalRepliedAt},
+        notes = ${finalNotes},
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${submissionId}
       RETURNING *
     `
-
-    const result = await client(query, values)
 
     if (result.length === 0) {
       return NextResponse.json(

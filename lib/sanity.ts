@@ -111,8 +111,8 @@ export const upcomingEventsQuery = `*[_type == "event" && status == "upcoming"] 
   "coverImage": coverImage.asset->url
 }`
 
-// Activities (events with eventCategory = "activity")
-export const activitiesQuery = `*[_type == "event" && eventCategory == "activity"] | order(date desc) {
+// Activities (separate content type)
+export const activitiesQuery = `*[_type == "activity"] | order(date desc) {
   _id,
   title,
   slug,
@@ -122,7 +122,12 @@ export const activitiesQuery = `*[_type == "event" && eventCategory == "activity
   description,
   location,
   attendeesCount,
-  "coverImage": coverImage.asset->url
+  featured,
+  speakerName,
+  speakerInfo,
+  registrationLink,
+  "coverImage": coverImage.asset->url,
+  "images": images[].asset->url
 }`
 
 // Contact Info (singleton)

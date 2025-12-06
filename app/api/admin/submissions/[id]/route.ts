@@ -48,9 +48,9 @@ export async function PATCH(
     // First, get current record
     const current = await client`
       SELECT * FROM contact_submissions WHERE id = ${submissionId}
-    `
+    ` as Record<string, unknown>[]
     
-    if (current.length === 0) {
+    if (!current || current.length === 0) {
       return NextResponse.json(
         { success: false, message: 'Submission not found' },
         { status: 404 }
@@ -77,9 +77,9 @@ export async function PATCH(
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ${submissionId}
       RETURNING *
-    `
+    ` as Record<string, unknown>[]
 
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return NextResponse.json(
         { success: false, message: 'Submission not found' },
         { status: 404 }
@@ -121,9 +121,9 @@ export async function DELETE(
       DELETE FROM contact_submissions
       WHERE id = ${submissionId}
       RETURNING id
-    `
+    ` as Record<string, unknown>[]
 
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return NextResponse.json(
         { success: false, message: 'Submission not found' },
         { status: 404 }

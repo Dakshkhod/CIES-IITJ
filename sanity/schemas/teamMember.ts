@@ -22,6 +22,7 @@ export default defineType({
           { title: 'Secretary', value: 'Secretary' },
           { title: 'Joint Secretary', value: 'Joint Secretary' },
           { title: 'PG Representative', value: 'PG Representative' },
+          { title: 'Tech-Lead (UG)-Web Dev Executive', value: 'Tech-Lead (UG)-Web Dev Executive' },
           { title: 'Executive', value: 'Executive' },
           { title: 'Mentor', value: 'Mentor' },
           { title: 'Member', value: 'Member' },

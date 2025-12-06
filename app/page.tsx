@@ -9,7 +9,7 @@ import {
   ChevronRight,
   Loader2,
 } from 'lucide-react';
-import { getRecentActivities } from '@/lib/api';
+import { getActivities as getSanityActivities, urlFor } from '@/lib/sanity';
 
 // --- Main Page Component ---
 export default function HomePage() {
@@ -531,15 +531,19 @@ const RecentActivities = () => {
   }>>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch recent activities from API
+  // Fetch recent activities from Sanity
   useEffect(() => {
     async function fetchRecentActivities() {
       try {
         setLoading(true);
-        const response = await getRecentActivities(5);
+        const allActivities = await getSanityActivities();
         
-        const transformedActivities = response.data.map((activity, index) => ({
-          id: index + 1,
+        // Get 5 most recent activities
+        const recent = allActivities.slice(0, 5);
+        
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const transformedActivities = recent.map((activity: any, index: number) => ({
+          id: activity._id || `activity-${index}`,
           title: activity.title,
           date: new Date(activity.date).toLocaleDateString('en-US', { 
             month: 'long', 
@@ -547,13 +551,13 @@ const RecentActivities = () => {
             year: 'numeric' 
           }),
           description: activity.description || 'Details coming soon.',
-          image: activity.image_url || '/CIE Design.png',
-          link: `/activities#${activity.uuid}`,
+          image: activity.coverImage ? urlFor(activity.coverImage).url() : '/CIE Design.png',
+          link: `/activities#${activity._id || index}`,
         }));
         
         setRecentActivities(transformedActivities.length > 0 ? transformedActivities : FALLBACK_ACTIVITIES);
       } catch (err) {
-        console.error('Failed to fetch recent activities:', err);
+        console.error('Failed to fetch recent activities from Sanity:', err);
         setRecentActivities(FALLBACK_ACTIVITIES);
       } finally {
         setLoading(false);

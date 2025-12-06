@@ -116,7 +116,7 @@ export default function ContactPage() {
           officeHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
           mapEmbedUrl: undefined,
           socialLinks: {
-            linkedin: 'https://www.linkedin.com/company/cies-iitj',
+            linkedin: 'https://www.linkedin.com/company/107540236',
             instagram: 'https://www.instagram.com/cies_iitj',
             twitter: undefined,
             youtube: undefined,
@@ -371,7 +371,7 @@ export default function ContactPage() {
 
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     <a
-                      href={contactInfo?.socialLinks?.linkedin || 'https://www.linkedin.com/company/cies-iitj'}
+                      href={contactInfo?.socialLinks?.linkedin || 'https://www.linkedin.com/company/107540236'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all duration-300"

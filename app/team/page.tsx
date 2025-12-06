@@ -151,11 +151,11 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     { 
       id: "daksh", 
       name: "Daksh", 
-      role: "Executive",
+      role: "Tech-Lead (UG)-Web Dev Executive",
       committee: "Technical Committee", 
       batch: "UG 2024",
       photo: "/Other images/1759265474674~3.jpg", 
-      bio: "Executive member handling web development and technical initiatives.", 
+      bio: "Tech-Lead (UG) handling web development and technical initiatives.", 
       socials: { linkedin: "#", email: "#", instagram: "#" }, 
       featured: true 
     },

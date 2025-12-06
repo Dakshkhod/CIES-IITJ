@@ -96,7 +96,7 @@ const jsonLdData = {
     email: 'office@civil.iitj.ac.in',
     contactType: 'customer service',
   },
-  sameAs: ['https://www.instagram.com/cies_iitj', 'https://www.linkedin.com/company/cies-iitj'],
+  sameAs: ['https://www.instagram.com/cies_iitj', 'https://www.linkedin.com/company/107540236'],
   parentOrganization: {
     '@type': 'EducationalOrganization',
     name: 'Indian Institute of Technology Jodhpur',

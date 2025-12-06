@@ -44,7 +44,6 @@ export async function PATCH(
     }
 
     // Build update query - update only provided fields
-    let result
     
     // First, get current record
     const current = await client`
@@ -68,7 +67,7 @@ export async function PATCH(
       ? new Date() 
       : (currentRecord.replied_at || null)
     
-    result = await client`
+    const result = await client`
       UPDATE contact_submissions 
       SET 
         is_read = ${finalIsRead},

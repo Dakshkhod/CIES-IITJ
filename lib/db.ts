@@ -1,7 +1,18 @@
-import { neon } from '@neondatabase/serverless'
+import { neon, NeonQueryFunction } from '@neondatabase/serverless'
 
-// Create a singleton database connection
-export const sql = neon(process.env.DATABASE_URL!)
+// Lazy initialization - only connect when needed (not at build time)
+let sqlClient: NeonQueryFunction<false, false> | null = null
+
+export function getDbClient() {
+  if (!sqlClient) {
+    const databaseUrl = process.env.DATABASE_URL
+    if (!databaseUrl) {
+      throw new Error('DATABASE_URL environment variable is not set')
+    }
+    sqlClient = neon(databaseUrl)
+  }
+  return sqlClient
+}
 
 // Contact submission types
 export interface ContactSubmission {
@@ -26,6 +37,7 @@ export async function getContactSubmissions(
   page: number = 1,
   limit: number = 20
 ): Promise<{ submissions: ContactSubmission[]; total: number }> {
+  const sql = getDbClient()
   const offset = (page - 1) * limit
 
   const submissions = await sql`
@@ -45,6 +57,7 @@ export async function getContactSubmissions(
 }
 
 export async function markSubmissionAsRead(id: number): Promise<void> {
+  const sql = getDbClient()
   await sql`
     UPDATE contact_submissions
     SET is_read = TRUE, updated_at = CURRENT_TIMESTAMP
@@ -53,6 +66,7 @@ export async function markSubmissionAsRead(id: number): Promise<void> {
 }
 
 export async function markSubmissionAsReplied(id: number): Promise<void> {
+  const sql = getDbClient()
   await sql`
     UPDATE contact_submissions
     SET is_replied = TRUE, replied_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
@@ -61,10 +75,10 @@ export async function markSubmissionAsReplied(id: number): Promise<void> {
 }
 
 export async function addNoteToSubmission(id: number, notes: string): Promise<void> {
+  const sql = getDbClient()
   await sql`
     UPDATE contact_submissions
     SET notes = ${notes}, updated_at = CURRENT_TIMESTAMP
     WHERE id = ${id}
   `
 }
-

@@ -1,11 +1,18 @@
 import { neon } from '@neondatabase/serverless'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Initialize database connection
-const sql = neon(process.env.DATABASE_URL!)
+// Lazy initialization - only connect when needed (not at build time)
+function getDbClient() {
+  const databaseUrl = process.env.DATABASE_URL
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL environment variable is not set')
+  }
+  return neon(databaseUrl)
+}
 
 // Initialize database table (runs on first connection)
 async function initializeDatabase() {
+  const sql = getDbClient()
   await sql`
     CREATE TABLE IF NOT EXISTS contact_submissions (
       id SERIAL PRIMARY KEY,
@@ -59,6 +66,7 @@ export async function POST(request: NextRequest) {
     const user_agent = request.headers.get('user-agent') || 'unknown'
 
     // Insert into database
+    const sql = getDbClient()
     const result = await sql`
       INSERT INTO contact_submissions (name, email, phone, subject, message, ip_address, user_agent)
       VALUES (${name}, ${email}, ${phone || null}, ${subject || null}, ${message}, ${ip_address}, ${user_agent})
@@ -92,6 +100,7 @@ export async function GET(request: NextRequest) {
 
     await initializeDatabase()
 
+    const sql = getDbClient()
     const submissions = await sql`
       SELECT * FROM contact_submissions
       ORDER BY created_at DESC
@@ -120,4 +129,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

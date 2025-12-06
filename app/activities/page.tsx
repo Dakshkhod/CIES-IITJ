@@ -48,6 +48,7 @@ export default function ActivitiesPage() {
         const allActivities = await getSanityActivities();
         
         // Transform Sanity data to component format
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedItems: GalleryItem[] = allActivities.map((activity: any) => ({
           id: activity._id,
           title: activity.title,

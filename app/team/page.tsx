@@ -527,6 +527,7 @@ export default function TeamPage() {
         const allMembers = await getSanityTeamMembers();
         
         // Transform Sanity data to component format with local photo fallbacks
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedData: TeamMemberLocal[] = allMembers.map((member: any) => {
           const nameKey = (member.name || '').trim();
           const fallbackPhoto = TEAM_FALLBACK_PHOTOS[nameKey];

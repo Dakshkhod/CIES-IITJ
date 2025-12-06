@@ -112,6 +112,7 @@ export default function EventsPage() {
         const allEvents = await getSanityEvents();
         
         // Filter only events (not activities)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const eventsOnly = allEvents.filter((event: any) => event.eventCategory === 'event');
         
         // Map Sanity category to frontend category
@@ -124,6 +125,7 @@ export default function EventsPage() {
           'competition': 'celebration',
         };
         
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: EventItem[] = eventsOnly.map((event: any) => {
           const apiPhotos = event.images || [];
           const titleKey = (event.title || '').trim();

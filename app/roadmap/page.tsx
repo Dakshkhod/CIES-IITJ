@@ -114,6 +114,7 @@ export default function RoadmapPage() {
           'other': 'research',
         };
         
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: TimelineEvent[] = allActivities.map((activity: any) => ({
           id: activity._id,
           title: activity.title,

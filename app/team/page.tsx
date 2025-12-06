@@ -111,11 +111,11 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     { 
       id: "saurabh", 
       name: "Saurabh", 
-      role: "Events & Community Engagement Lead", 
+      role: "Executive", 
       committee: "Events & Community Engagement Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Saurabh.jpeg", 
-      bio: "Leading events and community outreach initiatives.", 
+      bio: "Executive member supporting events and community engagement initiatives.", 
       socials: { linkedin: "#", email: "mailto:saurabh@iitj.ac.in", instagram: "#" } 
     },
     { 
@@ -141,42 +141,42 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     { 
       id: "keshav", 
       name: "Keshav Saini", 
-      role: "Technical Lead", 
+      role: "Executive", 
       committee: "Technical Committee", 
       batch: "PG 2024",
       photo: "/Team images/Keshav.jpeg", 
-      bio: "Technical lead managing web development and digital initiatives.", 
+      bio: "Executive member managing web development and digital initiatives.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "daksh", 
       name: "Daksh", 
-      role: "Tech-Lead (UG)-Web Dev Executive",
+      role: "Executive",
       committee: "Technical Committee", 
       batch: "UG 2024",
       photo: "/Other images/1759265474674~3.jpg", 
-      bio: "Web dev and technical executive.", 
+      bio: "Executive member handling web development and technical initiatives.", 
       socials: { linkedin: "#", email: "#", instagram: "#" }, 
       featured: true 
     },
     { 
       id: "falak", 
       name: "Falak Khan", 
-      role: "Seminars & Academic Engagement", 
+      role: "Executive", 
       committee: "Seminars & Academic Engagement Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Falak.jpeg", 
-      bio: "Organizing seminars and academic engagement programs.", 
+      bio: "Executive member organizing seminars and academic engagement programs.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "faizah", 
       name: "Faizah Wani", 
-      role: "PG Lead", 
+      role: "Executive", 
       committee: "Seminars & Academic Engagement Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Faizah.jpeg", 
-      bio: "PG lead for academic seminars and research engagement.", 
+      bio: "Executive member coordinating academic seminars and research engagement.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
@@ -186,77 +186,87 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
       committee: "Seminars & Academic Engagement Committee", 
       batch: "UG 2024", 
       photo: "/Team images/Sri Raghava.jpeg", 
-      bio: "PG lead coordinating academic and research activities.", 
+      bio: "Executive member supporting academic and research activities.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "deepali", 
       name: "Deepali", 
-      role: "Media & Design Lead", 
+      role: "Executive", 
       committee: "Media & Design Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Deepali.jpeg", 
-      bio: "Leading design and media content creation for the society.", 
+      bio: "Executive member leading design and media content creation for the society.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "nitesh", 
       name: "Nitesh", 
-      role: "Media & Design Executive", 
+      role: "Executive", 
       committee: "Media & Design Committee", 
       batch: "UG 2024", 
       photo: "/Team images/Nitesh.jpeg", 
-      bio: "Supporting design and media initiatives for society events.", 
+      bio: "Executive member supporting design and media initiatives for society events.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "harsh", 
       name: "Harsh", 
-      role: "Media & Design", 
+      role: "Executive", 
       committee: "Media & Design Committee", 
       batch: "UG 2024", 
       photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3EH%3C/text%3E%3C/svg%3E", 
-      bio: "Design & media.", 
+      bio: "Executive member handling design and media activities.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "simran_sehgal", 
       name: "Simran Sehgal", 
-      role: "Media & Design Executive", 
+      role: "Executive", 
       committee: "Media & Design Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Simran Sehgal.jpeg", 
-      bio: "Creative executive handling visual content and media.", 
+      bio: "Executive member handling visual content and media.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "simranjit_kaur", 
       name: "Simranjit Kaur", 
-      role: "Media & Design Executive", 
+      role: "Executive", 
       committee: "Media & Design Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Simranjit Kaur.jpeg", 
-      bio: "Supporting media and design activities for society outreach.", 
+      bio: "Executive member supporting media and design activities for society outreach.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "ram", 
       name: "Ram Kunawar", 
-      role: "Outreach & Publicity Lead", 
+      role: "Executive", 
       committee: "Outreach & Publicity Committee", 
       batch: "PG 2024", 
       photo: "/Team images/Ram.jpeg", 
-      bio: "Leading outreach and publicity efforts for society events.", 
+      bio: "Executive member leading outreach and publicity efforts for society events.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     },
     { 
       id: "nishant", 
       name: "Nishant", 
-      role: "Outreach & Publicity Executive", 
+      role: "Executive", 
       committee: "Outreach & Publicity Committee", 
       batch: "UG 2024", 
       photo: "/Team images/Nishant.jpeg", 
-      bio: "Supporting outreach initiatives and event promotion.", 
+      bio: "Executive member supporting outreach initiatives and event promotion.", 
+      socials: { linkedin: "#", email: "#", instagram: "#" } 
+    },
+    { 
+      id: "manas", 
+      name: "Manas", 
+      role: "Mentor", 
+      committee: "Coordination Committee", 
+      batch: "Alumni", 
+      photo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3EM%3C/text%3E%3C/svg%3E", 
+      bio: "Mentor (Ex-Secretary) - Providing guidance and support to the society.", 
       socials: { linkedin: "#", email: "#", instagram: "#" } 
     }
 ];

@@ -4,7 +4,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { formatDateShort, generateICS } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
 import { Calendar, Clock, MapPin, Filter, Grid, List, Users, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
-import { getActivities, fetchAllPages, Activity } from '@/lib/api';
+import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 type GalleryItem = {
   id: string;
@@ -38,34 +38,31 @@ export default function ActivitiesPage() {
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Fetch activities from API
+  // Fetch activities from Sanity
   useEffect(() => {
     async function fetchActivities() {
       try {
         setLoading(true);
         
-        // Fetch all activities
-        const allActivities = await fetchAllPages<Activity>(
-          (params) => getActivities({ ...params }),
-          100
-        );
+        // Fetch all activities (events with eventCategory = "activity")
+        const allActivities = await getSanityActivities();
         
-        // Transform API data to component format
-        const transformedItems: GalleryItem[] = allActivities.map((activity) => ({
-          id: activity.uuid,
+        // Transform Sanity data to component format
+        const transformedItems: GalleryItem[] = allActivities.map((activity: any) => ({
+          id: activity._id,
           title: activity.title,
           date: activity.date,
           category: activity.category as GalleryItem['category'],
-          imageUrl: activity.image_url || '/CIE Design.png',
-          status: activity.status,
+          imageUrl: activity.coverImage || '/CIE Design.png',
+          status: (activity.status === 'completed' ? 'completed' : activity.status === 'upcoming' ? 'upcoming' : 'ongoing') as 'completed' | 'upcoming' | 'ongoing',
         }));
         
         if (transformedItems.length > 0) {
           setItems(transformedItems);
         }
-        // If API fails or returns empty, keep using FALLBACK_ACTIVITIES
+        // If Sanity fails or returns empty, keep using FALLBACK_ACTIVITIES
       } catch (err) {
-        console.error('Failed to fetch activities, using fallback data:', err);
+        console.error('Failed to fetch activities from Sanity, using fallback data:', err);
         // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);

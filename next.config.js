@@ -14,6 +14,7 @@ const nextConfig = {
       'placehold.co', // For development placeholders
       'cies.iitj.ac.in', // Production domain
       'iitj.ac.in', // IIT Jodhpur domain
+      'cdn.sanity.io', // Sanity CMS images
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',

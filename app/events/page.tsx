@@ -3,7 +3,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import { Calendar, Clock, MapPin, Users, Camera, ChevronRight, Filter, Grid, List, Loader2 } from 'lucide-react';
-import { getEvents, fetchAllPages, Event as ApiEvent } from '@/lib/api';
+import { getEvents as getSanityEvents } from '@/lib/sanity';
 
 type EventItem = {
   id: string;
@@ -103,18 +103,18 @@ export default function EventsPage() {
     'Diwali Celebration': '/Other images/DSC03840.JPG',
   };
 
-  // Fetch events from API
+  // Fetch events from Sanity
   useEffect(() => {
     async function fetchEventsData() {
       try {
         setLoading(true);
         
-        const allEvents = await fetchAllPages<ApiEvent>(
-          (params) => getEvents({ ...params, type: 'event' }),
-          100
-        );
+        const allEvents = await getSanityEvents();
         
-        // Map API category to frontend category
+        // Filter only events (not activities)
+        const eventsOnly = allEvents.filter((event: any) => event.eventCategory === 'event');
+        
+        // Map Sanity category to frontend category
         const categoryMap: Record<string, EventItem['category']> = {
           'other': 'celebration',
           'edificio': 'cultural',
@@ -124,27 +124,29 @@ export default function EventsPage() {
           'competition': 'celebration',
         };
         
-        const transformedEvents: EventItem[] = allEvents.map((event) => {
-          const apiPhotos = (event.images?.map(img => img.image?.url).filter(Boolean) as string[]) || [];
+        const transformedEvents: EventItem[] = eventsOnly.map((event: any) => {
+          const apiPhotos = event.images || [];
           const titleKey = (event.title || '').trim();
           const fallbackImage = EVENT_FALLBACK_IMAGES[titleKey];
           
           const photos = apiPhotos.length > 0
             ? apiPhotos
-            : fallbackImage
-              ? [fallbackImage]
-              : ['/logo.jpg'];
+            : event.coverImage
+              ? [event.coverImage]
+              : fallbackImage
+                ? [fallbackImage]
+                : ['/logo.jpg'];
 
           return {
-            id: event.uuid,
+            id: event._id,
             title: event.title,
             date: event.date,
             category: categoryMap[event.category] || 'celebration',
             description: event.description || '',
             location: event.location || 'IIT Jodhpur Campus',
-            attendees: event.attendees_count ? `${event.attendees_count}+ Attendees` : undefined,
+            attendees: event.attendeesCount ? `${event.attendeesCount}+ Attendees` : undefined,
             photos,
-            status: event.status as 'completed' | 'upcoming',
+            status: (event.status === 'completed' ? 'completed' : 'upcoming') as 'completed' | 'upcoming',
           };
         });
         
@@ -152,7 +154,7 @@ export default function EventsPage() {
           setEvents(transformedEvents);
         }
       } catch (err) {
-        console.error('Failed to fetch events, using fallback data:', err);
+        console.error('Failed to fetch events from Sanity, using fallback data:', err);
         // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);

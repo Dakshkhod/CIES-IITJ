@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Linkedin, Mail, Instagram, Loader2, X } from 'lucide-react';
-import { getTeamMembers, fetchAllPages, TeamMember } from '@/lib/api';
+import { getTeamMembers as getSanityTeamMembers } from '@/lib/sanity';
 import AppLayout from '@/components/layout/AppLayout';
 
 
@@ -517,20 +517,17 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch team data from API
+  // Fetch team data from Sanity
   useEffect(() => {
     async function fetchTeamData() {
       try {
         setLoading(true);
         setError(null);
         
-        const allMembers = await fetchAllPages<TeamMember>(
-          (params) => getTeamMembers({ ...params }),
-          100
-        );
+        const allMembers = await getSanityTeamMembers();
         
-        // Transform API data to component format with local photo fallbacks
-        const transformedData: TeamMemberLocal[] = allMembers.map((member) => {
+        // Transform Sanity data to component format with local photo fallbacks
+        const transformedData: TeamMemberLocal[] = allMembers.map((member: any) => {
           const nameKey = (member.name || '').trim();
           const fallbackPhoto = TEAM_FALLBACK_PHOTOS[nameKey];
           const photo =
@@ -539,10 +536,10 @@ export default function TeamPage() {
             "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E";
 
           return {
-            id: member.uuid,
+            id: member._id,
             name: member.name,
-            role: member.role_label || 'Member',
-            committee: member.committee_label || 'Other',
+            role: member.role || 'Member',
+            committee: member.committee || 'Other',
             batch: member.batch || '',
             photo,
             bio: member.bio || '',
@@ -551,15 +548,20 @@ export default function TeamPage() {
               email: member.socials?.email || '#',
               instagram: member.socials?.instagram || '#',
             },
-            featured: member.featured,
-            isHOD: member.is_hod,
-            is_faculty: member.is_faculty,
+            featured: member.featured || false,
+            isHOD: member.isHOD || false,
+            is_faculty: member.isFaculty || false,
           };
         });
         
-        setTeamData(transformedData);
+        if (transformedData.length > 0) {
+          setTeamData(transformedData);
+        } else {
+          // Fallback to legacy data if Sanity is empty
+          setTeamData(LEGACY_TEAM_DATA);
+        }
       } catch (err) {
-        console.error('Failed to fetch team data:', err);
+        console.error('Failed to fetch team data from Sanity:', err);
         setError('Failed to load team data.');
         // Fallback to legacy data
         setTeamData(LEGACY_TEAM_DATA);

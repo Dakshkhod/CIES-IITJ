@@ -21,7 +21,44 @@ import {
   Users,
   MessageSquare
 } from 'lucide-react';
-import { getContactInfo, submitContactForm, ContactInfo } from '@/lib/api';
+import { getContactInfo as getSanityContactInfo } from '@/lib/sanity';
+
+// Contact Info type (from Sanity)
+interface ContactInfo {
+  departmentName: string;
+  institutionName: string;
+  address: string;
+  email: string;
+  phone?: string;
+  officeHours?: string;
+  mapEmbedUrl?: string;
+  socialLinks?: {
+    linkedin?: string;
+    instagram?: string;
+    twitter?: string;
+    youtube?: string;
+    facebook?: string;
+    website?: string;
+  };
+}
+
+// Submit contact form to Vercel API route
+async function submitContactForm(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+}): Promise<{ success: boolean; message: string }> {
+  const response = await fetch('/api/contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
 
 // Form field type
 interface FormData {
@@ -57,29 +94,33 @@ export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
 
-  // Fetch contact info
+  // Fetch contact info from Sanity
   useEffect(() => {
     async function fetchContactInfo() {
       try {
-        const response = await getContactInfo();
-        setContactInfo(response.data);
+        const data = await getSanityContactInfo();
+        if (data) {
+          setContactInfo(data);
+        } else {
+          throw new Error('No contact info found');
+        }
       } catch (err) {
         console.error('Failed to fetch contact info:', err);
         // Use fallback data
         setContactInfo({
-          department_name: 'Civil & Infrastructure Engineering Society (CIES)',
-          institution_name: 'Indian Institute of Technology Jodhpur',
+          departmentName: 'Civil & Infrastructure Engineering Society (CIES)',
+          institutionName: 'Indian Institute of Technology Jodhpur',
           address: 'NH 62, Nagaur Road, Karwar, Jodhpur, Rajasthan 342030, India',
           email: 'cies@iitj.ac.in',
           phone: '+91-291-280-1234',
-          office_hours: 'Mon-Fri: 9:00 AM - 5:00 PM',
-          map_embed_url: null,
-          social_links: {
+          officeHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
+          mapEmbedUrl: undefined,
+          socialLinks: {
             linkedin: 'https://www.linkedin.com/company/cies-iitj',
             instagram: 'https://www.instagram.com/cies_iitj',
-            twitter: null,
-            youtube: null,
-            facebook: null,
+            twitter: undefined,
+            youtube: undefined,
+            facebook: undefined,
             website: 'https://iitj.ac.in',
           },
         });
@@ -248,10 +289,10 @@ export default function ContactPage() {
                     </div>
                     <div className="min-w-0">
                       <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                        {contactInfo?.department_name}
+                        {contactInfo?.departmentName}
                       </h2>
                       <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
-                        {contactInfo?.institution_name}
+                        {contactInfo?.institutionName}
                       </p>
                     </div>
                   </div>
@@ -303,14 +344,14 @@ export default function ContactPage() {
                     )}
 
                     {/* Office Hours */}
-                    {contactInfo?.office_hours && (
+                    {contactInfo?.officeHours && (
                       <div className="flex items-start gap-3 sm:gap-4 group">
                         <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex-shrink-0">
                           <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div className="min-w-0">
                           <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Office Hours</p>
-                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo.office_hours}</p>
+                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo.officeHours}</p>
                         </div>
                       </div>
                     )}
@@ -330,7 +371,7 @@ export default function ContactPage() {
 
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     <a
-                      href={contactInfo?.social_links?.linkedin || 'https://www.linkedin.com/company/cies-iitj'}
+                      href={contactInfo?.socialLinks?.linkedin || 'https://www.linkedin.com/company/cies-iitj'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all duration-300"
@@ -340,7 +381,7 @@ export default function ContactPage() {
                     </a>
                     
                     <a
-                      href={contactInfo?.social_links?.instagram || 'https://www.instagram.com/cies_iitj/'}
+                      href={contactInfo?.socialLinks?.instagram || 'https://www.instagram.com/cies_iitj/'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-pink-600 hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300"
@@ -349,9 +390,9 @@ export default function ContactPage() {
                       <span className="font-medium">Instagram</span>
                     </a>
                     
-                    {contactInfo?.social_links?.twitter && (
+                    {contactInfo?.socialLinks?.twitter && (
                       <a
-                        href={contactInfo.social_links.twitter}
+                        href={contactInfo.socialLinks.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white transition-all duration-300"
@@ -361,9 +402,9 @@ export default function ContactPage() {
                       </a>
                     )}
                     
-                    {contactInfo?.social_links?.youtube && (
+                    {contactInfo?.socialLinks?.youtube && (
                       <a
-                        href={contactInfo.social_links.youtube}
+                        href={contactInfo.socialLinks.youtube}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white transition-all duration-300"
@@ -373,9 +414,9 @@ export default function ContactPage() {
                       </a>
                     )}
                     
-                    {contactInfo?.social_links?.facebook && (
+                    {contactInfo?.socialLinks?.facebook && (
                       <a
-                        href={contactInfo.social_links.facebook}
+                        href={contactInfo.socialLinks.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300"
@@ -389,10 +430,10 @@ export default function ContactPage() {
                 </div>
 
                 {/* Map Embed */}
-                {contactInfo?.map_embed_url ? (
+                {contactInfo?.mapEmbedUrl ? (
                   <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-slate-700/50">
                     <iframe
-                      src={contactInfo.map_embed_url}
+                      src={contactInfo.mapEmbedUrl}
                       width="100%"
                       height="250"
                       style={{ border: 0 }}

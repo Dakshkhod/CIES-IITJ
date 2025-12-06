@@ -21,7 +21,7 @@ import {
   ChevronRight,
   Loader2
 } from 'lucide-react';
-import { getActivities, fetchAllPages, Activity as ApiActivity } from '@/lib/api';
+import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 // Types
 type EventCategory = 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'research';
@@ -96,18 +96,15 @@ export default function RoadmapPage() {
     return sortedEvents.filter(e => e.category === activeFilter);
   }, [sortedEvents, activeFilter]);
 
-  // Fetch roadmap data from API
+  // Fetch roadmap data from Sanity
   useEffect(() => {
     async function fetchRoadmapData() {
       try {
         setLoading(true);
         
-        const allActivities = await fetchAllPages<ApiActivity>(
-          (params) => getActivities({ ...params }),
-          100
-        );
+        const allActivities = await getSanityActivities();
         
-        // Map API category to roadmap category
+        // Map Sanity category to roadmap category
         const categoryMap: Record<string, EventCategory> = {
           'workshop': 'workshop',
           'seminar': 'seminar',
@@ -117,22 +114,22 @@ export default function RoadmapPage() {
           'other': 'research',
         };
         
-        const transformedEvents: TimelineEvent[] = allActivities.map((activity) => ({
-          id: activity.uuid,
+        const transformedEvents: TimelineEvent[] = allActivities.map((activity: any) => ({
+          id: activity._id,
           title: activity.title,
           category: categoryMap[activity.category] || 'research',
           date: activity.date,
           description: activity.description || 'Details coming soon.',
           location: activity.location || 'IIT Jodhpur Campus',
-          attendees: activity.attendees_count ? `${activity.attendees_count}+ Participants` : undefined,
-          images: activity.image_url ? [activity.image_url] : ['/CIE Design.png'],
+          attendees: activity.attendeesCount ? `${activity.attendeesCount}+ Participants` : undefined,
+          images: activity.coverImage ? [activity.coverImage] : ['/CIE Design.png'],
         }));
         
         if (transformedEvents.length > 0) {
           setEvents(transformedEvents);
         }
       } catch (err) {
-        console.error('Failed to fetch roadmap data, using fallback:', err);
+        console.error('Failed to fetch roadmap data from Sanity, using fallback:', err);
         // Keep using fallback data - no error shown to user
       } finally {
         setLoading(false);

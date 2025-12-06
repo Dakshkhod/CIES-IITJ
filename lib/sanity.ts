@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
+import { createImageUrlBuilder } from '@sanity/image-url'
 
 export const sanityClient = createClient({
   projectId: 'py29aahl',
@@ -8,8 +8,11 @@ export const sanityClient = createClient({
   useCdn: true, // Enable CDN for faster reads in production
 })
 
-// Image URL builder
-const builder = imageUrlBuilder(sanityClient)
+// Image URL builder (using named export to avoid deprecation warning)
+const builder = createImageUrlBuilder({
+  projectId: 'py29aahl',
+  dataset: 'production',
+})
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function urlFor(source: any) {

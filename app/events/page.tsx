@@ -164,6 +164,7 @@ export default function EventsPage() {
     }
     
     fetchEventsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Show loading state

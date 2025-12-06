@@ -1,8 +1,15 @@
 import { Inter } from 'next/font/google';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
+
+// Viewport configuration (separate from metadata in Next.js 14+)
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0b3d91',
+};
 
 // SEO and Meta Tags for Next.js 13+ App Router
 export const metadata: Metadata = {
@@ -12,7 +19,6 @@ export const metadata: Metadata = {
   keywords:
     'civil engineering, IIT Jodhpur, student society, infrastructure, construction, engineering education, workshops, competitions',
   authors: [{ name: 'Civil Engineering Society, IIT Jodhpur' }],
-  viewport: 'width=device-width, initial-scale=1.0',
 
   // Open Graph Meta Tags
   openGraph: {
@@ -42,7 +48,6 @@ export const metadata: Metadata = {
   },
 
   // PWA and Theme
-  themeColor: '#0b3d91',
   applicationName: 'CIES IIT Jodhpur',
   appleWebApp: {
     capable: true,

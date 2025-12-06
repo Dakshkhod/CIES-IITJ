@@ -39,31 +39,52 @@ interface TimelineEvent {
 }
 
 // Fallback events data (defined outside component)
+// Updated with Calendar 2025-26 events
 const FALLBACK_EVENTS: TimelineEvent[] = [
   {
     id: '1',
-    title: 'Research Presentation - Saran Kumar Aatrey',
+    title: 'Research Presentation - PhD Scholar',
     category: 'research',
-    date: '2025-05-09',
-    description: 'Research presentation by P21CI002 on advanced civil engineering methodologies.',
+    date: '2025-05-15',
+    description: 'Monthly research presentation by PhD scholars showcasing their research progress.',
     location: 'IIT Jodhpur Campus',
     attendees: '50+ Faculty & Students',
-    speaker: 'Saran Kumar Aatrey (P21CI002)',
     images: ['/CIE Design.png']
   },
   {
     id: '2',
-    title: 'Seminar by Prof. Ravindra Gettu',
+    title: 'Guest Lecture by Dr. Mohamed Shader Kahanun',
     category: 'seminar',
-    date: '2025-06-10',
-    description: 'Expert talk on sustainable concrete technology.',
-    location: 'IIT Jodhpur Auditorium',
+    date: '2025-10-20',
+    description: 'Guest lecture by Dr. Mohamed Shader Kahanun on advanced topics in civil engineering.',
+    location: 'IIT Jodhpur Campus',
     attendees: '100+ Attendees',
-    speaker: 'Prof. Ravindra Gettu (IIT Madras)',
+    speaker: 'Dr. Mohamed Shader Kahanun',
     images: ['/CIE Design.png']
   },
   {
     id: '3',
+    title: 'Guest Lecture by Dr. Alkhair',
+    category: 'seminar',
+    date: '2025-10-25',
+    description: 'In-person guest lecture by Dr. Alkhair on insights of civil engineering.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '100+ Attendees',
+    speaker: 'Dr. Alkhair',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '4',
+    title: 'Insights of Civil Engineering - First Issue Launch',
+    category: 'research',
+    date: '2025-11-28',
+    description: 'Launch event for the first issue of "Insights of Civil Engineering" magazine (Issue 1800-1801).',
+    location: 'IIT Jodhpur Campus',
+    attendees: '80+ Attendees',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '5',
     title: 'EDIFICIO - Hackathon & Ideathon',
     category: 'edificio',
     date: '2025-12-01',

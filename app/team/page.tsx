@@ -555,8 +555,19 @@ export default function TeamPage() {
           };
         });
         
+        // Always include Faculty Leadership from legacy data (HOD + 3 Advisors)
+        const facultyLeadershipFromLegacy = LEGACY_TEAM_DATA.filter(m => m.committee === 'Faculty Leadership');
+        
+        // Check if Sanity has Faculty Leadership members
+        const sanityHasFacultyLeadership = transformedData.some(m => m.committee === 'Faculty Leadership');
+        
         if (transformedData.length > 0) {
-          setTeamData(transformedData);
+          // If Sanity doesn't have Faculty Leadership, add them from legacy
+          if (!sanityHasFacultyLeadership) {
+            setTeamData([...facultyLeadershipFromLegacy, ...transformedData]);
+          } else {
+            setTeamData(transformedData);
+          }
         } else {
           // Fallback to legacy data if Sanity is empty
           setTeamData(LEGACY_TEAM_DATA);

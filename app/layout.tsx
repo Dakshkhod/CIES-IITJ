@@ -114,11 +114,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `
               (function() {
                 const savedTheme = localStorage.getItem('theme');
-                // Default to light mode if no saved preference exists
+                // Always default to light mode on first visit (ignore system preference)
                 if (savedTheme === 'dark') {
                   document.documentElement.classList.add('dark');
                 } else {
                   document.documentElement.classList.remove('dark');
+                  // Set light mode as default if no saved preference exists
                   if (!savedTheme) {
                     localStorage.setItem('theme', 'light');
                   }

@@ -44,17 +44,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // CMS Hook: Check user's saved theme preference from a CMS or localStorage
+    // Check user's saved theme preference from localStorage
+    // Always default to light mode on first visit (ignore system preference)
     const savedTheme = localStorage.getItem('theme');
 
-    // Default to light mode if no saved preference exists
     if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark');
       setIsDarkMode(true);
     } else {
       document.documentElement.classList.remove('dark');
       setIsDarkMode(false);
-      // Set light mode as default if no preference exists
+      // Set light mode as default if no saved preference exists
       if (!savedTheme) {
         localStorage.setItem('theme', 'light');
       }
@@ -312,7 +312,7 @@ const Footer = () => (
           </svg>
         </a>
         <a
-          href="https://www.linkedin.com/company/107540236/admin/notifications/all/"
+          href="https://www.linkedin.com/company/107540236"
           className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-600 dark:hover:text-blue-400"
           aria-label="LinkedIn"
           target="_blank"

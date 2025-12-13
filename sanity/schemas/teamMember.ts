@@ -17,8 +17,8 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'HOD', value: 'HOD' },
-          { title: 'Faculty Coordinator', value: 'Faculty Coordinator' },
+          { title: 'Head of Department', value: 'Head of Department' },
+          { title: 'Faculty Advisor', value: 'Faculty Advisor' },
           { title: 'Secretary', value: 'Secretary' },
           { title: 'Joint Secretary', value: 'Joint Secretary' },
           { title: 'PG Representative', value: 'PG Representative' },

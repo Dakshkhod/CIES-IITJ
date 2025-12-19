@@ -372,7 +372,7 @@ const MemberCard = ({ member, setSelectedImage }: MemberCardProps & { setSelecte
         <img 
           src={member.photo} 
           alt={member.name} 
-          className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-full object-cover object-[center_30%] ring-4 ring-offset-2 sm:ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700 cursor-pointer hover:scale-105 transition-transform duration-200" 
+          className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-full object-cover object-[center_20%] ring-4 ring-offset-2 sm:ring-offset-4 ring-offset-white dark:ring-offset-gray-800 ring-gray-200 dark:ring-gray-700 cursor-pointer hover:scale-105 transition-transform duration-200" 
           loading="lazy"
           onClick={() => setSelectedImage(member.photo)}
         />

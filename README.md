@@ -4,7 +4,7 @@ Official website for the **Civil & Infrastructure Engineering Society** at IIT J
 
 ## 🌐 Live Demo
 
-- **Website**: [cies-iitj.vercel.app](https://cies-iitj.vercel.app)
+- **Website**: [cies.iitj.ac.in](https://cies.iitj.ac.in)
 
 
 ## 🏗️ Tech Stack

@@ -323,7 +323,7 @@ async function main() {
   console.log('\n╔═══════════════════════════════════════╗')
   console.log('║   ✅ Migration Complete!               ║')
   console.log('╚═══════════════════════════════════════╝')
-  console.log('\n📌 Check your data at: https://cies-iitj.vercel.app/studio')
+  console.log('\n📌 Check your data at: https://cies.iitj.ac.in/studio')
 }
 
 main().catch(console.error)

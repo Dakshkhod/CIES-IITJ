@@ -6,11 +6,9 @@ import { motion } from 'framer-motion';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
 import AppLayout from '@/components/layout/AppLayout';
 import {
-  Building2,
   Users,
   Target,
   Download,
-  Lightbulb,
   BookOpen,
   Rocket,
   Calendar,

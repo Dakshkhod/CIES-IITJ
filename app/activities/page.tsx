@@ -346,9 +346,7 @@ export default function ActivitiesPage() {
 
                   {/* Featured Recent Events Grid */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {recentEvents.map((event, idx) => {
-                      const allPhotos = [event.imageUrl, ...(event.images || [])];
-                      return (
+                    {recentEvents.map((event, idx) => (
                         <article
                           key={event.id}
                           className="group relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 hover:border-blue-400 dark:hover:border-blue-500/50 shadow-sm"
@@ -374,19 +372,11 @@ export default function ActivitiesPage() {
                                 {event.category.replace('-', ' ').toUpperCase()}
                               </span>
                             </div>
-                            <div className="absolute top-4 right-4 flex items-center gap-2">
-                              <span className="bg-green-500/90 text-white px-2 py-0.5 rounded-full text-xs font-semibold">NEW</span>
-                              {allPhotos.length > 1 && (
-                                <span className="bg-black/50 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-white">
-                                  +{allPhotos.length - 1} more
-                                </span>
-                              )}
-                            </div>
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
+                            <div className="absolute bottom-0 left-0 right-0 pt-8 pb-4 px-4 bg-gradient-to-t from-black/75 to-transparent">
+                              <h3 className="text-lg font-bold text-white/90 mb-1 line-clamp-2">
                                 {event.title}
                               </h3>
-                              <div className="flex items-center gap-2 text-sm text-white/90">
+                              <div className="flex items-center gap-2 text-sm text-white/80">
                                 <Calendar className="h-4 w-4" />
                                 <time dateTime={event.date}>{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</time>
                               </div>
@@ -411,8 +401,7 @@ export default function ActivitiesPage() {
                             </button>
                           </div>
                         </article>
-                      );
-                    })}
+                    ))}
                   </div>
 
                   {/* Divider */}
@@ -439,10 +428,8 @@ export default function ActivitiesPage() {
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredItems.map((card) => {
-                    const allPhotos = [card.imageUrl, ...(card.images || [])];
-                    return (
-                      <article
+                  {filteredItems.map((card) => (
+                    <article
                         key={card.id}
                         className="group relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 hover:border-blue-400 dark:hover:border-blue-500/50 shadow-sm"
                       >
@@ -466,20 +453,15 @@ export default function ActivitiesPage() {
                               {card.category.replace('-', ' ').toUpperCase()}
                             </span>
                           </div>
-                          <div className="absolute bottom-4 left-4 right-4">
-                            <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
+                          <div className="absolute bottom-0 left-0 right-0 pt-8 pb-4 px-4 bg-gradient-to-t from-black/75 to-transparent">
+                            <h3 className="text-lg font-bold text-white/90 mb-1 line-clamp-2">
                               {card.title}
                             </h3>
-                            <div className="flex items-center gap-2 text-sm text-white/90">
+                            <div className="flex items-center gap-2 text-sm text-white/80">
                               <Calendar className="h-4 w-4" />
                               <time dateTime={card.date}>{new Date(card.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</time>
                             </div>
                           </div>
-                          {allPhotos.length > 1 && (
-                            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-white">
-                              +{allPhotos.length - 1} more
-                            </div>
-                          )}
                         </div>
 
                         <div className="p-6">
@@ -504,8 +486,7 @@ export default function ActivitiesPage() {
                           </button>
                         </div>
                       </article>
-                    );
-                  })}
+                  ))}
                 </div>
               ) : (
                 <div className="space-y-8">

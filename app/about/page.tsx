@@ -15,6 +15,8 @@ import {
   Lightbulb,
   BookOpen,
   Rocket,
+  MapPin,
+  HelpCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -565,6 +567,8 @@ const EdificioPhotoEssay = () => {
     { id: 2, alt: 'Technical Workshop', gradient: 'from-blue-600 to-cyan-600', icon: <BookOpen className="h-20 w-20" />, src: '/images/edificio/technical-workshop.jpg' },
     { id: 3, alt: 'Guest Lecture', gradient: 'from-cyan-600 to-teal-600', icon: <Users className="h-20 w-20" />, src: '/images/edificio/guest-lecture.jpg' },
     { id: 4, alt: 'Panel Discussion', gradient: 'from-teal-600 to-green-600', icon: <Target className="h-20 w-20" />, src: '/images/edificio/panel-discussion.jpg' },
+    { id: 5, alt: 'Site Visit', gradient: 'from-green-600 to-emerald-600', icon: <MapPin className="h-20 w-20" />, src: '/images/edificio/IMG_9348.JPG' },
+    { id: 6, alt: 'Quiz Competition', gradient: 'from-emerald-600 to-teal-600', icon: <HelpCircle className="h-20 w-20" />, src: '/images/edificio/GOPR4016.JPG' },
   ];
 
   return (

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Filter, Grid, List, Loader2, Camera, ChevronRight, Sparkles } from 'lucide-react';
+import { Calendar, Clock, MapPin, Filter, Grid, List, Loader2, Camera, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 type GalleryItem = {
@@ -47,6 +47,7 @@ export default function ActivitiesPage() {
   const [items, setItems] = useState<GalleryItem[]>(FALLBACK_ACTIVITIES);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
   // Fetch activities from Sanity
   useEffect(() => {
@@ -104,11 +105,20 @@ export default function ActivitiesPage() {
   }, [activeCategory, items]);
 
   const selected = useMemo(() => items.find(i => i.id === selectedId) || null, [items, selectedId]);
-  const close = () => setSelectedId(null);
+  const close = () => {
+    setSelectedId(null);
+    setSelectedPhotoIndex(null);
+  };
+
+  // All photos for selected activity (cover + gallery)
+  const selectedAllPhotos = useMemo(() => {
+    if (!selected) return [];
+    return [selected.imageUrl, ...(selected.images || [])];
+  }, [selected]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (selected) {
+    if (selected || selectedPhotoIndex !== null) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -117,7 +127,7 @@ export default function ActivitiesPage() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [selected]);
+  }, [selected, selectedPhotoIndex]);
 
   // Group items by month for timeline view
   const groupedByMonth = useMemo(() => {
@@ -560,40 +570,8 @@ export default function ActivitiesPage() {
                   </div>
 
                   <div className="p-6 max-h-[70vh] overflow-y-auto">
-                    {/* Photo grid - events style */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                      <div className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
-                        <img
-                          src={selected.imageUrl}
-                          alt={selected.title}
-                          className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                          style={{ objectPosition: 'center center', minHeight: '192px' }}
-                          onError={(e) => {
-                            e.currentTarget.src = '/CIE Design.png';
-                            e.currentTarget.onerror = null;
-                          }}
-                          loading="lazy"
-                        />
-                      </div>
-                      {selected.images?.map((url, idx) => (
-                        <div key={idx} className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
-                          <img
-                            src={url}
-                            alt={`${selected.title} – ${idx + 2}`}
-                            className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                            style={{ objectPosition: 'center center', minHeight: '192px' }}
-                            onError={(e) => {
-                              e.currentTarget.src = '/CIE Design.png';
-                              e.currentTarget.onerror = null;
-                            }}
-                            loading="lazy"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Info sections - events style */}
-                    <div className="space-y-4">
+                    {/* Info sections first - events style */}
+                    <div className="space-y-4 mb-6">
                       <div className="flex items-center gap-4 p-4 rounded-xl bg-blue-50 dark:bg-slate-800/50 border border-blue-200 dark:border-slate-700 shadow-sm">
                         <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                         <div>
@@ -618,7 +596,118 @@ export default function ActivitiesPage() {
                         </p>
                       </div>
                     </div>
+
+                    {/* Photos section at bottom - click to open zoom */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div
+                        className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer bg-slate-100 dark:bg-slate-800"
+                        onClick={() => setSelectedPhotoIndex(0)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === 'Enter' && setSelectedPhotoIndex(0)}
+                        aria-label="View photo 1"
+                      >
+                        <img
+                          src={selected.imageUrl}
+                          alt={selected.title}
+                          className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                          style={{ objectPosition: 'center center', minHeight: '192px' }}
+                          onError={(e) => {
+                            e.currentTarget.src = '/CIE Design.png';
+                            e.currentTarget.onerror = null;
+                          }}
+                          loading="lazy"
+                        />
+                      </div>
+                      {selected.images?.map((url, idx) => (
+                        <div
+                          key={idx}
+                          className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer bg-slate-100 dark:bg-slate-800"
+                          onClick={() => setSelectedPhotoIndex(idx + 1)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => e.key === 'Enter' && setSelectedPhotoIndex(idx + 1)}
+                          aria-label={`View photo ${idx + 2}`}
+                        >
+                          <img
+                            src={url}
+                            alt={`${selected.title} – ${idx + 2}`}
+                            className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                            style={{ objectPosition: 'center center', minHeight: '192px' }}
+                            onError={(e) => {
+                              e.currentTarget.src = '/CIE Design.png';
+                              e.currentTarget.onerror = null;
+                            }}
+                            loading="lazy"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Photo zoom modal - click image to open, arrows to traverse */}
+          {selected && selectedPhotoIndex !== null && selectedAllPhotos.length > 0 && (
+            <div className="fixed inset-0 flex items-center justify-center p-4 z-[60]" style={{ zIndex: 60 }}>
+              <div
+                className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+                onClick={() => setSelectedPhotoIndex(null)}
+                aria-hidden="true"
+              />
+              <div className="relative w-full max-w-6xl max-h-[90vh] flex items-center justify-center">
+                <button
+                  onClick={() => setSelectedPhotoIndex(null)}
+                  className="absolute top-4 right-4 z-10 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                  aria-label="Close"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                <img
+                  src={selectedAllPhotos[selectedPhotoIndex]}
+                  alt={`${selected.title} – ${selectedPhotoIndex + 1}`}
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                  style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }}
+                  onError={(e) => {
+                    e.currentTarget.src = '/CIE Design.png';
+                    e.currentTarget.onerror = null;
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                />
+
+                {selectedPhotoIndex > 0 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhotoIndex(selectedPhotoIndex - 1);
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                    aria-label="Previous photo"
+                  >
+                    <ChevronLeft className="h-8 w-8" />
+                  </button>
+                )}
+
+                {selectedPhotoIndex < selectedAllPhotos.length - 1 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhotoIndex(selectedPhotoIndex + 1);
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                    aria-label="Next photo"
+                  >
+                    <ChevronRight className="h-8 w-8" />
+                  </button>
+                )}
+
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm">
+                  {selectedPhotoIndex + 1} of {selectedAllPhotos.length}
                 </div>
               </div>
             </div>

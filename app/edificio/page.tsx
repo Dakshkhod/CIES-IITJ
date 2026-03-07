@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
 import AppLayout from '@/components/layout/AppLayout';
@@ -16,6 +17,7 @@ import {
   MapPin,
   Trophy,
   Zap,
+  HelpCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -254,12 +256,12 @@ const EdificioHighlights = () => {
 // --- Edificio Photo Gallery ---
 const EdificioPhotoGallery = () => {
   const photos = [
-    { id: 1, alt: 'Design Competition', gradient: 'from-[#0b3d91] to-blue-600', icon: <Rocket className="h-12 w-12 sm:h-20 sm:w-20" /> },
-    { id: 2, alt: 'Technical Workshop', gradient: 'from-blue-600 to-cyan-600', icon: <BookOpen className="h-12 w-12 sm:h-20 sm:w-20" /> },
-    { id: 3, alt: 'Guest Lecture', gradient: 'from-cyan-600 to-teal-600', icon: <Users className="h-12 w-12 sm:h-20 sm:w-20" /> },
-    { id: 4, alt: 'Panel Discussion', gradient: 'from-teal-600 to-green-600', icon: <Target className="h-12 w-12 sm:h-20 sm:w-20" /> },
-    { id: 5, alt: 'Innovation Showcase', gradient: 'from-green-600 to-emerald-600', icon: <Lightbulb className="h-12 w-12 sm:h-20 sm:w-20" /> },
-    { id: 6, alt: 'Networking Session', gradient: 'from-emerald-600 to-cyan-600', icon: <Building2 className="h-12 w-12 sm:h-20 sm:w-20" /> },
+    { id: 1, alt: 'Design Competition', gradient: 'from-[#0b3d91] to-blue-600', icon: <Rocket className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/design-competition.jpg' },
+    { id: 2, alt: 'Technical Workshop', gradient: 'from-blue-600 to-cyan-600', icon: <BookOpen className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/technical-workshop.jpg' },
+    { id: 3, alt: 'Guest Lecture', gradient: 'from-cyan-600 to-teal-600', icon: <Users className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/guest-lecture.jpg' },
+    { id: 4, alt: 'Panel Discussion', gradient: 'from-teal-600 to-green-600', icon: <Target className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/panel-discussion.jpg' },
+    { id: 5, alt: 'Site Visit', gradient: 'from-green-600 to-emerald-600', icon: <MapPin className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/IMG_9348.JPG' },
+    { id: 6, alt: 'Quiz Competition', gradient: 'from-emerald-600 to-teal-600', icon: <HelpCircle className="h-12 w-12 sm:h-20 sm:w-20" />, src: '/images/edificio/GOPR4016.JPG' },
   ];
 
   return (
@@ -304,6 +306,15 @@ const EdificioPhotoGallery = () => {
                 whileHover={{ y: -8 }}
                 className="group relative aspect-square sm:aspect-[4/3] overflow-hidden rounded-xl sm:rounded-2xl shadow-lg sm:shadow-2xl"
               >
+                {photo.src ? (
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                  />
+                ) : (
                 <div className={`absolute inset-0 bg-gradient-to-br ${photo.gradient}`}>
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:16px_16px] sm:bg-[size:24px_24px]"></div>
                   
@@ -314,6 +325,7 @@ const EdificioPhotoGallery = () => {
                   <div className="absolute left-2 top-2 sm:left-3 sm:top-3 h-6 w-6 sm:h-12 sm:w-12 border-l sm:border-l-2 border-t sm:border-t-2 border-white/30"></div>
                   <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 h-6 w-6 sm:h-12 sm:w-12 border-b sm:border-b-2 border-r sm:border-r-2 border-white/30"></div>
                 </div>
+                )}
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-100 sm:opacity-0 transition-all duration-300 sm:group-hover:opacity-100">

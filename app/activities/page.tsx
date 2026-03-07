@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { formatDateShort, generateICS } from '@/lib/utils';
+import { formatDateShort } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Filter, Grid, List, Users, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { Calendar, Clock, MapPin, Filter, Grid, List, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
 import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 type GalleryItem = {
@@ -12,8 +12,11 @@ type GalleryItem = {
   date: string;
   category: 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'other';
   imageUrl: string;
+  images?: string[]; // gallery images from Sanity (excluding cover)
   colorUrl?: string;
   status?: 'completed' | 'upcoming' | 'ongoing';
+  description?: string;
+  location?: string;
 };
 
 // Fallback data when API is unavailable — 2025-26 Academic Year Activities
@@ -63,7 +66,10 @@ export default function ActivitiesPage() {
           date: activity.date,
           category: activity.category as GalleryItem['category'],
           imageUrl: activity.coverImage || '/CIE Design.png',
+          images: Array.isArray(activity.images) ? activity.images.filter((u: unknown) => u && typeof u === 'string') : [],
           status: (activity.status === 'completed' ? 'completed' : activity.status === 'upcoming' ? 'upcoming' : 'ongoing') as 'completed' | 'upcoming' | 'ongoing',
+          description: activity.description ?? undefined,
+          location: activity.location ?? undefined,
         }));
 
         if (transformedItems.length > 0) {
@@ -378,7 +384,6 @@ export default function ActivitiesPage() {
                             loading="eager"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
-                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(event.category)} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
 
                           {/* Category Badge */}
                           <div className="absolute top-4 right-4">
@@ -387,6 +392,15 @@ export default function ActivitiesPage() {
                               {event.category.replace('-', ' ').toUpperCase()}
                             </span>
                           </div>
+
+                          {event.images && event.images.length > 0 && (
+                            <div className="absolute bottom-14 left-4">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white">
+                                <Award className="h-3.5 w-3.5" />
+                                {1 + event.images.length} photos
+                              </span>
+                            </div>
+                          )}
 
                           {/* Title overlay */}
                           <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -463,7 +477,6 @@ export default function ActivitiesPage() {
                           />
                           {/* Gradient overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
-                          <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(card.category)} opacity-15 group-hover:opacity-25 transition-opacity duration-300`} />
 
                           {/* Status badge */}
                           <div className="absolute top-4 right-4">
@@ -480,6 +493,16 @@ export default function ActivitiesPage() {
                               {card.category.replace('-', ' ').toUpperCase()}
                             </span>
                           </div>
+
+                          {/* Photo count badge when gallery has extra images */}
+                          {card.images && card.images.length > 0 && (
+                            <div className="absolute bottom-12 left-4">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white">
+                                <Award className="h-3.5 w-3.5" />
+                                {1 + card.images.length} photos
+                              </span>
+                            </div>
+                          )}
 
                           {/* Title overlay on image */}
                           <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -548,7 +571,6 @@ export default function ActivitiesPage() {
                                       }}
                                       loading="lazy"
                                     />
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(event.category)} opacity-20`} />
                                   </div>
 
                                   <div className="flex-1 p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -609,7 +631,6 @@ export default function ActivitiesPage() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(selected.category)} opacity-20`} />
 
                   {/* Close button */}
                   <button
@@ -683,42 +704,49 @@ export default function ActivitiesPage() {
                         <h3 className="font-semibold text-slate-900 dark:text-slate-100">About this Event</h3>
                       </div>
                       <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Join us for this exciting event organized by the Civil & Infrastructure Engineering Society.
-                        This activity is part of our commitment to fostering knowledge sharing and professional development
-                        in the field of civil engineering. More details will be announced soon. Stay tuned!
+                        {selected.description ||
+                          'Join us for this exciting event organized by the Civil & Infrastructure Engineering Society. This activity is part of our commitment to fostering knowledge sharing and professional development in the field of civil engineering. More details will be announced soon. Stay tuned!'}
                       </p>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <button
-                        onClick={() => {
-                          const ics = generateICS({
-                            title: selected.title,
-                            description: `${selected.title} — CIES IITJ`,
-                            location: 'IIT Jodhpur',
-                            start: selected.date,
-                          });
-                          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement('a');
-                          a.href = url;
-                          a.download = `${selected.title.replace(/\s+/g, '_')}.ics`;
-                          document.body.appendChild(a);
-                          a.click();
-                          a.remove();
-                          URL.revokeObjectURL(url);
-                        }}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 px-6 py-3 font-semibold text-white transition-all shadow-lg hover:shadow-xl shadow-slate-500/30 dark:shadow-blue-500/30"
-                      >
-                        <Calendar className="h-5 w-5" />
-                        Add to Calendar
-                      </button>
-                      <button className="flex-1 flex items-center justify-center gap-2 rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-500 dark:hover:border-blue-500 shadow-sm hover:shadow-md">
-                        <Users className="h-5 w-5" />
-                        Share Event
-                      </button>
-                    </div>
+                    {/* Gallery: cover + extra images from Sanity */}
+                    {((selected.images && selected.images.length > 0) || selected.imageUrl) && (
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                          <Award className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+                          Photos
+                        </h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {/* Cover image first */}
+                          <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
+                            <img
+                              src={selected.imageUrl}
+                              alt={selected.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.src = '/CIE Design.png';
+                                e.currentTarget.onerror = null;
+                              }}
+                            />
+                          </div>
+                          {/* Gallery images */}
+                          {selected.images?.map((url, idx) => (
+                            <div key={idx} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
+                              <img
+                                src={url}
+                                alt={`${selected.title} – ${idx + 2}`}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src = '/CIE Design.png';
+                                  e.currentTarget.onerror = null;
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               </div>

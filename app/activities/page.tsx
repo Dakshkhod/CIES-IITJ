@@ -3,7 +3,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { formatDateShort } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Filter, Grid, List, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { Calendar, Clock, MapPin, Filter, Grid, List, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2, Camera, ChevronRight } from 'lucide-react';
 import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 type GalleryItem = {
@@ -346,91 +346,73 @@ export default function ActivitiesPage() {
 
                   {/* Featured Recent Events Grid */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {recentEvents.map((event, idx) => (
-                      <article
-                        key={event.id}
-                        className="group relative rounded-2xl border-2 border-blue-200 dark:border-blue-500/30 bg-white dark:bg-slate-900/80 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-500/30 dark:hover:shadow-blue-500/20 hover:border-blue-400 dark:hover:border-blue-500/60 shadow-lg"
-                        style={{ animationDelay: `${idx * 100}ms` }}
-                      >
-                        {/* Spotlight effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-slate-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                        {/* Featured badge */}
-                        <div className="absolute top-0 right-0 z-10">
-                          <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white px-4 py-1.5 rounded-bl-xl rounded-tr-xl text-xs font-bold shadow-lg flex items-center gap-1.5">
-                            <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-                            NEW
-                          </div>
-                        </div>
-
-                        {/* Status badge */}
-                        <div className="absolute top-0 left-0 z-10">
-                          <span className={`px-3 py-1.5 rounded-br-xl rounded-tl-xl text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(event.date))}`}>
-                            {getEventStatus(event.date) === 'completed' ? 'Completed' :
-                              getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
-                          </span>
-                        </div>
-
-                        {/* Image Section */}
-                        <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                          <img
-                            src={event.imageUrl}
-                            alt={event.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            onError={(e) => {
-                              e.currentTarget.src = '/CIE Design.png';
-                              e.currentTarget.onerror = null;
-                            }}
-                            loading="eager"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
-
-                          {/* Category Badge */}
-                          <div className="absolute top-4 right-4">
-                            <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-bold ${getCategoryBadge(event.category)}`}>
-                              {getCategoryIcon(event.category)}
-                              {event.category.replace('-', ' ').toUpperCase()}
-                            </span>
-                          </div>
-
-                          {event.images && event.images.length > 0 && (
-                            <div className="absolute bottom-14 left-4">
-                              <span className="inline-flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white">
-                                <Award className="h-3.5 w-3.5" />
-                                {1 + event.images.length} photos
+                    {recentEvents.map((event, idx) => {
+                      const allPhotos = [event.imageUrl, ...(event.images || [])];
+                      return (
+                        <article
+                          key={event.id}
+                          className="group relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 hover:border-blue-400 dark:hover:border-blue-500/50 shadow-sm"
+                          style={{ animationDelay: `${idx * 100}ms` }}
+                        >
+                          {/* Image */}
+                          <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-slate-800">
+                            <img
+                              src={event.imageUrl}
+                              alt={event.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              style={{ objectPosition: 'center center', objectFit: 'cover', minHeight: '224px' }}
+                              onError={(e) => {
+                                e.currentTarget.src = '/CIE Design.png';
+                                e.currentTarget.onerror = null;
+                              }}
+                              loading="eager"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                            <div className="absolute top-4 left-4">
+                              <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${getCategoryBadge(event.category)}`}>
+                                <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                {event.category.replace('-', ' ').toUpperCase()}
                               </span>
                             </div>
-                          )}
-
-                          {/* Title overlay */}
-                          <div className="absolute bottom-0 left-0 right-0 p-5">
-                            <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 drop-shadow-2xl shadow-black/50">
-                              {event.title}
-                            </h3>
-                            <div className="flex items-center gap-2 text-sm text-white/95 drop-shadow-lg">
-                              <Calendar className="h-4 w-4" />
-                              <time dateTime={event.date}>{formatDateShort(event.date)}</time>
+                            <div className="absolute top-4 right-4 flex items-center gap-2">
+                              <span className="bg-green-500/90 text-white px-2 py-0.5 rounded-full text-xs font-semibold">NEW</span>
+                              {allPhotos.length > 1 && (
+                                <span className="bg-black/50 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-white">
+                                  +{allPhotos.length - 1} more
+                                </span>
+                              )}
+                            </div>
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
+                                {event.title}
+                              </h3>
+                              <div className="flex items-center gap-2 text-sm text-white/90">
+                                <Calendar className="h-4 w-4" />
+                                <time dateTime={event.date}>{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</time>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="relative p-5">
-                          {/* Action Button */}
-                          <button
-                            onClick={() => setSelectedId(event.id)}
-                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-cyan-600 to-slate-600 hover:from-blue-600 hover:via-cyan-700 hover:to-slate-700 py-3 text-sm font-bold text-white transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/40 transform hover:-translate-y-0.5"
-                          >
-                            <Award className="h-4 w-4" />
-                            Explore Event
-                          </button>
-                        </div>
-
-                        {/* Decorative corner accent */}
-                        <div className="absolute bottom-0 right-0 w-24 h-24 opacity-10 dark:opacity-20 pointer-events-none">
-                          <Sparkles className="w-full h-full text-blue-500" />
-                        </div>
-                      </article>
-                    ))}
+                          <div className="p-6">
+                            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+                              {event.description || 'Explore this activity by the Civil & Infrastructure Engineering Society.'}
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-4">
+                              <MapPin className="h-4 w-4" />
+                              <span>{event.location || 'IIT Jodhpur Campus'}</span>
+                            </div>
+                            <button
+                              onClick={() => setSelectedId(event.id)}
+                              className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-all hover:bg-blue-500 hover:text-white shadow-sm"
+                            >
+                              <Camera className="h-4 w-4" />
+                              View Photos
+                              <ChevronRight className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </article>
+                      );
+                    })}
                   </div>
 
                   {/* Divider */}
@@ -458,77 +440,69 @@ export default function ActivitiesPage() {
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredItems.map((card) => {
+                    const allPhotos = [card.imageUrl, ...(card.images || [])];
                     return (
                       <article
                         key={card.id}
                         className="group relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 hover:border-blue-400 dark:hover:border-blue-500/50 shadow-sm"
                       >
-                        {/* Image Section */}
-                        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
+                        {/* Activity Image */}
+                        <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-slate-800">
                           <img
                             src={card.imageUrl}
                             alt={card.title}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            style={{ objectPosition: 'center center', objectFit: 'cover', minHeight: '224px' }}
                             onError={(e) => {
                               e.currentTarget.src = '/CIE Design.png';
                               e.currentTarget.onerror = null;
                             }}
                             loading="lazy"
                           />
-                          {/* Gradient overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
-
-                          {/* Status badge */}
-                          <div className="absolute top-4 right-4">
-                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(card.date))}`}>
-                              {getEventStatus(card.date) === 'completed' ? 'Completed' :
-                                getEventStatus(card.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
-                            </span>
-                          </div>
-
-                          {/* Category Badge */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="absolute top-4 left-4">
-                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${getCategoryBadge(card.category)}`}>
-                              {getCategoryIcon(card.category)}
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${getCategoryBadge(card.category)}`}>
+                              <span className="h-1.5 w-1.5 rounded-full bg-current" />
                               {card.category.replace('-', ' ').toUpperCase()}
                             </span>
                           </div>
-
-                          {/* Photo count badge when gallery has extra images */}
-                          {card.images && card.images.length > 0 && (
-                            <div className="absolute bottom-12 left-4">
-                              <span className="inline-flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white">
-                                <Award className="h-3.5 w-3.5" />
-                                {1 + card.images.length} photos
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Title overlay on image */}
-                          <div className="absolute bottom-0 left-0 right-0 p-4">
-                            <h3 className="text-base font-bold text-white mb-1 line-clamp-2 drop-shadow-2xl shadow-black/50">
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
                               {card.title}
                             </h3>
+                            <div className="flex items-center gap-2 text-sm text-white/90">
+                              <Calendar className="h-4 w-4" />
+                              <time dateTime={card.date}>{new Date(card.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</time>
+                            </div>
                           </div>
+                          {allPhotos.length > 1 && (
+                            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-white">
+                              +{allPhotos.length - 1} more
+                            </div>
+                          )}
                         </div>
 
-                        <div className="relative p-5">
-                          {/* Date */}
-                          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300 mb-4">
-                            <Calendar className="h-4 w-4" />
-                            <time dateTime={card.date}>{formatDateShort(card.date)}</time>
+                        <div className="p-6">
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+                            {card.description || 'Explore this activity by the Civil & Infrastructure Engineering Society.'}
+                          </p>
+
+                          <div className="space-y-2 mb-4">
+                            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                              <MapPin className="h-4 w-4" />
+                              <span>{card.location || 'IIT Jodhpur Campus'}</span>
+                            </div>
                           </div>
 
-                          {/* Action Button */}
                           <button
                             onClick={() => setSelectedId(card.id)}
-                            className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 py-2.5 text-sm font-semibold text-white transition-all shadow-md hover:shadow-lg hover:shadow-slate-500/30 dark:hover:shadow-blue-500/30"
+                            className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-all hover:bg-blue-500 hover:text-white shadow-sm"
                           >
-                            <MapPin className="h-4 w-4" />
-                            View Details
+                            <Camera className="h-4 w-4" />
+                            View Photos
+                            <ChevronRight className="h-4 w-4" />
                           </button>
                         </div>
-
                       </article>
                     );
                   })}
@@ -577,28 +551,27 @@ export default function ActivitiesPage() {
                                     <div className="flex-1">
                                       <div className="flex items-center gap-3 mb-2 flex-wrap">
                                         <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${getCategoryBadge(event.category)}`}>
-                                          {getCategoryIcon(event.category)}
+                                          <span className="h-1.5 w-1.5 rounded-full bg-current" />
                                           {event.category.replace('-', ' ').toUpperCase()}
                                         </span>
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(event.date))}`}>
-                                          {getEventStatus(event.date) === 'completed' ? 'Completed' :
-                                            getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
-                                        </span>
-                                        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
+                                        <div className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
                                           <Clock className="h-3 w-3" />
                                           <time dateTime={event.date}>{new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
                                         </div>
                                       </div>
-                                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-slate-700 dark:group-hover:text-blue-400 transition-colors">
+                                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
                                         {event.title}
                                       </h3>
+                                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                                        {event.description || 'Explore this activity by CIES.'}
+                                      </p>
                                     </div>
                                     <button
                                       onClick={() => setSelectedId(event.id)}
-                                      className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 px-5 py-2 text-sm font-semibold text-white transition-all whitespace-nowrap shadow-md hover:shadow-lg"
+                                      className="rounded-lg bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-all hover:bg-blue-500 hover:text-white whitespace-nowrap shadow-sm flex items-center gap-2"
                                     >
-                                      <MapPin className="h-4 w-4" />
-                                      View Details
+                                      <Camera className="h-4 w-4" />
+                                      View Photos
                                     </button>
                                   </div>
                                 </div>
@@ -614,139 +587,92 @@ export default function ActivitiesPage() {
             </div>
           </section>
 
-          {/* Modern Modal Dialog */}
+          {/* Modal - Events-style gallery */}
           {selected && (
-            <div id="event-dialog" role="dialog" aria-modal="true" className="fixed inset-0 flex items-center justify-center p-4 sm:p-6" style={{ zIndex: 50 }}>
+            <div id="event-dialog" role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
               <div className="absolute inset-0 bg-black/60 dark:bg-black/70 backdrop-blur-sm" onClick={close} aria-hidden="true" />
-              <div className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl">
-                {/* Featured Image Header */}
-                <div className="relative h-64 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                  <img
-                    src={selected.imageUrl}
-                    alt={selected.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = '/CIE Design.png';
-                      e.currentTarget.onerror = null;
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-                  {/* Close button */}
-                  <button
-                    onClick={close}
-                    className="absolute right-4 top-4 rounded-full bg-white/10 backdrop-blur-sm p-2.5 text-white transition-all hover:bg-white/20 shadow-lg z-10"
-                    aria-label="Close"
-                  >
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-
-                  {/* Category badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${getCategoryBadge(selected.category)}`}>
-                      {getCategoryIcon(selected.category)}
-                      {selected.category.replace('-', ' ').toUpperCase()}
-                    </span>
-                  </div>
-
-                  {/* Status badge */}
-                  <div className="absolute top-16 right-4">
-                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(selected.date))}`}>
-                      {getEventStatus(selected.date) === 'completed' ? 'Completed' :
-                        getEventStatus(selected.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
-                    </span>
-                  </div>
-
-                  {/* Title at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h2 className="text-3xl font-bold text-white drop-shadow-lg">
-                      {selected.title}
-                    </h2>
-                  </div>
-                </div>
-
-                {/* Content */}
+              <div className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl">
                 <div className="relative">
+                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur px-6 py-4">
+                    <div>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${getCategoryBadge(selected.category)}`}>
+                        <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                        {selected.category.replace('-', ' ').toUpperCase()}
+                      </span>
+                      <h2 className="mt-2 text-xl font-bold text-slate-900 dark:text-slate-100">
+                        {selected.title}
+                      </h2>
+                    </div>
+                    <button
+                      onClick={close}
+                      className="rounded-full bg-slate-100 dark:bg-slate-800/80 p-2 text-slate-600 dark:text-slate-400 transition-all hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white backdrop-blur shadow-sm"
+                      aria-label="Close"
+                    >
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
 
-                  {/* Body */}
-                  <div className="p-6 space-y-5 max-h-[50vh] overflow-y-auto">
-                    {/* Info Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Date & Time */}
-                      <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-blue-500/10 dark:to-blue-500/5 border border-slate-200 dark:border-blue-500/20 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-2 rounded-lg bg-slate-800 dark:bg-blue-500 text-white">
-                          <Calendar className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-medium text-slate-700 dark:text-blue-400">Event Date</div>
-                          <div className="font-semibold text-slate-900 dark:text-slate-100">{formatDateShort(selected.date)}</div>
-                        </div>
+                  <div className="p-6 max-h-[70vh] overflow-y-auto">
+                    {/* Photo grid - events style */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                      <div className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+                        <img
+                          src={selected.imageUrl}
+                          alt={selected.title}
+                          className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                          style={{ objectPosition: 'center center', minHeight: '192px' }}
+                          onError={(e) => {
+                            e.currentTarget.src = '/CIE Design.png';
+                            e.currentTarget.onerror = null;
+                          }}
+                          loading="lazy"
+                        />
                       </div>
-
-                      {/* Location */}
-                      <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-500/10 dark:to-green-500/5 border border-green-200 dark:border-green-500/20 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-2 rounded-lg bg-green-500 text-white">
-                          <MapPin className="h-5 w-5" />
+                      {selected.images?.map((url, idx) => (
+                        <div key={idx} className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+                          <img
+                            src={url}
+                            alt={`${selected.title} – ${idx + 2}`}
+                            className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                            style={{ objectPosition: 'center center', minHeight: '192px' }}
+                            onError={(e) => {
+                              e.currentTarget.src = '/CIE Design.png';
+                              e.currentTarget.onerror = null;
+                            }}
+                            loading="lazy"
+                          />
                         </div>
-                        <div>
-                          <div className="text-xs font-medium text-green-600 dark:text-green-400">Location</div>
-                          <div className="font-semibold text-slate-900 dark:text-slate-100">IIT Jodhpur</div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
 
-                    {/* Description */}
-                    <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm">
-                      <div className="flex items-start gap-3 mb-3">
-                        <BookOpen className="h-5 w-5 text-slate-500 dark:text-slate-300 mt-0.5" />
-                        <h3 className="font-semibold text-slate-900 dark:text-slate-100">About this Event</h3>
-                      </div>
-                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                        {selected.description ||
-                          'Join us for this exciting event organized by the Civil & Infrastructure Engineering Society. This activity is part of our commitment to fostering knowledge sharing and professional development in the field of civil engineering. More details will be announced soon. Stay tuned!'}
-                      </p>
-                    </div>
-
-                    {/* Gallery: cover + extra images from Sanity */}
-                    {((selected.images && selected.images.length > 0) || selected.imageUrl) && (
-                      <div className="space-y-3">
-                        <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                          <Award className="h-5 w-5 text-slate-500 dark:text-slate-400" />
-                          Photos
-                        </h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                          {/* Cover image first */}
-                          <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-                            <img
-                              src={selected.imageUrl}
-                              alt={selected.title}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.currentTarget.src = '/CIE Design.png';
-                                e.currentTarget.onerror = null;
-                              }}
-                            />
-                          </div>
-                          {/* Gallery images */}
-                          {selected.images?.map((url, idx) => (
-                            <div key={idx} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-                              <img
-                                src={url}
-                                alt={`${selected.title} – ${idx + 2}`}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.src = '/CIE Design.png';
-                                  e.currentTarget.onerror = null;
-                                }}
-                              />
-                            </div>
-                          ))}
+                    {/* Info sections - events style */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-blue-50 dark:bg-slate-800/50 border border-blue-200 dark:border-slate-700 shadow-sm">
+                        <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        <div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">Date</div>
+                          <div className="font-medium text-slate-900 dark:text-slate-200">{new Date(selected.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
                         </div>
                       </div>
-                    )}
 
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-green-50 dark:bg-slate-800/50 border border-green-200 dark:border-slate-700 shadow-sm">
+                        <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
+                        <div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">Location</div>
+                          <div className="font-medium text-slate-900 dark:text-slate-200">{selected.location || 'IIT Jodhpur Campus'}</div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm">
+                        <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">About this Event</h3>
+                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                          {selected.description ||
+                            'Join us for this exciting event organized by the Civil & Infrastructure Engineering Society. This activity is part of our commitment to fostering knowledge sharing and professional development in the field of civil engineering. More details will be announced soon. Stay tuned!'}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { formatDateShort } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
-import { Calendar, Clock, MapPin, Filter, Grid, List, Award, BookOpen, Hammer, Building2, TrendingUp, Sparkles, Loader2, Camera, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, MapPin, Filter, Grid, List, Loader2, Camera, ChevronRight, Sparkles } from 'lucide-react';
 import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 type GalleryItem = {
@@ -149,19 +148,6 @@ export default function ActivitiesPage() {
   }
 
 
-  // Get category icon
-  const getCategoryIcon = (category: string) => {
-    const icons: { [key: string]: JSX.Element } = {
-      workshop: <Hammer className="h-5 w-5" />,
-      seminar: <BookOpen className="h-5 w-5" />,
-      'site-visit': <Building2 className="h-5 w-5" />,
-      competition: <Award className="h-5 w-5" />,
-      edificio: <TrendingUp className="h-5 w-5" />,
-      other: <Sparkles className="h-5 w-5" />,
-    };
-    return icons[category] || icons.other;
-  };
-
   // Get category color
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
@@ -186,28 +172,6 @@ export default function ActivitiesPage() {
       other: 'bg-slate-100 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-500/50',
     };
     return badges[category] || badges.other;
-  };
-
-  // Get event status based on date
-  const getEventStatus = (date: string): 'completed' | 'upcoming' | 'ongoing' => {
-    const eventDate = new Date(date);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-
-    if (eventDay < today) return 'completed';
-    if (eventDay.getTime() === today.getTime()) return 'ongoing';
-    return 'upcoming';
-  };
-
-  // Get status badge styling
-  const getStatusBadge = (status: 'completed' | 'upcoming' | 'ongoing') => {
-    const badges = {
-      completed: 'bg-gradient-to-r from-slate-500/30 to-slate-600/30 border border-slate-400/70 text-slate-100 dark:from-cyan-500/30 dark:to-blue-500/30 dark:border-cyan-400/70 dark:text-cyan-100',
-      upcoming: 'bg-gradient-to-r from-slate-500/30 to-slate-600/30 border border-slate-400/70 text-slate-100 shadow-lg shadow-slate-500/30 dark:from-cyan-500/30 dark:to-blue-500/30 dark:border-cyan-400/70 dark:text-cyan-100 dark:shadow-cyan-500/30',
-      ongoing: 'bg-gradient-to-r from-amber-500/30 to-orange-500/30 border border-amber-400/70 text-amber-100 shadow-lg shadow-amber-500/30'
-    };
-    return badges[status];
   };
 
   return (

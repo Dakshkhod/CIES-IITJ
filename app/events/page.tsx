@@ -21,6 +21,17 @@ type EventItem = {
 const FALLBACK_EVENTS: EventItem[] = [
   {
     id: '1',
+    title: 'Congratulations to Class of 2025',
+    date: '2025-06-01',
+    category: 'celebration',
+    description: 'CIES congratulated the Class of 2025 (B.Tech 2021 & M.Tech 2023) on their convocation. Graduates were encouraged to carry forward the community spirit of CIES.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '200+ Graduates',
+    photos: ['/CIE Design.png'],
+    status: 'completed'
+  },
+  {
+    id: '2',
     title: 'Orientation of Batch 25 (PG)',
     date: '2025-07-15',
     category: 'orientation',
@@ -31,18 +42,29 @@ const FALLBACK_EVENTS: EventItem[] = [
     status: 'completed'
   },
   {
-    id: '2',
-    title: 'Orientation of Batch 25 (UG)',
+    id: '3',
+    title: 'UG Orientation – Batch of 2025',
     date: '2025-08-05',
     category: 'orientation',
-    description: 'Welcome session for new undergraduate students joining the Civil & Infrastructure Engineering program.',
+    description: 'CIES conducted the Undergraduate Orientation for the 2025 batch. Included a welcome by the HoD, academic guidance by the Batch Faculty Advisor, and interactions with the Student Council. Activities like hometown-mapping helped students engage.',
     location: 'IIT Jodhpur Campus',
     attendees: '80+ Students',
     photos: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
     status: 'completed'
   },
   {
-    id: '3',
+    id: '4',
+    title: "Engineer's Day 2025",
+    date: '2025-09-15',
+    category: 'celebration',
+    description: 'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '100+ Attendees',
+    photos: ['/Other images/1757908205139.jpeg'],
+    status: 'completed'
+  },
+  {
+    id: '5',
     title: 'Freshers (UG)',
     date: '2025-10-05',
     category: 'cultural',
@@ -50,6 +72,17 @@ const FALLBACK_EVENTS: EventItem[] = [
     location: 'IIT Jodhpur Auditorium',
     attendees: '120+ Attendees',
     photos: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg'],
+    status: 'completed'
+  },
+  {
+    id: '6',
+    title: 'Diwali Celebration',
+    date: '2025-10-20',
+    category: 'celebration',
+    description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '150+ Attendees',
+    photos: ['/Other images/DSC03840.JPG'],
     status: 'completed'
   }
 ];
@@ -79,7 +112,7 @@ export default function EventsPage() {
     } else {
       document.body.style.overflow = 'unset';
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -108,13 +141,13 @@ export default function EventsPage() {
     async function fetchEventsData() {
       try {
         setLoading(true);
-        
+
         const allEvents = await getSanityEvents();
-        
+
         // Filter only events (not activities)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const eventsOnly = allEvents.filter((event: any) => event.eventCategory === 'event');
-        
+
         // Map Sanity category to frontend category
         const categoryMap: Record<string, EventItem['category']> = {
           'other': 'celebration',
@@ -124,13 +157,13 @@ export default function EventsPage() {
           'site-visit': 'orientation',
           'competition': 'celebration',
         };
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: EventItem[] = eventsOnly.map((event: any) => {
           const apiPhotos = event.images || [];
           const titleKey = (event.title || '').trim();
           const fallbackImage = EVENT_FALLBACK_IMAGES[titleKey];
-          
+
           const photos = apiPhotos.length > 0
             ? apiPhotos
             : event.coverImage
@@ -151,7 +184,7 @@ export default function EventsPage() {
             status: (event.status === 'completed' ? 'completed' : 'upcoming') as 'completed' | 'upcoming',
           };
         });
-        
+
         if (transformedEvents.length > 0) {
           setEvents(transformedEvents);
         }
@@ -162,7 +195,7 @@ export default function EventsPage() {
         setLoading(false);
       }
     }
-    
+
     fetchEventsData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -263,11 +296,10 @@ export default function EventsPage() {
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
-                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                        activeCategory === cat
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
                           ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
                           : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                      }`}
+                        }`}
                     >
                       {cat === 'all' ? 'All Events' : cat.replace('-', ' ').replace(/^./, s => s.toUpperCase())}
                     </button>
@@ -277,22 +309,20 @@ export default function EventsPage() {
                   <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-lg p-2 transition-all ${
-                      viewMode === 'grid'
+                    className={`rounded-lg p-2 transition-all ${viewMode === 'grid'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                    }`}
+                      }`}
                     aria-label="Grid view"
                   >
                     <Grid className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setViewMode('timeline')}
-                    className={`rounded-lg p-2 transition-all ${
-                      viewMode === 'timeline'
+                    className={`rounded-lg p-2 transition-all ${viewMode === 'timeline'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                    }`}
+                      }`}
                     aria-label="Timeline view"
                   >
                     <List className="h-4 w-4" />
@@ -320,11 +350,11 @@ export default function EventsPage() {
                     >
                       {/* Event Image */}
                       <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img 
-                          src={event.photos[0]} 
+                        <img
+                          src={event.photos[0]}
                           alt={event.title}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          style={{ 
+                          style={{
                             objectPosition: 'center center',
                             objectFit: 'cover',
                             minHeight: '224px' // Ensure consistent height
@@ -412,7 +442,7 @@ export default function EventsPage() {
                         {monthEvents.map((event) => (
                           <div key={event.id} className="relative pl-8 pb-8 group">
                             <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full border-2 border-white dark:border-slate-900 bg-gradient-to-br ${getCategoryColor(event.category)} group-hover:scale-125 transition-transform shadow-sm`} />
-                            
+
                             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 backdrop-blur transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 shadow-sm">
                               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                                 <div className="flex-1">
@@ -481,16 +511,16 @@ export default function EventsPage() {
                   <div className="p-6 max-h-[70vh] overflow-y-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {selected.photos.map((photo, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer bg-slate-100 dark:bg-slate-800"
                           onClick={() => setSelectedPhoto({ eventId: selected.id, photoIndex: index })}
                         >
-                          <img 
-                            src={photo} 
+                          <img
+                            src={photo}
                             alt={`${selected.title} - Photo ${index + 1}`}
                             className="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                            style={{ 
+                            style={{
                               objectPosition: 'center center',
                               minHeight: '192px' // Ensure consistent height
                             }}
@@ -564,10 +594,10 @@ export default function EventsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
-                
+
                 {selectedPhoto && (
-                  <img 
-                    src={events.find(e => e.id === selectedPhoto.eventId)?.photos[selectedPhoto.photoIndex]} 
+                  <img
+                    src={events.find(e => e.id === selectedPhoto.eventId)?.photos[selectedPhoto.photoIndex]}
                     alt={`${events.find(e => e.id === selectedPhoto.eventId)?.title} - Photo ${selectedPhoto.photoIndex + 1}`}
                     className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                     style={{
@@ -581,13 +611,13 @@ export default function EventsPage() {
                     }}
                   />
                 )}
-                
+
                 {/* Navigation arrows */}
                 {selectedPhoto && (() => {
                   const event = events.find(e => e.id === selectedPhoto.eventId);
                   const currentIndex = selectedPhoto.photoIndex;
                   const totalPhotos = event?.photos.length || 0;
-                  
+
                   return (
                     <>
                       {currentIndex > 0 && (
@@ -601,7 +631,7 @@ export default function EventsPage() {
                           </svg>
                         </button>
                       )}
-                      
+
                       {currentIndex < totalPhotos - 1 && (
                         <button
                           onClick={() => setSelectedPhoto({ eventId: selectedPhoto.eventId, photoIndex: currentIndex + 1 })}
@@ -613,7 +643,7 @@ export default function EventsPage() {
                           </svg>
                         </button>
                       )}
-                      
+
                       {/* Photo counter */}
                       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm">
                         {currentIndex + 1} of {totalPhotos}

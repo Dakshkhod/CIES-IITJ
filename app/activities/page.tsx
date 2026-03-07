@@ -16,18 +16,26 @@ type GalleryItem = {
   status?: 'completed' | 'upcoming' | 'ongoing';
 };
 
-// Fallback data when API is unavailable
+// Fallback data when API is unavailable — 2025-26 Academic Year Activities
 const FALLBACK_ACTIVITIES: GalleryItem[] = [
-  { id: '1', title: 'Research Presentation - Saran Kumar Aatrey', date: '2025-05-09', category: 'seminar', imageUrl: '/CIE Design.png' },
-  { id: '2', title: 'Research Presentation - Aparna Singh', date: '2025-05-23', category: 'seminar', imageUrl: '/logo.jpg' },
-  { id: '3', title: 'Seminar by Prof. Ravindra Gettu', date: '2025-06-10', category: 'seminar', imageUrl: '/CIE Design.png' },
-  { id: '4', title: 'Workshop on Geospatial Technologies', date: '2025-10-11', category: 'workshop', imageUrl: '/Other images/PXL_20251011_075907856.jpg' },
-  { id: '5', title: 'Guest Lecture by Prof. Ligy (IITM)', date: '2025-10-13', category: 'seminar', imageUrl: '/Other images/1759303624829.jpeg' },
-  { id: '6', title: 'Diwali Celebration', date: '2025-10-14', category: 'other', imageUrl: '/Other images/DSC03840.JPG' },
-  { id: '7', title: "Teacher's Day Celebration", date: '2025-09-05', category: 'other', imageUrl: '/Other images/DSC01359.JPG' },
-  { id: '8', title: "Engineer's Day", date: '2025-09-15', category: 'other', imageUrl: '/Other images/1757908205139.jpeg' },
-  { id: '9', title: 'EDIFICIO - Hackathon & Ideathon', date: '2025-12-01', category: 'edificio', imageUrl: '/logo.jpg' },
-  { id: '10', title: 'Industry Visit', date: '2026-03-20', category: 'site-visit', imageUrl: '/iitj-logo.png' },
+  { id: '1', title: 'PG Seminar Series 2025', date: '2025-05-15', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '2', title: 'Seminar by Prof. Ravindra Gettu – Technology Implementation in Concrete Research', date: '2025-06-30', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '3', title: 'Prof. Akshay Gupta – Excellence in Doctoral Research Award', date: '2025-09-05', category: 'other', imageUrl: '/CIE Design.png' },
+  { id: '4', title: 'Plantation Drive with Green Cell', date: '2025-09-20', category: 'other', imageUrl: '/CIE Design.png' },
+  { id: '5', title: 'Online Talk – Prof. Masiur Rahaman on Julia for Numerical Computations', date: '2025-09-27', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '6', title: 'Guest Lecture – Prof. Ligy Philip on Sustainable Wastewater Treatment', date: '2025-10-03', category: 'seminar', imageUrl: '/Other images/1759303624829.jpeg' },
+  { id: '7', title: 'Survey of India Workshop on Geospatial Technologies', date: '2025-10-11', category: 'workshop', imageUrl: '/Other images/PXL_20251011_075907856.jpg' },
+  { id: '8', title: 'PG Seminar – Keshav Saini on Hybrid High Strength Steel I-Beams', date: '2025-10-20', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '9', title: 'PG Seminar – Koduru Sandeep on Moisture Resistance of Cold Mix Asphalt', date: '2025-10-25', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '10', title: 'Seminar – Dr. Ashutosh Kumar on Climate Resilience in Geotechnical Engineering', date: '2026-01-03', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '11', title: 'Seminar – Shri S.L. Kapil on Geophysical Technologies for Dam Projects', date: '2026-01-07', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '12', title: 'Seminar – Prof. Animesh Das on Studying Pavement Materials Through Imaging', date: '2026-01-09', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '13', title: 'Seminar – Dr. Deeksha Arya on Multinational Road Damage Detection AI', date: '2026-01-29', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '14', title: 'Seminar – Prof. Nemkumar Banthia on Nano-Materials in Concrete', date: '2026-02-03', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '15', title: 'BIS Essay Competition – Role of Standards in Engineering Life', date: '2026-02-13', category: 'competition', imageUrl: '/CIE Design.png' },
+  { id: '16', title: 'Seminar – Dr. Sarath Chandra Reddy on Multiscale Landslide Dynamics', date: '2026-02-27', category: 'seminar', imageUrl: '/CIE Design.png' },
+  { id: '17', title: 'Alumni Meet – Abhinav Singh Tawar on Placement Preparation', date: '2026-02-28', category: 'other', imageUrl: '/CIE Design.png' },
+  { id: '18', title: 'M.Tech Alumni Meet – Batch 2020 on Industry Expectations', date: '2026-02-28', category: 'other', imageUrl: '/CIE Design.png' },
 ];
 
 export default function ActivitiesPage() {
@@ -43,10 +51,10 @@ export default function ActivitiesPage() {
     async function fetchActivities() {
       try {
         setLoading(true);
-        
+
         // Fetch all activities (events with eventCategory = "activity")
         const allActivities = await getSanityActivities();
-        
+
         // Transform Sanity data to component format
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedItems: GalleryItem[] = allActivities.map((activity: any) => ({
@@ -57,7 +65,7 @@ export default function ActivitiesPage() {
           imageUrl: activity.coverImage || '/CIE Design.png',
           status: (activity.status === 'completed' ? 'completed' : activity.status === 'upcoming' ? 'upcoming' : 'ongoing') as 'completed' | 'upcoming' | 'ongoing',
         }));
-        
+
         if (transformedItems.length > 0) {
           setItems(transformedItems);
         }
@@ -69,14 +77,14 @@ export default function ActivitiesPage() {
         setLoading(false);
       }
     }
-    
+
     fetchActivities();
   }, []);
 
   // All hooks must be called before any conditional returns
   const filteredItems = useMemo(() => {
     let filtered = items;
-    
+
     if (activeCategory === 'all') {
       filtered = items;
     } else if (activeCategory === 'upcoming') {
@@ -85,7 +93,7 @@ export default function ActivitiesPage() {
     } else {
       filtered = items.filter(i => i.category === (activeCategory as GalleryItem['category']));
     }
-    
+
     // Sort by date - most recent first
     return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [activeCategory, items]);
@@ -100,7 +108,7 @@ export default function ActivitiesPage() {
     } else {
       document.body.style.overflow = 'unset';
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -180,7 +188,7 @@ export default function ActivitiesPage() {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-    
+
     if (eventDay < today) return 'completed';
     if (eventDay.getTime() === today.getTime()) return 'ongoing';
     return 'upcoming';
@@ -204,7 +212,7 @@ export default function ActivitiesPage() {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(100,100,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(100,100,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
           <div className="absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-blue-400/10 dark:bg-blue-500/5 blur-3xl animate-pulse" />
           <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] rounded-full bg-purple-400/10 dark:bg-purple-500/5 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-            </div>
+        </div>
 
         <main className="pt-20">
           {/* Hero Section - Mobile Optimized */}
@@ -257,11 +265,10 @@ export default function ActivitiesPage() {
                       <button
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
-                        className={`rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
-                          activeCategory === cat
+                        className={`rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${activeCategory === cat
                             ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
                             : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                        }`}
+                          }`}
                       >
                         {cat === 'all' ? 'All' : cat.replace('-', ' ').replace(/^./, s => s.toUpperCase())}
                       </button>
@@ -273,22 +280,20 @@ export default function ActivitiesPage() {
                   <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-lg p-2 transition-all ${
-                      viewMode === 'grid'
+                    className={`rounded-lg p-2 transition-all ${viewMode === 'grid'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                    }`}
+                      }`}
                     aria-label="Grid view"
                   >
                     <Grid className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setViewMode('timeline')}
-                    className={`rounded-lg p-2 transition-all ${
-                      viewMode === 'timeline'
+                    className={`rounded-lg p-2 transition-all ${viewMode === 'timeline'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
-                    }`}
+                      }`}
                     aria-label="Timeline view"
                   >
                     <List className="h-4 w-4" />
@@ -297,7 +302,7 @@ export default function ActivitiesPage() {
               </div>
             </div>
           </div>
-          
+
           {/* Recent Events Showcase - Only show when "all" filter is active */}
           {activeCategory === 'all' && (() => {
             const recentEvents = filteredItems.filter(item => {
@@ -343,7 +348,7 @@ export default function ActivitiesPage() {
                       >
                         {/* Spotlight effect */}
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-slate-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        
+
                         {/* Featured badge */}
                         <div className="absolute top-0 right-0 z-10">
                           <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white px-4 py-1.5 rounded-bl-xl rounded-tr-xl text-xs font-bold shadow-lg flex items-center gap-1.5">
@@ -355,15 +360,15 @@ export default function ActivitiesPage() {
                         {/* Status badge */}
                         <div className="absolute top-0 left-0 z-10">
                           <span className={`px-3 py-1.5 rounded-br-xl rounded-tl-xl text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(event.date))}`}>
-                            {getEventStatus(event.date) === 'completed' ? 'Completed' : 
-                             getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                            {getEventStatus(event.date) === 'completed' ? 'Completed' :
+                              getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
                           </span>
                         </div>
 
                         {/* Image Section */}
                         <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                          <img 
-                            src={event.imageUrl} 
+                          <img
+                            src={event.imageUrl}
                             alt={event.title}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             onError={(e) => {
@@ -374,7 +379,7 @@ export default function ActivitiesPage() {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
                           <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(event.category)} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
-                          
+
                           {/* Category Badge */}
                           <div className="absolute top-4 right-4">
                             <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-bold ${getCategoryBadge(event.category)}`}>
@@ -394,7 +399,7 @@ export default function ActivitiesPage() {
                             </div>
                           </div>
                         </div>
-                      
+
                         <div className="relative p-5">
                           {/* Action Button */}
                           <button
@@ -446,8 +451,8 @@ export default function ActivitiesPage() {
                       >
                         {/* Image Section */}
                         <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                          <img 
-                            src={card.imageUrl} 
+                          <img
+                            src={card.imageUrl}
                             alt={card.title}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             onError={(e) => {
@@ -459,15 +464,15 @@ export default function ActivitiesPage() {
                           {/* Gradient overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
                           <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(card.category)} opacity-15 group-hover:opacity-25 transition-opacity duration-300`} />
-                          
+
                           {/* Status badge */}
                           <div className="absolute top-4 right-4">
                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(card.date))}`}>
-                              {getEventStatus(card.date) === 'completed' ? 'Completed' : 
-                               getEventStatus(card.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                              {getEventStatus(card.date) === 'completed' ? 'Completed' :
+                                getEventStatus(card.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
                             </span>
                           </div>
-                          
+
                           {/* Category Badge */}
                           <div className="absolute top-4 left-4">
                             <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${getCategoryBadge(card.category)}`}>
@@ -483,7 +488,7 @@ export default function ActivitiesPage() {
                             </h3>
                           </div>
                         </div>
-                      
+
                         <div className="relative p-5">
                           {/* Date */}
                           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300 mb-4">
@@ -527,14 +532,14 @@ export default function ActivitiesPage() {
                             >
                               {/* Timeline dot */}
                               <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full border-2 border-white dark:border-slate-900 bg-gradient-to-br ${getCategoryColor(event.category)} group-hover:scale-125 transition-transform shadow-sm`} />
-                              
+
                               {/* Event Card */}
                               <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 backdrop-blur transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 shadow-sm overflow-hidden">
                                 <div className="flex flex-col sm:flex-row gap-4">
                                   {/* Image thumbnail */}
                                   <div className="relative sm:w-48 h-32 sm:h-auto overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex-shrink-0">
-                                    <img 
-                                      src={event.imageUrl} 
+                                    <img
+                                      src={event.imageUrl}
                                       alt={event.title}
                                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                       onError={(e) => {
@@ -554,8 +559,8 @@ export default function ActivitiesPage() {
                                           {event.category.replace('-', ' ').toUpperCase()}
                                         </span>
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(getEventStatus(event.date))}`}>
-                                          {getEventStatus(event.date) === 'completed' ? 'Completed' : 
-                                           getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                                          {getEventStatus(event.date) === 'completed' ? 'Completed' :
+                                            getEventStatus(event.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
                                         </span>
                                         <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
                                           <Clock className="h-3 w-3" />
@@ -594,8 +599,8 @@ export default function ActivitiesPage() {
               <div className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl">
                 {/* Featured Image Header */}
                 <div className="relative h-64 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                  <img 
-                    src={selected.imageUrl} 
+                  <img
+                    src={selected.imageUrl}
                     alt={selected.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -605,7 +610,7 @@ export default function ActivitiesPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(selected.category)} opacity-20`} />
-                  
+
                   {/* Close button */}
                   <button
                     onClick={close}
@@ -628,8 +633,8 @@ export default function ActivitiesPage() {
                   {/* Status badge */}
                   <div className="absolute top-16 right-4">
                     <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${getStatusBadge(getEventStatus(selected.date))}`}>
-                      {getEventStatus(selected.date) === 'completed' ? 'Completed' : 
-                       getEventStatus(selected.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
+                      {getEventStatus(selected.date) === 'completed' ? 'Completed' :
+                        getEventStatus(selected.date) === 'ongoing' ? 'Live Now' : 'Upcoming'}
                     </span>
                   </div>
 
@@ -640,7 +645,7 @@ export default function ActivitiesPage() {
                     </h2>
                   </div>
                 </div>
-                
+
                 {/* Content */}
                 <div className="relative">
 
@@ -678,8 +683,8 @@ export default function ActivitiesPage() {
                         <h3 className="font-semibold text-slate-900 dark:text-slate-100">About this Event</h3>
                       </div>
                       <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Join us for this exciting event organized by the Civil & Infrastructure Engineering Society. 
-                        This activity is part of our commitment to fostering knowledge sharing and professional development 
+                        Join us for this exciting event organized by the Civil & Infrastructure Engineering Society.
+                        This activity is part of our commitment to fostering knowledge sharing and professional development
                         in the field of civil engineering. More details will be announced soon. Stay tuned!
                       </p>
                     </div>

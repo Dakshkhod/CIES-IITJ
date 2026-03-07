@@ -3,10 +3,10 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import AppLayout from '@/components/layout/AppLayout';
-import { 
-  Calendar, 
-  MapPin, 
-  Users, 
+import {
+  Calendar,
+  MapPin,
+  Users,
   Clock,
   X,
   Zap,
@@ -24,7 +24,7 @@ import {
 import { getActivities as getSanityActivities } from '@/lib/sanity';
 
 // Types
-type EventCategory = 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'research';
+type EventCategory = 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'research' | 'other';
 
 interface TimelineEvent {
   id: string;
@@ -39,58 +39,237 @@ interface TimelineEvent {
 }
 
 // Fallback events data (defined outside component)
-// Updated with Calendar 2025-26 events
+// Updated with actual 2025-26 academic year events from PDF
 const FALLBACK_EVENTS: TimelineEvent[] = [
   {
     id: '1',
-    title: 'Research Presentation - PhD Scholar',
-    category: 'research',
+    title: 'PG Seminar Series 2025',
+    category: 'seminar',
     date: '2025-05-15',
-    description: 'Monthly research presentation by PhD scholars showcasing their research progress.',
+    description: 'PhD scholars presented ongoing research in various domains of Civil and Infrastructure Engineering, initiated in collaboration with CIES.',
     location: 'IIT Jodhpur Campus',
     attendees: '50+ Faculty & Students',
     images: ['/CIE Design.png']
   },
   {
     id: '2',
-    title: 'Guest Lecture by Dr. Mohamed Shader Kahanun',
-    category: 'seminar',
-    date: '2025-10-20',
-    description: 'Guest lecture by Dr. Mohamed Shader Kahanun on advanced topics in civil engineering.',
+    title: 'Congratulations to Class of 2025',
+    category: 'other',
+    date: '2025-06-01',
+    description: 'CIES congratulated the Class of 2025 (B.Tech 2021 & M.Tech 2023) on their convocation.',
     location: 'IIT Jodhpur Campus',
-    attendees: '100+ Attendees',
-    speaker: 'Dr. Mohamed Shader Kahanun',
+    attendees: '200+ Graduates',
     images: ['/CIE Design.png']
   },
   {
     id: '3',
-    title: 'Guest Lecture by Dr. Alkhair',
+    title: 'Seminar by Prof. Ravindra Gettu – Technology Implementation in Concrete Research',
     category: 'seminar',
-    date: '2025-10-25',
-    description: 'In-person guest lecture by Dr. Alkhair on insights of civil engineering.',
+    date: '2025-06-30',
+    description: 'Prof. Ravindra Gettu (IIT Madras) delivered a seminar titled "Technology Implementation as a Primary Aim of Research: Examples from Concrete Research." The hybrid session featured active participation.',
     location: 'IIT Jodhpur Campus',
     attendees: '100+ Attendees',
-    speaker: 'Dr. Alkhair',
+    speaker: 'Prof. Ravindra Gettu (IIT Madras)',
     images: ['/CIE Design.png']
   },
   {
     id: '4',
-    title: 'Insights of Civil Engineering - First Issue Launch',
-    category: 'research',
-    date: '2025-11-28',
-    description: 'Launch event for the first issue of "Insights of Civil Engineering" magazine (Issue 1800-1801).',
+    title: 'UG Orientation – Batch of 2025',
+    category: 'other',
+    date: '2025-08-05',
+    description: 'CIES conducted the Undergraduate Orientation for the 2025 batch. Included a welcome by the HoD, academic guidance, and interactions with the Student Council.',
     location: 'IIT Jodhpur Campus',
-    attendees: '80+ Attendees',
-    images: ['/CIE Design.png']
+    attendees: '80+ Students',
+    images: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg']
   },
   {
     id: '5',
-    title: 'EDIFICIO - Hackathon & Ideathon',
-    category: 'edificio',
-    date: '2025-12-01',
-    description: 'Annual technical festival featuring hackathon, ideathon, and competitions.',
+    title: 'Prof. Akshay Gupta – Excellence in Doctoral Research Award',
+    category: 'research',
+    date: '2025-09-05',
+    description: 'CIES congratulated Prof. Akshay Gupta for receiving the Excellence in Doctoral Research Award at IIT Roorkee for his contributions to Transportation Engineering.',
+    location: 'IIT Roorkee',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '6',
+    title: "Engineer's Day 2025",
+    category: 'other',
+    date: '2025-09-15',
+    description: 'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India.',
     location: 'IIT Jodhpur Campus',
-    attendees: '500+ Participants',
+    attendees: '100+ Attendees',
+    images: ['/Other images/1757908205139.jpeg']
+  },
+  {
+    id: '7',
+    title: 'Plantation Drive with Green Cell',
+    category: 'other',
+    date: '2025-09-20',
+    description: 'Organized on campus with the Green Cell. Prof. Mitali Mukerji (PIC-Green Cell) promoted the initiative, which saw active participation from postgraduate members.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '40+ Participants',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '8',
+    title: 'Online Talk – Prof. Masiur Rahaman on Julia for Numerical Computations',
+    category: 'seminar',
+    date: '2025-09-27',
+    description: 'Online talk by Prof. Mohammad Masiur Rahaman (IIT Bhubaneswar) on "Julia for efficient numerical computations," focusing on applications in structural engineering research.',
+    location: 'Online (IIT Jodhpur)',
+    attendees: '60+ Attendees',
+    speaker: 'Prof. Mohammad Masiur Rahaman (IIT Bhubaneswar)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '9',
+    title: 'Guest Lecture – Prof. Ligy Philip on Sustainable Wastewater Treatment',
+    category: 'seminar',
+    date: '2025-10-03',
+    description: 'Guest lecture by Prof. Ligy Philip (IIT Madras) on "Integrating sustainability and circular economy principles in wastewater treatment," highlighting innovative environmental engineering solutions.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '80+ Attendees',
+    speaker: 'Prof. Ligy Philip (IIT Madras)',
+    images: ['/Other images/1759303624829.jpeg']
+  },
+  {
+    id: '10',
+    title: 'Survey of India Workshop on Geospatial Technologies',
+    category: 'workshop',
+    date: '2025-10-11',
+    description: 'Collaborative workshop on modern geospatial technologies, introduced participants to CORS, geoid models, and the Survey of India Map Portal.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '60+ Participants',
+    images: ['/Other images/PXL_20251011_075907856.jpg']
+  },
+  {
+    id: '11',
+    title: 'Diwali Celebration',
+    category: 'other',
+    date: '2025-10-20',
+    description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '150+ Attendees',
+    images: ['/Other images/DSC03840.JPG']
+  },
+  {
+    id: '12',
+    title: 'PG Seminar – Keshav Saini on Hybrid High Strength Steel I-Beams',
+    category: 'seminar',
+    date: '2025-10-20',
+    description: 'Mr. Keshav Saini presented on "Structural Performance of Hybrid High Strength Steel I-Beams," highlighting lighter and more efficient structural systems.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '40+ Attendees',
+    speaker: 'Keshav Saini',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '13',
+    title: 'PG Seminar – Koduru Sandeep on Moisture Resistance of Cold Mix Asphalt',
+    category: 'seminar',
+    date: '2025-10-25',
+    description: 'Mr. Koduru Sandeep presented on "Improving Moisture Resistance of Cold Mix Asphalt through Aggregate Surface Modification," emphasizing sustainable pavement solutions.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '40+ Attendees',
+    speaker: 'Koduru Sandeep',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '14',
+    title: 'Seminar – Dr. Ashutosh Kumar on Climate Resilience in Geotechnical Engineering',
+    category: 'seminar',
+    date: '2026-01-03',
+    description: 'Seminar by Dr. Ashutosh Kumar (IIT Mandi) on "Climate Resilience in Geotechnical Engineering: Why It Matters and How to Achieve It."',
+    location: 'IIT Jodhpur Campus',
+    attendees: '70+ Attendees',
+    speaker: 'Dr. Ashutosh Kumar (IIT Mandi)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '15',
+    title: 'Seminar – Shri S.L. Kapil on Geophysical Technologies for Dam Projects',
+    category: 'seminar',
+    date: '2026-01-07',
+    description: 'Seminar by Shri S. L. Kapil on "Cutting Edge Geophysical Technologies for Dam and Infrastructure Projects."',
+    location: 'IIT Jodhpur Campus',
+    attendees: '60+ Attendees',
+    speaker: 'Shri S. L. Kapil',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '16',
+    title: 'Seminar – Prof. Animesh Das on Studying Pavement Materials Through Imaging',
+    category: 'seminar',
+    date: '2026-01-09',
+    description: 'Seminar by Prof. Animesh Das (IIT Kanpur) on "Studying Pavement Materials Through Imaging," highlighting advanced techniques to understand material behavior like bitumen bonding.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '70+ Attendees',
+    speaker: 'Prof. Animesh Das (IIT Kanpur)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '17',
+    title: 'Seminar – Dr. Deeksha Arya on Multinational Road Damage Detection AI',
+    category: 'seminar',
+    date: '2026-01-29',
+    description: 'Seminar by Dr. Deeksha Arya (University of Tokyo) on "Can One Country\'s AI Work Elsewhere? Evidence from Multinational Road Damage Detection Research."',
+    location: 'IIT Jodhpur Campus',
+    attendees: '60+ Attendees',
+    speaker: 'Dr. Deeksha Arya (University of Tokyo)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '18',
+    title: 'Seminar – Prof. Nemkumar Banthia on Nano-Materials in Concrete',
+    category: 'seminar',
+    date: '2026-02-03',
+    description: 'Technical talk by Prof. Nemkumar Banthia (University of British Columbia) on "The Promise of Nano-Materials as Functional Additives in Concrete," focusing on UHPC and sustainable infrastructure.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '80+ Attendees',
+    speaker: 'Prof. Nemkumar Banthia (University of British Columbia)',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '19',
+    title: 'BIS Essay Competition – Role of Standards in Engineering Life',
+    category: 'competition',
+    date: '2026-02-13',
+    description: 'Essay writing competition on "Role of Standards in Engineering Life" in collaboration with the Bureau of Indian Standards (BIS).',
+    location: 'IIT Jodhpur Campus',
+    attendees: '50+ Participants',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '20',
+    title: 'Seminar – Dr. Sarath Chandra Reddy on Multiscale Landslide Dynamics',
+    category: 'seminar',
+    date: '2026-02-27',
+    description: 'Technical seminar on "Multiscale Mechanisms of Landslide Dynamics," presenting experimental and simulation-based studies.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '60+ Attendees',
+    speaker: 'Dr. Sarath Chandra Reddy Nallala',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '21',
+    title: 'Alumni Meet – Abhinav Singh Tawar on Placement Preparation',
+    category: 'other',
+    date: '2026-02-28',
+    description: 'Interaction session with Abhinav Singh Tawar focused on placement preparation, resume building, and aligning academic profiles.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '40+ Students',
+    speaker: 'Abhinav Singh Tawar',
+    images: ['/CIE Design.png']
+  },
+  {
+    id: '22',
+    title: 'M.Tech Alumni Meet – Batch 2020 on Industry Expectations',
+    category: 'other',
+    date: '2026-02-28',
+    description: 'Alumni interaction session with M.Tech CIE (Environment) Batch 2020, focusing on industry expectations and placement readiness.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '30+ Students',
     images: ['/CIE Design.png']
   }
 ];
@@ -106,9 +285,9 @@ export default function RoadmapPage() {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   // All hooks must be called before any conditional returns
-  // Sort events by date
+  // Sort events by date (descending order: newest to oldest)
   const sortedEvents = useMemo(() => {
-    return [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    return [...events].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [events]);
 
   // Filter events
@@ -122,9 +301,9 @@ export default function RoadmapPage() {
     async function fetchRoadmapData() {
       try {
         setLoading(true);
-        
+
         const allActivities = await getSanityActivities();
-        
+
         // Map Sanity category to roadmap category
         const categoryMap: Record<string, EventCategory> = {
           'workshop': 'workshop',
@@ -134,7 +313,7 @@ export default function RoadmapPage() {
           'edificio': 'edificio',
           'other': 'research',
         };
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: TimelineEvent[] = allActivities.map((activity: any) => ({
           id: activity._id,
@@ -146,7 +325,7 @@ export default function RoadmapPage() {
           attendees: activity.attendeesCount ? `${activity.attendeesCount}+ Participants` : undefined,
           images: activity.coverImage ? [activity.coverImage] : ['/CIE Design.png'],
         }));
-        
+
         if (transformedEvents.length > 0) {
           setEvents(transformedEvents);
         }
@@ -157,7 +336,7 @@ export default function RoadmapPage() {
         setLoading(false);
       }
     }
-    
+
     fetchRoadmapData();
   }, []);
 
@@ -166,7 +345,7 @@ export default function RoadmapPage() {
     const interval = setInterval(() => {
       setCurrentMonth(new Date());
     }, 1000 * 60 * 60); // Update every hour
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -174,8 +353,8 @@ export default function RoadmapPage() {
   const currentMonthEvents = useMemo(() => {
     return sortedEvents.filter(event => {
       const eventDate = new Date(event.date);
-      return eventDate.getMonth() === currentMonth.getMonth() && 
-             eventDate.getFullYear() === currentMonth.getFullYear();
+      return eventDate.getMonth() === currentMonth.getMonth() &&
+        eventDate.getFullYear() === currentMonth.getFullYear();
     });
   }, [sortedEvents, currentMonth]);
 
@@ -183,7 +362,7 @@ export default function RoadmapPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedEvent) return;
-      
+
       if (e.key === 'Escape') {
         setSelectedEvent(null);
       } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
@@ -233,7 +412,7 @@ export default function RoadmapPage() {
     const now = new Date();
     const event = new Date(eventDate);
     const daysDiff = Math.floor((event.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    
+
     if (daysDiff < -7) return 'past';
     if (daysDiff > 7) return 'future';
     return 'present';
@@ -251,7 +430,8 @@ export default function RoadmapPage() {
     'site-visit': { icon: Building2, color: 'from-green-500 to-emerald-500', glow: 'shadow-green-500/50' },
     competition: { icon: Award, color: 'from-orange-500 to-red-500', glow: 'shadow-orange-500/50' },
     edificio: { icon: TrendingUp, color: 'from-yellow-500 to-amber-500', glow: 'shadow-yellow-500/50' },
-    research: { icon: Sparkles, color: 'from-indigo-500 to-violet-500', glow: 'shadow-indigo-500/50' }
+    research: { icon: Sparkles, color: 'from-indigo-500 to-violet-500', glow: 'shadow-indigo-500/50' },
+    other: { icon: Sparkles, color: 'from-slate-500 to-gray-500', glow: 'shadow-slate-500/50' }
   };
 
   return (
@@ -272,7 +452,7 @@ export default function RoadmapPage() {
               transition={{ duration: shouldReduceMotion ? 0 : 0.8 }}
             >
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                <motion.div 
+                <motion.div
                   className="relative p-3 sm:p-4 rounded-xl bg-yellow-500/10 dark:bg-cyan-500/10 border-2 border-yellow-500/40 dark:border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-yellow-500/10 dark:shadow-cyan-500/20"
                 >
                   <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-slate-700 dark:text-cyan-400" />
@@ -295,7 +475,7 @@ export default function RoadmapPage() {
                   </h1>
                   <p className="text-slate-600 dark:text-cyan-300/70 mt-1 sm:mt-2 flex items-center gap-2 text-sm sm:text-base">
                     <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
-                     Academic Year 2025-26
+                    Academic Year 2025-26
                   </p>
                 </div>
               </div>
@@ -322,7 +502,7 @@ export default function RoadmapPage() {
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-4 sm:mb-6">
-              <motion.h2 
+              <motion.h2
                 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-1"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -333,7 +513,7 @@ export default function RoadmapPage() {
                 {currentMonthEvents.length} {currentMonthEvents.length === 1 ? 'Event' : 'Events'} This Month
               </p>
               {currentMonthEvents.length > 0 && (
-                <motion.p 
+                <motion.p
                   className="text-slate-500 dark:text-cyan-500/60 text-xs sm:text-sm flex items-center justify-center gap-2"
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -376,23 +556,22 @@ export default function RoadmapPage() {
                               />
                             )}
                           </div>
-                          
+
                           {/* Title */}
                           <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-2 text-center line-clamp-2">
                             {event.title}
                           </h4>
-                          
+
                           {/* Date Badge */}
-                          <div className={`px-3 py-1 rounded-full text-xs font-semibold text-center ${
-                            status === 'present'
-                              ? 'bg-green-500/20 border border-green-500/50 text-green-700 dark:text-green-300'
-                              : status === 'past'
+                          <div className={`px-3 py-1 rounded-full text-xs font-semibold text-center ${status === 'present'
+                            ? 'bg-green-500/20 border border-green-500/50 text-green-700 dark:text-green-300'
+                            : status === 'past'
                               ? 'bg-slate-200 border border-slate-300 text-slate-600 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-400'
                               : 'bg-blue-500/20 border border-blue-500/50 text-blue-700 dark:text-blue-300'
-                          }`}>
+                            }`}>
                             {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </div>
-                          
+
                           {/* Location */}
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
                             <MapPin className="h-3 w-3" />
@@ -418,9 +597,9 @@ export default function RoadmapPage() {
               {/* Diagonal Beam - Connecting Line Through Events */}
               <div className="absolute inset-0 flex items-center pointer-events-none overflow-hidden z-0">
                 {/* Main connecting beam */}
-                <motion.div 
+                <motion.div
                   className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-yellow-400 dark:via-cyan-400 to-transparent shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
-                  style={{ 
+                  style={{
                     left: '-10%',
                     top: '58%',
                     transform: 'rotate(-8deg)'
@@ -445,9 +624,9 @@ export default function RoadmapPage() {
                   />
                 </motion.div>
                 {/* Glow layer */}
-                <motion.div 
+                <motion.div
                   className="absolute w-[120%] h-8 bg-gradient-to-r from-transparent via-yellow-400/30 dark:via-cyan-400/30 to-transparent blur-xl"
-                  style={{ 
+                  style={{
                     left: '-10%',
                     top: '58%',
                     transform: 'rotate(-8deg)'
@@ -468,11 +647,11 @@ export default function RoadmapPage() {
                   const config = categoryConfig[event.category];
                   const Icon = config.icon;
                   const status = getEventStatus(event.date);
-                  
+
                   // Position events along the diagonal beam
                   const totalEvents = currentMonthEvents.length;
                   const progressPercent = index / Math.max(totalEvents - 1, 1);
-                  
+
                   const leftPercent = 10 + progressPercent * 70;
                   const bottomPercent = 36.5 + progressPercent * (70 * 0.14);
 
@@ -507,16 +686,15 @@ export default function RoadmapPage() {
                             ease: 'easeInOut'
                           }}
                         />
-                        
+
                         {/* Icon Container - Node */}
                         <motion.div
-                          className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${config.color} border-2 ${
-                            status === 'present' 
-                              ? 'border-green-400' 
-                              : status === 'past'
+                          className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${config.color} border-2 ${status === 'present'
+                            ? 'border-green-400'
+                            : status === 'past'
                               ? 'border-slate-600'
                               : 'border-cyan-400'
-                          } backdrop-blur-sm flex items-center justify-center transition-all duration-300 shadow-xl z-10`}
+                            } backdrop-blur-sm flex items-center justify-center transition-all duration-300 shadow-xl z-10`}
                           animate={status === 'present' ? {
                             boxShadow: [
                               '0 0 20px rgba(34,197,94,0.5)',
@@ -537,10 +715,9 @@ export default function RoadmapPage() {
                             ease: 'easeInOut'
                           }}
                         >
-                          <Icon className={`h-7 w-7 ${
-                            status === 'past' ? 'text-slate-500' : 'text-white'
-                          }`} />
-                          
+                          <Icon className={`h-7 w-7 ${status === 'past' ? 'text-slate-500' : 'text-white'
+                            }`} />
+
                           {/* Live indicator */}
                           {status === 'present' && (
                             <motion.div
@@ -562,15 +739,14 @@ export default function RoadmapPage() {
                           <h4 className="text-[11px] font-bold text-slate-800 dark:text-white mb-1 line-clamp-2 leading-tight">
                             {event.title}
                           </h4>
-                          <div className={`px-2 py-0.5 rounded-full text-[9px] font-semibold inline-block ${
-                            status === 'present'
-                              ? 'bg-green-500/30 border border-green-500/60 text-green-800 dark:bg-green-500/20 dark:border-green-400/50 dark:text-green-300'
-                              : status === 'past'
+                          <div className={`px-2 py-0.5 rounded-full text-[9px] font-semibold inline-block ${status === 'present'
+                            ? 'bg-green-500/30 border border-green-500/60 text-green-800 dark:bg-green-500/20 dark:border-green-400/50 dark:text-green-300'
+                            : status === 'past'
                               ? 'bg-slate-200 border border-slate-400/50 text-slate-700 dark:bg-slate-800/50 dark:border-slate-600/30 dark:text-slate-500'
                               : 'bg-slate-100 border border-slate-400/60 text-slate-800 dark:bg-cyan-500/20 dark:border-cyan-400/50 dark:text-cyan-300'
-                          } backdrop-blur-sm`}>
-                            {new Date(event.date).toLocaleDateString('en-US', { 
-                              month: 'short', 
+                            } backdrop-blur-sm`}>
+                            {new Date(event.date).toLocaleDateString('en-US', {
+                              month: 'short',
                               day: 'numeric'
                             })}
                           </div>
@@ -593,9 +769,9 @@ export default function RoadmapPage() {
                                 </h4>
                                 <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1">
                                   <Calendar className="h-3 w-3" />
-                                  {new Date(event.date).toLocaleDateString('en-US', { 
+                                  {new Date(event.date).toLocaleDateString('en-US', {
                                     weekday: 'long',
-                                    month: 'long', 
+                                    month: 'long',
                                     day: 'numeric',
                                     year: 'numeric'
                                   })}
@@ -635,7 +811,7 @@ export default function RoadmapPage() {
 
             {/* Legend */}
             {currentMonthEvents.length > 0 && (
-              <motion.div 
+              <motion.div
                 className="mt-4 sm:mt-6 flex justify-center gap-2 sm:gap-4 flex-wrap px-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -664,11 +840,10 @@ export default function RoadmapPage() {
             <div className="flex overflow-x-auto gap-2 scrollbar-hide pb-1 -mx-1 px-1">
               <button
                 onClick={() => setActiveFilter('all')}
-                className={`flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${
-                  activeFilter === 'all'
-                    ? 'bg-cyan-500/20 dark:bg-cyan-500/20 border-cyan-500/70 dark:border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-lg shadow-cyan-500/30'
-                    : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                }`}
+                className={`flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${activeFilter === 'all'
+                  ? 'bg-cyan-500/20 dark:bg-cyan-500/20 border-cyan-500/70 dark:border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-lg shadow-cyan-500/30'
+                  : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                  }`}
               >
                 All Events
               </button>
@@ -678,11 +853,10 @@ export default function RoadmapPage() {
                   <button
                     key={key}
                     onClick={() => setActiveFilter(key)}
-                    className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${
-                      activeFilter === key
-                        ? `bg-gradient-to-r ${config.color} border-transparent text-white shadow-lg ${config.glow}`
-                        : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                    }`}
+                    className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${activeFilter === key
+                      ? `bg-gradient-to-r ${config.color} border-transparent text-white shadow-lg ${config.glow}`
+                      : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                      }`}
                   >
                     <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="capitalize whitespace-nowrap">{key.replace('-', ' ')}</span>
@@ -721,7 +895,7 @@ export default function RoadmapPage() {
                     <p className="text-cyan-400/70 mt-1">{getCurrentMonthName()} • {currentMonthEvents.length} Events</p>
                   </div>
                 </div>
-                
+
                 {/* Live Clock */}
                 <motion.div
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-cyan-500/30"
@@ -740,10 +914,10 @@ export default function RoadmapPage() {
                 >
                   <Clock className="h-4 w-4 text-cyan-400" />
                   <span className="text-sm text-cyan-300 font-mono">
-                    {currentMonth.toLocaleTimeString('en-US', { 
-                      hour: '2-digit', 
+                    {currentMonth.toLocaleTimeString('en-US', {
+                      hour: '2-digit',
                       minute: '2-digit',
-                      hour12: true 
+                      hour12: true
                     })}
                   </span>
                 </motion.div>
@@ -755,7 +929,7 @@ export default function RoadmapPage() {
                   const config = categoryConfig[event.category];
                   const Icon = config.icon;
                   const status = getEventStatus(event.date);
-                  
+
                   return (
                     <motion.div
                       key={event.id}
@@ -766,14 +940,13 @@ export default function RoadmapPage() {
                       onClick={() => setSelectedEvent(event)}
                       className="relative group cursor-pointer"
                     >
-                      <motion.div 
-                        className={`relative rounded-xl border-2 overflow-hidden transition-all duration-300 ${
-                          status === 'past'
-                            ? 'bg-slate-800/50 border-cyan-500/50 hover:border-cyan-400'
-                            : status === 'present'
+                      <motion.div
+                        className={`relative rounded-xl border-2 overflow-hidden transition-all duration-300 ${status === 'past'
+                          ? 'bg-slate-800/50 border-cyan-500/50 hover:border-cyan-400'
+                          : status === 'present'
                             ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-cyan-400 shadow-lg shadow-cyan-500/30'
                             : 'bg-slate-800/50 border-cyan-500/50 hover:border-cyan-400'
-                        }`}
+                          }`}
                         animate={status === 'present' ? {
                           borderColor: ['rgba(6,182,212,1)', 'rgba(34,197,94,1)', 'rgba(6,182,212,1)']
                         } : {}}
@@ -875,13 +1048,12 @@ export default function RoadmapPage() {
                       whileHover={{ scale: shouldReduceMotion ? 1 : 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className={`relative rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all duration-500 ${
-                        status === 'past'
-                          ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl'
-                          : status === 'future'
+                      <div className={`relative rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all duration-500 ${status === 'past'
+                        ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl'
+                        : status === 'future'
                           ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50'
                           : 'bg-white/95 dark:bg-slate-900/70 border-cyan-500/80 dark:border-cyan-500 shadow-2xl shadow-cyan-500/60'
-                      }`}>
+                        }`}>
                         {/* Holographic effect for future events */}
                         {status === 'future' && (
                           <motion.div
@@ -916,13 +1088,12 @@ export default function RoadmapPage() {
 
                         <div className="relative p-4 sm:p-6 flex items-start gap-3 sm:gap-6">
                           {/* Icon */}
-                          <div className={`relative p-2.5 sm:p-4 rounded-lg sm:rounded-xl flex-shrink-0 ${
-                            status === 'past'
-                              ? `bg-gradient-to-br ${config.color} shadow-lg`
-                              : `bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`
-                          }`}>
+                          <div className={`relative p-2.5 sm:p-4 rounded-lg sm:rounded-xl flex-shrink-0 ${status === 'past'
+                            ? `bg-gradient-to-br ${config.color} shadow-lg`
+                            : `bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`
+                            }`}>
                             <Icon className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
-                            
+
                             {/* Pulse effect for present */}
                             {status === 'present' && (
                               <motion.div
@@ -944,29 +1115,26 @@ export default function RoadmapPage() {
                           <div className="flex-1 text-left min-w-0">
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
                               <div className="min-w-0">
-                                <h3 className={`text-base sm:text-xl font-bold mb-1 sm:mb-2 line-clamp-2 ${
-                                  status === 'past'
-                                    ? 'text-slate-500 dark:text-slate-500'
-                                    : status === 'future'
+                                <h3 className={`text-base sm:text-xl font-bold mb-1 sm:mb-2 line-clamp-2 ${status === 'past'
+                                  ? 'text-slate-500 dark:text-slate-500'
+                                  : status === 'future'
                                     ? 'text-slate-800 dark:text-cyan-300'
                                     : 'text-slate-800 dark:text-cyan-200'
-                                }`}>
+                                  }`}>
                                   {event.title}
                                 </h3>
                                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm">
-                                  <span className={`flex items-center gap-1 sm:gap-2 ${
-                                    status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
-                                  }`}>
+                                  <span className={`flex items-center gap-1 sm:gap-2 ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
+                                    }`}>
                                     <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
-                                    {new Date(event.date).toLocaleDateString('en-US', { 
-                                      month: 'short', 
-                                      day: 'numeric', 
-                                      year: 'numeric' 
+                                    {new Date(event.date).toLocaleDateString('en-US', {
+                                      month: 'short',
+                                      day: 'numeric',
+                                      year: 'numeric'
                                     })}
                                   </span>
-                                  <span className={`flex items-center gap-1 sm:gap-2 truncate ${
-                                    status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
-                                  }`}>
+                                  <span className={`flex items-center gap-1 sm:gap-2 truncate ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
+                                    }`}>
                                     <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                                     <span className="truncate">{event.location}</span>
                                   </span>
@@ -974,27 +1142,24 @@ export default function RoadmapPage() {
                               </div>
 
                               {/* Status badge */}
-                              <div className={`self-start flex-shrink-0 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${
-                                status === 'past'
-                                  ? 'bg-slate-200 dark:bg-slate-800/30 border-slate-400 dark:border-slate-700/30 text-slate-600 dark:text-slate-600'
-                                  : status === 'future'
+                              <div className={`self-start flex-shrink-0 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${status === 'past'
+                                ? 'bg-slate-200 dark:bg-slate-800/30 border-slate-400 dark:border-slate-700/30 text-slate-600 dark:text-slate-600'
+                                : status === 'future'
                                   ? 'bg-slate-100 dark:bg-cyan-500/20 border-slate-400 dark:border-cyan-500/50 text-slate-800 dark:text-cyan-300'
                                   : 'bg-green-500/30 dark:bg-cyan-500/30 border-green-500/60 dark:border-cyan-500 text-green-800 dark:text-cyan-200 animate-pulse'
-                              }`}>
+                                }`}>
                                 {status === 'past' ? 'Completed' : status === 'future' ? 'Upcoming' : 'Active'}
                               </div>
                             </div>
 
-                            <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-none ${
-                              status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-300/60'
-                            }`}>
+                            <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-none ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-300/60'
+                              }`}>
                               {event.description}
                             </p>
 
                             {event.speaker && (
-                              <div className={`mt-2 sm:mt-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm ${
-                                status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/80'
-                              }`}>
+                              <div className={`mt-2 sm:mt-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/80'
+                                }`}>
                                 <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                                 <span className="truncate">{event.speaker}</span>
                               </div>
@@ -1048,28 +1213,28 @@ export default function RoadmapPage() {
                           const config = categoryConfig[selectedEvent.category];
                           const Icon = config.icon;
                           return (
-                            <motion.div 
+                            <motion.div
                               className={`p-3 sm:p-4 rounded-xl bg-gradient-to-br ${config.color} shadow-lg ${config.glow} flex-shrink-0`}
                               animate={{
                                 boxShadow: [
-                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' : 
-                                              config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
-                                              config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
-                                              config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
-                                              config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
-                                              'rgba(99, 102, 241, 0.5)'}`,
-                                  `0 0 40px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.8)' : 
-                                              config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.8)' :
-                                              config.glow.includes('green') ? 'rgba(34, 197, 94, 0.8)' :
-                                              config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.8)' :
-                                              config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.8)' :
-                                              'rgba(99, 102, 241, 0.8)'}`,
-                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' : 
-                                              config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
-                                              config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
-                                              config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
-                                              config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
-                                              'rgba(99, 102, 241, 0.5)'}`
+                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' :
+                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
+                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
+                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
+                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
+                                            'rgba(99, 102, 241, 0.5)'}`,
+                                  `0 0 40px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.8)' :
+                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.8)' :
+                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.8)' :
+                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.8)' :
+                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.8)' :
+                                            'rgba(99, 102, 241, 0.8)'}`,
+                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' :
+                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
+                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
+                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
+                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
+                                            'rgba(99, 102, 241, 0.5)'}`
                                 ]
                               }}
                               transition={{
@@ -1083,14 +1248,13 @@ export default function RoadmapPage() {
                           );
                         })()}
                         <div className="min-w-0">
-                          <span className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-1 sm:mb-2 ${
-                            categoryConfig[selectedEvent.category].color.includes('purple') ? 'bg-purple-500/30 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/60 dark:border-purple-500/50' :
+                          <span className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-1 sm:mb-2 ${categoryConfig[selectedEvent.category].color.includes('purple') ? 'bg-purple-500/30 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/60 dark:border-purple-500/50' :
                             categoryConfig[selectedEvent.category].color.includes('blue') ? 'bg-slate-500/30 dark:bg-blue-500/20 text-slate-700 dark:text-blue-300 border border-slate-500/60 dark:border-blue-500/50' :
-                            categoryConfig[selectedEvent.category].color.includes('green') ? 'bg-green-500/30 dark:bg-green-500/20 text-green-700 dark:text-green-300 border border-green-500/60 dark:border-green-500/50' :
-                            categoryConfig[selectedEvent.category].color.includes('orange') ? 'bg-orange-500/30 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-500/60 dark:border-orange-500/50' :
-                            categoryConfig[selectedEvent.category].color.includes('yellow') ? 'bg-yellow-500/30 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-500/60 dark:border-yellow-500/50' :
-                            'bg-indigo-500/30 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/60 dark:border-indigo-500/50'
-                          }`}>
+                              categoryConfig[selectedEvent.category].color.includes('green') ? 'bg-green-500/30 dark:bg-green-500/20 text-green-700 dark:text-green-300 border border-green-500/60 dark:border-green-500/50' :
+                                categoryConfig[selectedEvent.category].color.includes('orange') ? 'bg-orange-500/30 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-500/60 dark:border-orange-500/50' :
+                                  categoryConfig[selectedEvent.category].color.includes('yellow') ? 'bg-yellow-500/30 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-500/60 dark:border-yellow-500/50' :
+                                    'bg-indigo-500/30 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/60 dark:border-indigo-500/50'
+                            }`}>
                             {selectedEvent.category.replace('-', ' ').toUpperCase()}
                           </span>
                           <h2 className="text-lg sm:text-2xl font-bold text-slate-800 dark:text-cyan-200 line-clamp-2">{selectedEvent.title}</h2>
@@ -1118,7 +1282,7 @@ export default function RoadmapPage() {
                               e.currentTarget.src = '/CIE Design.png';
                             }}
                           />
-                          
+
                           {selectedEvent.images.length > 1 && (
                             <>
                               <button
@@ -1143,7 +1307,7 @@ export default function RoadmapPage() {
                               >
                                 <ChevronRight className="h-6 w-6" />
                               </button>
-                              
+
                               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                                 {selectedEvent.images.map((_, idx) => (
                                   <button
@@ -1152,9 +1316,8 @@ export default function RoadmapPage() {
                                       e.stopPropagation();
                                       setCurrentImageIndex(idx);
                                     }}
-                                    className={`h-2 rounded-full transition-all ${
-                                      idx === currentImageIndex ? 'w-8 bg-cyan-400' : 'w-2 bg-white/50'
-                                    }`}
+                                    className={`h-2 rounded-full transition-all ${idx === currentImageIndex ? 'w-8 bg-cyan-400' : 'w-2 bg-white/50'
+                                      }`}
                                     aria-label={`Go to image ${idx + 1}`}
                                   />
                                 ))}
@@ -1173,11 +1336,11 @@ export default function RoadmapPage() {
                           <span className="font-semibold">Date</span>
                         </div>
                         <p className="text-slate-900 dark:text-white font-medium">
-                          {new Date(selectedEvent.date).toLocaleDateString('en-US', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
+                          {new Date(selectedEvent.date).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
                           })}
                         </p>
                       </div>

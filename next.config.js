@@ -32,9 +32,10 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
+          // SAMEORIGIN allows Vercel deployment preview iframe; use DENY if you prefer stricter security
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-Content-Type-Options',

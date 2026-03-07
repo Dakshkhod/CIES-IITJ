@@ -200,6 +200,7 @@ export default function EventsPage() {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: EventItem[] = eventsOnly.map((event: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const apiPhotos = Array.isArray(event.images) ? event.images.filter((u: any) => u && typeof u === 'string') : [];
           const allPhotos = [];
           if (event.coverImage && typeof event.coverImage === 'string') allPhotos.push(event.coverImage);

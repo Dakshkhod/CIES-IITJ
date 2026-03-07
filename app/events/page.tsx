@@ -32,13 +32,13 @@ const FALLBACK_EVENTS: EventItem[] = [
   },
   {
     id: '2',
-    title: 'Orientation of Batch 25 (PG)',
-    date: '2025-07-15',
-    category: 'orientation',
-    description: 'Welcome session for new postgraduate students joining the Civil & Infrastructure Engineering program.',
+    title: 'Farewell – Class of 2025 (B.Tech 2021 & M.Tech 2023)',
+    date: '2025-06-14',
+    category: 'celebration',
+    description: 'CIES organized a farewell for the graduating Class of 2025. The department celebrated their journey at IIT Jodhpur and wished them success in their careers and future endeavors.',
     location: 'IIT Jodhpur Campus',
-    attendees: '50+ Students',
-    photos: ['/Other images/DSC01359.JPG'],
+    attendees: '180+ Graduates',
+    photos: ['/CIE Design.png'],
     status: 'completed'
   },
   {
@@ -65,24 +65,68 @@ const FALLBACK_EVENTS: EventItem[] = [
   },
   {
     id: '5',
-    title: 'Freshers (UG)',
+    title: "Teacher's Day 2025",
+    date: '2025-09-05',
+    category: 'celebration',
+    description: "Teacher's Day 2025 was celebrated with a community gathering and sports event. Students honored department faculty and expressed gratitude for their guidance and support.",
+    location: 'IIT Jodhpur Campus',
+    attendees: '150+ Attendees',
+    photos: ['/Other images/DSC01359.JPG'],
+    status: 'completed'
+  },
+  {
+    id: '6',
+    title: 'Freshers (UG) – Batch of 2025',
     date: '2025-10-05',
     category: 'cultural',
-    description: 'Welcome celebration for undergraduate students featuring cultural performances and interactive activities.',
+    description: 'Welcome celebration for the undergraduate Batch of 2025. The event featured cultural performances, ice-breakers, and introductions to CIES and department life.',
     location: 'IIT Jodhpur Auditorium',
     attendees: '120+ Attendees',
     photos: ['/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg'],
     status: 'completed'
   },
   {
-    id: '6',
-    title: 'Diwali Celebration',
+    id: '7',
+    title: 'Diwali Celebration 2025',
     date: '2025-10-20',
     category: 'celebration',
-    description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
+    description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights with traditional rituals and cultural activities.',
     location: 'IIT Jodhpur Campus',
     attendees: '150+ Attendees',
     photos: ['/Other images/DSC03840.JPG'],
+    status: 'completed'
+  },
+  {
+    id: '8',
+    title: 'Diwali Celebration 2024',
+    date: '2024-11-01',
+    category: 'celebration',
+    description: 'CIES celebrated Diwali 2024 on campus with students and faculty. The festival of lights was marked by cultural programs, rangoli, and community bonding within the CIE department.',
+    location: 'IIT Jodhpur Campus',
+    attendees: '140+ Attendees',
+    photos: ['/Other images/DSC03840.JPG'],
+    status: 'completed'
+  },
+  {
+    id: '9',
+    title: "Teacher's Day 2024",
+    date: '2024-09-05',
+    category: 'celebration',
+    description: "Teacher's Day 2024 was observed by CIES with tributes to department faculty. Students organized a community gathering and sports activities to honor their teachers.",
+    location: 'IIT Jodhpur Campus',
+    attendees: '120+ Attendees',
+    photos: ['/Other images/DSC01359.JPG'],
+    status: 'completed'
+  },
+  {
+    id: '10',
+    title: 'Departmental Cricket Match 2024',
+    date: '2024-10-12',
+    category: 'celebration',
+    description: 'A friendly departmental cricket match organized by CIES, bringing together students and faculty of the CIE department for a day of sports, teamwork, and camaraderie.',
+    location: 'IIT Jodhpur Sports Ground',
+    attendees: '80+ Participants',
+    photos: ['/CIE Design.png'],
     status: 'completed'
   }
 ];
@@ -120,20 +164,16 @@ export default function EventsPage() {
 
   // Fallback images for specific events when API doesn't provide images
   const EVENT_FALLBACK_IMAGES: Record<string, string> = {
-    // Orientations & Freshers
-    'Orientation of Batch 25 (UG)': '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
-    'Freshers (UG)': '/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg',
-
-    // Teacher\'s / Engineer\'s Day
-    "Teacher's Day (Community Gathering/Sports Event)": '/Other images/DSC01359.JPG',
-    "Engineer's Day": '/Other images/1757908205139.jpeg',
-
-    // Guest lecture & workshop
-    "Guest Lecture by Prof. Ligy (IITM)": '/Other images/1759303624829.jpeg',
-    'Workshop on Geospatial (Compulsory for Geoinformatics Students)': '/Other images/PXL_20251011_075907856.jpg',
-
-    // Diwali
-    'Diwali Celebration': '/Other images/DSC03840.JPG',
+    'UG Orientation – Batch of 2025': '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
+    'Freshers (UG) – Batch of 2025': '/Other images/abba8bc8-136f-4b63-aa87-af5b605cd971.jpeg',
+    "Teacher's Day 2025": '/Other images/DSC01359.JPG',
+    "Teacher's Day 2024": '/Other images/DSC01359.JPG',
+    "Engineer's Day 2025": '/Other images/1757908205139.jpeg',
+    'Diwali Celebration 2025': '/Other images/DSC03840.JPG',
+    'Diwali Celebration 2024': '/Other images/DSC03840.JPG',
+    'Departmental Cricket Match 2024': '/CIE Design.png',
+    'Farewell – Class of 2025 (B.Tech 2021 & M.Tech 2023)': '/CIE Design.png',
+    'Congratulations to Class of 2025': '/CIE Design.png',
   };
 
   // Fetch events from Sanity

@@ -1,16 +1,45 @@
 /**
  * Seed Script: Bulk-import 2025-26 activities & events into Sanity CMS
- * 
- * Usage:
- *   SANITY_API_TOKEN=your_token node scripts/seed-2025-26-content.mjs
- * 
- * To get your Sanity API token:
- *   1. Go to https://www.sanity.io/manage/project/py29aahl
- *   2. Settings → API → Tokens → Add API Token
- *   3. Give it "Editor" permissions
+ *
+ * Usage (set SANITY_API_TOKEN first):
+ *
+ *   Linux / Mac / Git Bash (one line):
+ *     export SANITY_API_TOKEN=your_token
+ *     node scripts/seed-2025-26-content.mjs
+ *   Or: SANITY_API_TOKEN=your_token node scripts/seed-2025-26-content.mjs
+ *
+ *   Windows CMD:
+ *     set SANITY_API_TOKEN=your_token
+ *     node scripts/seed-2025-26-content.mjs
+ *
+ *   Windows PowerShell:
+ *     $env:SANITY_API_TOKEN="your_token"; node scripts/seed-2025-26-content.mjs
+ *
+ *   Or: put SANITY_API_TOKEN=your_token in .env.local (gitignored), then run:
+ *     node scripts/seed-2025-26-content.mjs
+ *
+ * Token: Sanity Manage → Project (py29aahl) → API → Tokens → Add (Editor).
  */
 
 import { createClient } from '@sanity/client'
+import { readFileSync, existsSync } from 'fs'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const projectRoot = resolve(__dirname, '..')
+
+// Load SANITY_API_TOKEN from .env.local if not set (helps on Windows)
+if (!process.env.SANITY_API_TOKEN) {
+    const envPath = resolve(projectRoot, '.env.local')
+    if (existsSync(envPath)) {
+        const content = readFileSync(envPath, 'utf8')
+        const match = content.match(/SANITY_API_TOKEN\s*=\s*["']?([^\s"']+)["']?/)
+        if (match) {
+            process.env.SANITY_API_TOKEN = match[1].trim()
+        }
+    }
+}
 
 const client = createClient({
     projectId: 'py29aahl',
@@ -202,7 +231,7 @@ const activities = [
 ]
 
 // ═══════════════════════════════════════
-//  EVENTS (4 new items → Event schema)
+//  EVENTS (Past & upcoming → Event schema)
 // ═══════════════════════════════════════
 const events = [
     {
@@ -216,14 +245,34 @@ const events = [
         attendeesCount: 200,
     },
     {
+        title: 'Farewell – Class of 2025 (B.Tech 2021 & M.Tech 2023)',
+        date: '2025-06-14',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: 'CIES organized a farewell for the graduating Class of 2025 (B.Tech 2021 & M.Tech 2023). The department celebrated their journey at IIT Jodhpur and wished them success in their careers and future endeavors.',
+        location: 'IIT Jodhpur Campus',
+        attendeesCount: 180,
+    },
+    {
         title: 'UG Orientation – Batch of 2025',
         date: '2025-08-05',
         eventCategory: 'event',
         category: 'other',
         status: 'completed',
-        description: 'CIES conducted the Undergraduate Orientation for the 2025 batch. Included a welcome by the HoD, academic guidance by the Batch Faculty Advisor, and interactions with the Student Council. Activities like hometown-mapping helped students engage.',
+        description: 'CIES conducted the Undergraduate Orientation for the 2025 batch. The session included a welcome by the HoD, academic guidance by the Batch Faculty Advisor, and interactions with the Student Council. Activities like hometown-mapping helped incoming students connect with peers.',
         location: 'IIT Jodhpur Campus',
         attendeesCount: 80,
+    },
+    {
+        title: 'Freshers (UG) – Batch of 2025',
+        date: '2025-10-05',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: 'Welcome celebration for the undergraduate Batch of 2025. The event featured cultural performances, ice-breakers, and introductions to CIES and department life, helping freshers feel at home in the CIE community.',
+        location: 'IIT Jodhpur Auditorium',
+        attendeesCount: 120,
     },
     {
         title: "Engineer's Day 2025",
@@ -231,19 +280,59 @@ const events = [
         eventCategory: 'event',
         category: 'other',
         status: 'completed',
-        description: 'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India.',
+        description: 'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India. CIES organized talks and activities celebrating engineering excellence.',
         location: 'IIT Jodhpur Campus',
         attendeesCount: 100,
     },
     {
-        title: 'Diwali Celebration',
+        title: "Teacher's Day 2025",
+        date: '2025-09-05',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: "Teacher's Day 2025 was celebrated with a community gathering and sports event. Students honored department faculty and expressed gratitude for their guidance and support throughout the academic journey.",
+        location: 'IIT Jodhpur Campus',
+        attendeesCount: 150,
+    },
+    {
+        title: 'Diwali Celebration 2025',
         date: '2025-10-20',
         eventCategory: 'event',
         category: 'other',
         status: 'completed',
-        description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
+        description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights. The event included traditional rituals, sweets, and cultural activities on campus.',
         location: 'IIT Jodhpur Campus',
         attendeesCount: 150,
+    },
+    {
+        title: 'Diwali Celebration 2024',
+        date: '2024-11-01',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: 'CIES celebrated Diwali 2024 on campus with students and faculty. The festival of lights was marked by cultural programs, rangoli, and community bonding within the CIE department.',
+        location: 'IIT Jodhpur Campus',
+        attendeesCount: 140,
+    },
+    {
+        title: "Teacher's Day 2024",
+        date: '2024-09-05',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: "Teacher's Day 2024 was observed by CIES with tributes to department faculty. Students organized a community gathering and sports activities to honor and thank their teachers.",
+        location: 'IIT Jodhpur Campus',
+        attendeesCount: 120,
+    },
+    {
+        title: 'Departmental Cricket Match 2024',
+        date: '2024-10-12',
+        eventCategory: 'event',
+        category: 'other',
+        status: 'completed',
+        description: 'A friendly departmental cricket match organized by CIES, bringing together students and faculty of the Civil and Infrastructure Engineering department for a day of sports, teamwork, and camaraderie.',
+        location: 'IIT Jodhpur Sports Ground',
+        attendeesCount: 80,
     },
 ]
 
@@ -323,22 +412,53 @@ async function seedEvents() {
 // ═══════════════════════════════════════
 //  MAIN
 // ═══════════════════════════════════════
+async function checkToken() {
+    try {
+        await client.fetch('count(*)')
+        return true
+    } catch (e) {
+        if (e.message && (e.message.includes('Unauthorized') || e.message.includes('Session not found'))) {
+            console.error('\n❌ Sanity API token was rejected (Unauthorized / Session not found).')
+            console.error('   • Use a token from project py29aahl with "Editor" permission.')
+            console.error('   • Create one: https://www.sanity.io/manage/project/py29aahl → API → Tokens → Add API Token.')
+            console.error('   • On Windows, set the variable in a separate command, then run the script.')
+            process.exit(1)
+        }
+        throw e
+    }
+}
+
 async function main() {
     console.log('╔══════════════════════════════════════════════════╗')
     console.log('║  Seed CIES 2025-26 Content into Sanity CMS      ║')
     console.log('╠══════════════════════════════════════════════════╣')
-    console.log('║  18 Activities + 4 Events = 22 total items      ║')
+    console.log('║  18 Activities + 10 Events = 28 total items      ║')
     console.log('╚══════════════════════════════════════════════════╝')
 
     if (!process.env.SANITY_API_TOKEN) {
         console.error('\n❌ Error: SANITY_API_TOKEN is required.')
-        console.error('   Run: SANITY_API_TOKEN=your_token node scripts/seed-2025-26-content.mjs')
-        console.error('\n   To get a token:')
-        console.error('   1. Go to https://www.sanity.io/manage/project/py29aahl')
-        console.error('   2. Settings → API → Tokens → Add API Token')
-        console.error('   3. Give it "Editor" permissions')
+        console.error('\n   Option A – Environment variable:')
+        console.error('     Windows CMD:  set SANITY_API_TOKEN=your_token')
+        console.error('     PowerShell:  $env:SANITY_API_TOKEN="your_token"')
+        console.error('     Git Bash:    export SANITY_API_TOKEN=your_token')
+        console.error('     Then run:    node scripts/seed-2025-26-content.mjs')
+        console.error('\n   Option B – .env.local:')
+        console.error('     Add line:    SANITY_API_TOKEN=your_token')
+        console.error('     In project root file .env.local (gitignored), then run the script.')
+        console.error('\n   Get token: https://www.sanity.io/manage/project/py29aahl → API → Tokens → Add (Editor)')
         process.exit(1)
     }
+
+    // Warn if token might not be passed (e.g. Windows one-liner)
+    const token = process.env.SANITY_API_TOKEN
+    if (!token || token.length < 20) {
+        console.error('\n❌ SANITY_API_TOKEN looks missing or too short. On Windows, use two commands:')
+        console.error('   set SANITY_API_TOKEN=your_token_here')
+        console.error('   node scripts/seed-2025-26-content.mjs')
+        process.exit(1)
+    }
+
+    await checkToken()
 
     await seedActivities()
     await seedEvents()

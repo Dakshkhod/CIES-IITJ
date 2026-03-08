@@ -1,0 +1,45 @@
+
+> cies-iitj-homepage@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/16) ...
+   Generating static pages (4/16) 
+   Generating static pages (8/16) 
+   Generating static pages (12/16) 
+ ✓ Generating static pages (16/16)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    4.48 kB         140 kB
+├ ○ /_not-found                          880 B          88.8 kB
+├ ○ /about                               8.66 kB         157 kB
+├ ○ /activities                          7.45 kB         184 kB
+├ ○ /admin                               482 B          88.5 kB
+├ ○ /admin/submissions                   3.79 kB         101 kB
+├ ƒ /api/admin/submissions/[id]          0 B                0 B
+├ ƒ /api/contact                         0 B                0 B
+├ ○ /contact                             8.86 kB         181 kB
+├ ○ /developers                          6.02 kB         191 kB
+├ ○ /edificio                            5.5 kB          154 kB
+├ ○ /events                              6.83 kB         183 kB
+├ ○ /roadmap                             14 kB           187 kB
+├ ○ /sitemap.xml                         0 B                0 B
+├ ƒ /studio/[[...tool]]                  1.46 MB        1.58 MB
+└ ○ /team                                7.98 kB         186 kB
++ First Load JS shared by all            88 kB
+  ├ chunks/2117-67885ee33e01d640.js      31.9 kB
+  ├ chunks/fd9d1056-355e8d777fb97d9d.js  53.6 kB
+  └ other shared chunks (total)          2.43 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

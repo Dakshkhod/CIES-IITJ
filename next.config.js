@@ -27,7 +27,7 @@ const nextConfig = {
     CUSTOM_KEY: 'value',
   },
 
-  // Headers for security and performance
+  // Headers for security, performance, and SEO
   async headers() {
     return [
       {
@@ -49,6 +49,21 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          // SEO: Tell search engines to index and follow all pages
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+          },
+        ],
+      },
+      // Static assets — long cache for better Core Web Vitals
+      {
+        source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

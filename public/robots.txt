@@ -1,19 +1,29 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Block internal/admin areas from indexing
+Disallow: /studio/
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
 Sitemap: https://cies.iitj.ac.in/sitemap.xml
 
-# Disallow admin and private areas (if any)
-# Disallow: /admin/
-# Disallow: /private/
-
-# Allow all search engines to crawl the site
+# Allow all major search engines
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-# Crawl delay (optional)
-Crawl-delay: 1
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /

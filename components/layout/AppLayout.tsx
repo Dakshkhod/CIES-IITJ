@@ -326,8 +326,14 @@ const Footer = () => (
 
       <div className="mt-6 sm:mt-8 border-t border-slate-500 dark:border-slate-700 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-slate-800 dark:text-slate-500 px-2">
         <p>
-          &copy; {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur.
-          All Rights Reserved.
+          Copyright © {new Date().getFullYear()} Civil & Infrastructure Engineering Society, IIT Jodhpur
+          {' | '}
+          <Link
+            href="/developers"
+            className="inline-block rounded-md px-2 py-1 transition-all duration-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.7)] dark:hover:drop-shadow-[0_0_10px_rgba(103,232,249,0.7)] hover:bg-cyan-500/10 dark:hover:bg-cyan-400/10"
+          >
+            Designed by Developers
+          </Link>
         </p>
       </div>
     </div>

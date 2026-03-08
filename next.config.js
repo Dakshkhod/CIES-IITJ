@@ -15,6 +15,7 @@ const nextConfig = {
       'cies.iitj.ac.in', // Production domain
       'iitj.ac.in', // IIT Jodhpur domain
       'cdn.sanity.io', // Sanity CMS images
+      'images.unsplash.com', // Developer avatars
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',

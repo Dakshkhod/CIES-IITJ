@@ -15,8 +15,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://cies.iitj.ac.in'),
   title: {
-    default: 'CIES IIT Jodhpur - Civil Engineering Society | Building Futures, Strengthening Foundations',
-    template: '%s | CIES IIT Jodhpur',
+    default: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
+    template: '%s | Civil and Infrastructure Engineering Society',
   },
   description:
     'CIES IIT Jodhpur – Official website of the Civil & Infrastructure Engineering Society at Indian Institute of Technology Jodhpur. Explore workshops, seminars, EDIFICIO fest, events, team, and student community initiatives in civil engineering.',
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     title: 'CIES IIT Jodhpur',
   },
 
-  // Icons
+  // Icons - app/icon.jpg provides CIES logo favicon
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

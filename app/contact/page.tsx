@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AppLayout from '@/components/layout/AppLayout';
 import { 
   Mail, 
-  Phone, 
   MapPin, 
   Send, 
   Loader2, 

@@ -66,7 +66,7 @@ export default function DevelopersPage() {
                 Developed By
               </h1>
               <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
-                The talented developers who built and maintain the CIES IITJ website.
+                The developers who built and maintain the CIES IITJ website.
               </p>
             </div>
           </FadeInOnScroll>

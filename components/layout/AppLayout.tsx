@@ -10,7 +10,6 @@ import {
   Briefcase,
   Users,
   Award,
-  GalleryHorizontal,
   Mail,
   Menu,
   X,
@@ -29,7 +28,6 @@ const navItems = [
   { name: 'Edificio', href: '/edificio', icon: Building2 },
   { name: 'Team', href: '/team', icon: Users },
   { name: 'Roadmap and Calendar', href: '/roadmap', icon: Award },
-  { name: 'Gallery', href: '#gallery', icon: GalleryHorizontal },
   { name: 'Contact Us', href: '/contact', icon: Mail },
 ];
 

@@ -37,10 +37,10 @@ export default defineType({
       title: 'Social Links',
       type: 'object',
       fields: [
-        { name: 'linkedin', title: 'LinkedIn URL', type: 'url' },
+        { name: 'linkedin', title: 'LinkedIn URL', type: 'string', description: 'e.g. linkedin.com/in/username or https://linkedin.com/in/username' },
         { name: 'email', title: 'Email', type: 'string' },
-        { name: 'instagram', title: 'Instagram URL', type: 'url' },
-        { name: 'github', title: 'GitHub URL', type: 'url' },
+        { name: 'instagram', title: 'Instagram URL', type: 'string', description: 'e.g. instagram.com/username or https://instagram.com/username' },
+        { name: 'github', title: 'GitHub URL', type: 'string', description: 'e.g. github.com/username or https://github.com/username' },
       ],
     }),
   ],

@@ -183,7 +183,11 @@ export const developersQuery = `*[_type == "developer"] | order(displayOrder asc
   _id,
   name,
   designation,
-  "photo": profileImage.asset->url,
+  profileImage {
+    asset->,
+    crop,
+    hotspot
+  },
   displayOrder,
   socials {
     linkedin,
@@ -232,6 +236,11 @@ export async function getGallery() {
 }
 
 export async function getDevelopers() {
-  return sanityClient.fetch(developersQuery)
+  const data = await sanityClient.fetch(developersQuery)
+  return (data || []).map((d: { profileImage?: { asset?: unknown; crop?: unknown; hotspot?: unknown }; [key: string]: unknown }) => ({
+    ...d,
+    photo: d.profileImage ? urlFor(d.profileImage).url() : null,
+    profileImage: undefined,
+  }))
 }
 

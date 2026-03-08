@@ -383,7 +383,9 @@ const MemberCard = ({ member, setSelectedImage }: MemberCardProps & { setSelecte
         </div>
         <div className="mt-3 sm:mt-4 flex justify-center space-x-3 sm:space-x-4">
             <a href={member.socials.linkedin} className="text-gray-400 hover:text-[#0077b5] transition-colors p-1"><Linkedin size={18} /></a>
-            <a href={member.socials.instagram} className="text-gray-400 hover:text-[#E1306C] transition-colors p-1"><Instagram size={18} /></a>
+            {member.committee !== 'Faculty Leadership' && (
+              <a href={member.socials.instagram} className="text-gray-400 hover:text-[#E1306C] transition-colors p-1"><Instagram size={18} /></a>
+            )}
             <a href={member.socials.email} className="text-gray-400 hover:text-[#9b2b2b] transition-colors p-1"><Mail size={18} /></a>
         </div>
     </motion.div>

@@ -22,6 +22,13 @@ type Developer = {
 
 const PLACEHOLDER_PHOTO = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop';
 
+function ensureUrl(url: string | undefined): string | undefined {
+  if (!url?.trim()) return undefined;
+  const u = url.trim();
+  if (u.startsWith('http://') || u.startsWith('https://')) return u;
+  return `https://${u}`;
+}
+
 export default function DevelopersPage() {
   const [developers, setDevelopers] = useState<Developer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,10 +41,10 @@ export default function DevelopersPage() {
           name: d.name,
           designation: d.designation,
           photo: d.photo || PLACEHOLDER_PHOTO,
-          linkedin: d.socials?.linkedin,
+          linkedin: ensureUrl(d.socials?.linkedin),
           email: d.socials?.email ? (d.socials.email.startsWith('mailto:') ? d.socials.email : `mailto:${d.socials.email}`) : undefined,
-          instagram: d.socials?.instagram,
-          github: d.socials?.github,
+          instagram: ensureUrl(d.socials?.instagram),
+          github: ensureUrl(d.socials?.github),
         }));
         setDevelopers(mapped);
       })

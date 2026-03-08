@@ -7,7 +7,6 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Clock, 
   Send, 
   Loader2, 
   CheckCircle, 
@@ -325,36 +324,6 @@ export default function ContactPage() {
                       </div>
                     </div>
 
-                    {/* Phone */}
-                    {contactInfo?.phone && (
-                      <div className="flex items-start gap-3 sm:gap-4 group">
-                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex-shrink-0">
-                          <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Phone</p>
-                          <a 
-                            href={`tel:${contactInfo.phone}`}
-                            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                          >
-                            {contactInfo.phone}
-                          </a>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Office Hours */}
-                    {contactInfo?.officeHours && (
-                      <div className="flex items-start gap-3 sm:gap-4 group">
-                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex-shrink-0">
-                          <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Office Hours</p>
-                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo.officeHours}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
 
@@ -519,7 +488,7 @@ export default function ContactPage() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="John Doe"
+                          placeholder="Your Name"
                           className={`w-full px-4 py-3 rounded-xl border ${
                             formErrors.name
                               ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
@@ -574,7 +543,7 @@ export default function ContactPage() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          placeholder="+91 98765 43210"
+                          placeholder="Phone Number"
                           className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         />
                       </div>
@@ -653,12 +622,6 @@ export default function ContactPage() {
                       )}
                     </motion.button>
 
-                    <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                      By submitting this form, you agree to our{' '}
-                      <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-                        Privacy Policy
-                      </a>
-                    </p>
                   </form>
                 </div>
               </motion.div>

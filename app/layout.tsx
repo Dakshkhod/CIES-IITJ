@@ -85,14 +85,14 @@ export const metadata: Metadata = {
     title: 'CIES IIT Jodhpur',
   },
 
-  // Icons - app/icon.jpg provides CIES logo favicon
+  // Icons - CIES society logo as primary favicon
   icons: {
     icon: [
+      { url: '/logo.jpg', sizes: '32x32', type: 'image/jpeg' },
+      { url: '/logo.jpg', sizes: '16x16', type: 'image/jpeg' },
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    apple: [{ url: '/logo.jpg', sizes: '180x180', type: 'image/jpeg' }],
   },
 
   // Manifest
@@ -253,6 +253,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/logo.jpg" type="image/jpeg" />
         {/* Theme initialization script - runs before React hydrates to prevent FOUC */}
         <script
           dangerouslySetInnerHTML={{

@@ -68,7 +68,7 @@ const HeroSection = () => (
     <div className="absolute inset-0">
       {/* Campus background image in natural colours */}
       <div 
-        className="absolute inset-0 bg-[url('/Other%20images/abt%20us.png')] bg-cover bg-center"
+        className="absolute inset-0 bg-[url('/Other%20images/wmremove-transformed.png')] bg-cover bg-center"
         style={{ backgroundPosition: 'center' }}
       ></div>
       

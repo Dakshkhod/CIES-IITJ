@@ -115,9 +115,9 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
   return (
     <header
       id="home"
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-gray-900/95' : 'bg-white/80 backdrop-blur-sm dark:bg-gray-900/70'}`}
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isSticky ? 'bg-white/95 shadow-lg backdrop-blur-xl dark:bg-dark-bg/95' : 'bg-white/80 backdrop-blur-sm dark:bg-dark-bg/70'}`}
     >
-      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3">
+      <nav className="max-w-7xl w-full mx-auto flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 pt-[env(safe-area-inset-top)]">
         {/* Logo - More compact on mobile */}
         <Link href="/" className="flex items-center gap-1.5 sm:gap-2 md:gap-3 group" aria-label="Homepage">
           <img
@@ -141,7 +141,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-gray-700/50 dark:bg-gray-800/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
+        <div className="hidden items-center space-x-1 md:space-x-1 rounded-full border border-gray-300 bg-white/90 px-1.5 md:px-2 py-1.5 shadow-md dark:border-dark-bg-elevated/50 dark:bg-dark-bg-elevated/50 lg:flex ml-0 md:ml-2 lg:ml-3 xl:ml-4">
           {navItems.map(item => (
             <Link
               key={item.name}
@@ -161,7 +161,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
         <div className="flex items-center space-x-2 sm:space-x-4">
           <button
             onClick={toggleTheme}
-            className="rounded-full p-1.5 sm:p-2 text-gray-800 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] focus-visible:ring-offset-2 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900"
+            className="rounded-full p-2.5 sm:p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-800 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] focus-visible:ring-offset-2 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900 touch-manipulation"
             aria-label="Toggle dark mode"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -179,7 +179,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="rounded-md p-1.5 sm:p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-md p-2.5 sm:p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-800 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] dark:text-gray-300 dark:hover:bg-gray-800 touch-manipulation"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
             >
@@ -197,7 +197,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-gray-300 bg-white/95 backdrop-blur-xl dark:border-gray-700 dark:bg-gray-900/95 lg:hidden"
+            className="border-t border-gray-300 bg-white/95 backdrop-blur-xl dark:border-dark-bg-elevated dark:bg-dark-bg/95 lg:hidden"
           >
             <MobileNav pathname={pathname} />
           </motion.div>
@@ -218,12 +218,12 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
   };
 
   return (
-    <div className="flex flex-col space-y-1 px-3 pb-4 pt-2 max-h-[70vh] overflow-y-auto">
+    <div className="flex flex-col space-y-1 px-3 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] max-h-[70vh] overflow-y-auto">
       {navItems.map(item => (
         <Link
           key={item.name}
           href={item.href}
-          className={`flex items-center rounded-lg px-3 py-2.5 font-medium transition-colors text-sm ${
+          className={`flex items-center rounded-lg px-3 py-3 min-h-[44px] font-medium transition-colors text-sm touch-manipulation ${
             isActive(item.href)
               ? 'text-white bg-[#0b3d91] shadow-md dark:text-white'
               : 'text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -239,7 +239,7 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
 
 // --- Footer Component ---
 const Footer = () => (
-  <footer className="border-t-4 border-slate-800 dark:border-[#0b3d91] bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300">
+  <footer className="border-t-4 border-slate-800 dark:border-[#0b3d91] bg-slate-100 dark:bg-dark-bg text-slate-900 dark:text-slate-300">
     <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Mobile: Stack vertically, Desktop: Grid */}
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-12 items-start">
@@ -300,23 +300,23 @@ const Footer = () => (
       <div className="mt-8 sm:mt-12 flex justify-center space-x-4 sm:space-x-6">
         <a
           href="https://www.instagram.com/cies_iitj/"
-          className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500 dark:hover:text-pink-500"
+          className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] p-2 text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-pink-500 dark:hover:text-pink-500 touch-manipulation"
           aria-label="Instagram"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="h-9 w-9 sm:h-10 sm:w-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919 4.919 1.266-.058 1.644-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z" />
           </svg>
         </a>
         <a
           href="https://www.linkedin.com/company/107540236"
-          className="text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-600 dark:hover:text-blue-400"
+          className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] p-2 text-slate-800 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:text-blue-600 dark:hover:text-blue-400 touch-manipulation"
           aria-label="LinkedIn"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="h-9 w-9 sm:h-10 sm:w-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065c0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
           </svg>
         </a>

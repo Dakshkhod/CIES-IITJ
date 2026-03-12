@@ -494,7 +494,7 @@ function TeamPageContent({ setSelectedImage, teamData }: { setSelectedImage: (im
         </div>
       </section>
 
-      <section className="container mx-auto px-3 sm:px-6 py-8 sm:py-12 bg-white/50 dark:bg-gray-800/30 rounded-2xl sm:rounded-3xl my-6 sm:my-12 mx-2 sm:mx-auto">
+      <section className="container mx-auto px-3 sm:px-6 py-8 sm:py-12 my-6 sm:my-12 mx-2 sm:mx-auto">
         <SectionTitle>Coordination Committee</SectionTitle>
         <div className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-6 mx-auto" style={{ maxWidth: '1100px' }}>
           {coordinationCommittee.map(member => (
@@ -604,7 +604,7 @@ export default function TeamPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
           <div className="text-center">
             <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
             <p className="text-gray-600 dark:text-gray-400">Loading team...</p>
@@ -616,7 +616,7 @@ export default function TeamPage() {
 
   return (
     <AppLayout>
-      <div className={`bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans`}>
+      <div className={`bg-gray-50 dark:bg-dark-bg text-gray-800 dark:text-gray-200 font-sans`}>
         <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
         <main className="pt-24 isolate">
           {error && (

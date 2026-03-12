@@ -162,6 +162,29 @@ export default function EventsPage() {
     };
   }, [selected, selectedPhoto]);
 
+  // Keyboard navigation for modals (Arrow keys to traverse photos, Escape to close)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPhoto) {
+        const event = events.find(ev => ev.id === selectedPhoto.eventId);
+        const totalPhotos = event?.photos.length || 0;
+
+        if (e.key === 'Escape') {
+          setSelectedPhoto(null);
+        } else if (e.key === 'ArrowLeft' && selectedPhoto.photoIndex > 0) {
+          setSelectedPhoto({ eventId: selectedPhoto.eventId, photoIndex: selectedPhoto.photoIndex - 1 });
+        } else if (e.key === 'ArrowRight' && selectedPhoto.photoIndex < totalPhotos - 1) {
+          setSelectedPhoto({ eventId: selectedPhoto.eventId, photoIndex: selectedPhoto.photoIndex + 1 });
+        }
+      } else if (selected && e.key === 'Escape') {
+        setSelectedEvent(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto, selected, events]);
+
   // Fallback images for specific events when API doesn't provide images
   const EVENT_FALLBACK_IMAGES: Record<string, string> = {
     'UG Orientation – Batch of 2025': '/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg',
@@ -281,7 +304,7 @@ export default function EventsPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
         {/* Animated background */}
         <div className="fixed inset-0 -z-10">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(100,100,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(100,100,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -289,25 +312,25 @@ export default function EventsPage() {
           <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] rounded-full bg-purple-400/10 dark:bg-purple-500/5 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
-        <main className="pt-20">
+        <main className="pt-20 sm:pt-24">
           {/* Hero Section */}
-          <section className="relative px-6 py-16 md:py-24">
+          <section className="relative px-4 sm:px-6 py-12 sm:py-16 md:py-24">
             <div className="mx-auto max-w-7xl">
               <div className="text-center">
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-400/40 dark:border-blue-500/30 bg-slate-500/10 dark:bg-blue-500/10 px-4 py-2 text-sm text-slate-700 dark:text-blue-300 backdrop-blur-sm shadow-sm">
                   <Camera className="h-4 w-4" />
                   <span className="font-medium">Events Gallery 2025</span>
                 </div>
-                <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
                   Past Events
                 </h1>
-                <p className="mt-6 mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+                <p className="mt-4 sm:mt-6 mx-auto max-w-2xl text-base sm:text-lg text-slate-600 dark:text-slate-400 px-2">
                   Relive the memorable moments from our events throughout 2025. Browse through photos and stories from our community gatherings.
                 </p>
               </div>
 
               {/* Stats */}
-              <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 max-w-4xl mx-auto">
+              <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4 max-w-4xl mx-auto">
                 <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-slate-700 dark:text-blue-400">{events.length}</div>
                   <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Total Events</div>
@@ -330,7 +353,7 @@ export default function EventsPage() {
 
           {/* Filter Bar */}
           <div className="sm:sticky sm:top-16 z-30 border-y border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-sm" style={{ zIndex: 30 }}>
-            <div className="mx-auto max-w-7xl px-6 py-4">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Filter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
@@ -339,7 +362,7 @@ export default function EventsPage() {
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
-                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
+                      className={`rounded-lg px-3 sm:px-4 py-2.5 min-h-[44px] text-sm font-medium transition-all duration-200 touch-manipulation ${activeCategory === cat
                         ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                         }`}
@@ -352,7 +375,7 @@ export default function EventsPage() {
                   <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-lg p-2 transition-all ${viewMode === 'grid'
+                    className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'grid'
                       ? 'bg-blue-500 text-white shadow-md'
                       : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
@@ -362,7 +385,7 @@ export default function EventsPage() {
                   </button>
                   <button
                     onClick={() => setViewMode('timeline')}
-                    className={`rounded-lg p-2 transition-all ${viewMode === 'timeline'
+                    className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'timeline'
                       ? 'bg-blue-500 text-white shadow-md'
                       : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
@@ -376,7 +399,7 @@ export default function EventsPage() {
           </div>
 
           {/* Events Display */}
-          <section className="px-6 py-12">
+          <section className="px-4 sm:px-6 py-8 sm:py-12">
             <div className="mx-auto max-w-7xl">
               {filteredEvents.length === 0 ? (
                 <div className="text-center py-20">
@@ -630,7 +653,7 @@ export default function EventsPage() {
               <div className="relative w-full max-w-6xl max-h-[90vh] flex items-center justify-center">
                 <button
                   onClick={() => setSelectedPhoto(null)}
-                  className="absolute top-4 right-4 z-10 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                  className="absolute top-4 right-4 z-10 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                   aria-label="Close"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -666,7 +689,7 @@ export default function EventsPage() {
                       {currentIndex > 0 && (
                         <button
                           onClick={() => setSelectedPhoto({ eventId: selectedPhoto.eventId, photoIndex: currentIndex - 1 })}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                           aria-label="Previous photo"
                         >
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -678,7 +701,7 @@ export default function EventsPage() {
                       {currentIndex < totalPhotos - 1 && (
                         <button
                           onClick={() => setSelectedPhoto({ eventId: selectedPhoto.eventId, photoIndex: currentIndex + 1 })}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                           aria-label="Next photo"
                         >
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -129,6 +129,26 @@ export default function ActivitiesPage() {
     };
   }, [selected, selectedPhotoIndex]);
 
+  // Keyboard navigation for photo modal (Arrow keys to traverse, Escape to close)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPhotoIndex === null || !selected) return;
+
+      const totalPhotos = selectedAllPhotos.length;
+
+      if (e.key === 'Escape') {
+        setSelectedPhotoIndex(null);
+      } else if (e.key === 'ArrowLeft' && selectedPhotoIndex > 0) {
+        setSelectedPhotoIndex(selectedPhotoIndex - 1);
+      } else if (e.key === 'ArrowRight' && selectedPhotoIndex < totalPhotos - 1) {
+        setSelectedPhotoIndex(selectedPhotoIndex + 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhotoIndex, selected, selectedAllPhotos.length]);
+
   // Group items by month for timeline view
   const groupedByMonth = useMemo(() => {
     const groups: { [key: string]: typeof filteredItems } = {};
@@ -186,7 +206,7 @@ export default function ActivitiesPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
         {/* Animated background */}
         <div className="fixed inset-0 -z-10">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(100,100,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(100,100,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(100,100,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -245,7 +265,7 @@ export default function ActivitiesPage() {
                       <button
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
-                        className={`rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${activeCategory === cat
+                        className={`rounded-lg px-3 sm:px-4 py-2.5 min-h-[44px] text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 touch-manipulation ${activeCategory === cat
                             ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
                             : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                           }`}
@@ -260,7 +280,7 @@ export default function ActivitiesPage() {
                   <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium">View:</span>
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-lg p-2 transition-all ${viewMode === 'grid'
+                    className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'grid'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
@@ -270,7 +290,7 @@ export default function ActivitiesPage() {
                   </button>
                   <button
                     onClick={() => setViewMode('timeline')}
-                    className={`rounded-lg p-2 transition-all ${viewMode === 'timeline'
+                    className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'timeline'
                         ? 'bg-blue-500 text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
@@ -660,7 +680,7 @@ export default function ActivitiesPage() {
               <div className="relative w-full max-w-6xl max-h-[90vh] flex items-center justify-center">
                 <button
                   onClick={() => setSelectedPhotoIndex(null)}
-                  className="absolute top-4 right-4 z-10 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                  className="absolute top-4 right-4 z-10 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                   aria-label="Close"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -686,7 +706,7 @@ export default function ActivitiesPage() {
                       e.stopPropagation();
                       setSelectedPhotoIndex(selectedPhotoIndex - 1);
                     }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                     aria-label="Previous photo"
                   >
                     <ChevronLeft className="h-8 w-8" />
@@ -699,7 +719,7 @@ export default function ActivitiesPage() {
                       e.stopPropagation();
                       setSelectedPhotoIndex(selectedPhotoIndex + 1);
                     }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 backdrop-blur-sm p-3 text-white transition-all hover:bg-white/20"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-3 text-white transition-all hover:bg-white/10"
                     aria-label="Next photo"
                   >
                     <ChevronRight className="h-8 w-8" />

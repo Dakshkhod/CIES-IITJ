@@ -23,7 +23,7 @@ import Link from 'next/link';
 export default function AboutPage() {
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-gray-50 dark:bg-dark-bg transition-colors duration-300">
         {/* Blueprint background pattern */}
         <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
@@ -33,13 +33,13 @@ export default function AboutPage() {
           <Block1Section />
           
           {/* Mobile Divider - About to Pillars */}
-          <div className="block sm:hidden py-6 px-4 bg-white dark:bg-gray-900">
+          <div className="block sm:hidden py-6 px-4 bg-white dark:bg-dark-bg">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t-2 border-dashed border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white dark:bg-gray-900 px-6 py-2 text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                <span className="bg-white dark:bg-dark-bg px-6 py-2 text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
                   Our Pillars
                 </span>
               </div>
@@ -200,7 +200,7 @@ const HeroSection = () => (
 
 // --- Block 1: Two-Column About Section ---
 const Block1Section = () => (
-  <section className="relative overflow-hidden bg-white py-12 sm:py-20 dark:bg-gray-900 lg:py-32">
+  <section className="relative overflow-hidden bg-white py-12 sm:py-20 dark:bg-dark-bg lg:py-32">
     {/* Subtle background pattern */}
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
     
@@ -401,7 +401,7 @@ const PillarPanelsSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 sm:py-20 dark:from-gray-900 dark:to-gray-800">
+    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 sm:py-20 dark:from-dark-bg dark:to-dark-bg-elevated">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <FadeInOnScroll>
           <div className="mb-8 sm:mb-16 text-center">
@@ -440,7 +440,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
   <FadeInOnScroll delay={index * 0.1}>
     <motion.div
       layout
-      className="group overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 bg-white shadow-xl transition-all hover:shadow-2xl hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
+      className="group overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 bg-white shadow-xl transition-all hover:shadow-2xl hover:border-gray-300 dark:border-dark-bg-elevated dark:bg-dark-bg-elevated dark:hover:border-gray-600"
     >
       {/* Main Content */}
       <div className="grid grid-cols-1 gap-4 sm:gap-8 p-4 sm:p-8 lg:grid-cols-12 lg:gap-10">
@@ -543,7 +543,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
             transition={{ duration: 0.4, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-8 py-8 dark:border-gray-700 dark:from-gray-900/50 dark:to-gray-800/50">
+            <div className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-8 py-8 dark:border-gray-700 dark:from-dark-bg/50 dark:to-dark-bg-elevated/50">
               <div className="mx-auto max-w-4xl">
                 <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                   {pillar.fullDescription}
@@ -570,7 +570,7 @@ const EdificioPhotoEssay = () => {
   ];
 
   return (
-    <section id="edificio" className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100 py-12 sm:py-24 text-gray-900 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900 dark:text-white">
+    <section id="edificio" className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100 py-12 sm:py-24 text-gray-900 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg dark:text-white">
       {/* Background Pattern - Enhanced */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_2px,transparent_2px)] bg-[size:50px_50px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_2px,transparent_2px)]"></div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.03)_1px,transparent_1px)] bg-[size:20px_20px] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.05)_1px,transparent_1px)]"></div>
@@ -712,7 +712,7 @@ const PartnerLogoStrip = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden border-t-2 border-gray-200 bg-gradient-to-b from-white to-gray-50 py-12 sm:py-20 dark:border-gray-700 dark:from-gray-900 dark:to-gray-800">
+    <section className="relative overflow-hidden border-t-2 border-gray-200 bg-gradient-to-b from-white to-gray-50 py-12 sm:py-20 dark:border-gray-700 dark:from-dark-bg dark:to-dark-bg-elevated">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
@@ -770,7 +770,7 @@ const PartnerLogoStrip = () => {
                   </span>
                   
                   {/* Category badge - Hidden on mobile */}
-                  <span className="relative z-10 mt-1 rounded-full bg-gray-100 px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400 hidden sm:block">
+                  <span className="relative z-10 mt-1 rounded-full bg-gray-100 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400 hidden sm:block">
                     {partner.category}
                   </span>
 
@@ -785,7 +785,7 @@ const PartnerLogoStrip = () => {
 
         {/* Partnership CTA */}
         <FadeInOnScroll delay={0.4}>
-          <div className="mt-8 sm:mt-16 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 sm:p-10 text-center backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/50">
+          <div className="mt-8 sm:mt-16 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 sm:p-10 text-center backdrop-blur-sm dark:border-dark-bg-elevated dark:bg-dark-bg-elevated/50">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}

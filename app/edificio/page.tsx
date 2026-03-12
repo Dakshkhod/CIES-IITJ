@@ -22,7 +22,7 @@ import Link from 'next/link';
 export default function EdificioPage() {
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-gray-50 dark:bg-dark-bg transition-colors duration-300">
         {/* Blueprint background pattern */}
         <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
 
@@ -97,7 +97,7 @@ const EdificioHeroSection = () => (
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mb-4 sm:mb-6 inline-block"
           >
-            <span className="rounded-full border-2 border-yellow-400/50 bg-yellow-400/10 px-4 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-yellow-300 backdrop-blur-sm">
+            <span className="rounded-full border-2 border-yellow-400/50 px-4 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-yellow-300">
               🏗️ Flagship Technical Festival
             </span>
           </motion.div>
@@ -150,7 +150,7 @@ const EdificioHeroSection = () => (
 
 // --- Edificio About Section ---
 const EdificioAboutSection = () => (
-  <section className="relative overflow-hidden bg-white py-12 sm:py-20 dark:bg-gray-900">
+  <section className="relative overflow-hidden bg-white py-12 sm:py-20 dark:bg-dark-bg">
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"></div>
     
     <div className="container relative mx-auto max-w-6xl px-4 sm:px-6">
@@ -220,7 +220,7 @@ const EdificioHighlights = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 sm:py-20 dark:from-gray-900 dark:to-gray-800">
+    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 sm:py-20 dark:from-dark-bg dark:to-dark-bg-elevated">
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         <FadeInOnScroll>
           <div className="text-center mb-8 sm:mb-12">
@@ -236,7 +236,7 @@ const EdificioHighlights = () => {
             <FadeInOnScroll key={index} delay={index * 0.1}>
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
-                className="group relative rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all dark:border-gray-700 dark:bg-gray-800"
+                className="group relative rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all dark:border-dark-bg-elevated dark:bg-dark-bg-elevated"
               >
                 <div className={`mx-auto mb-3 sm:mb-4 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br ${item.color} text-white shadow-lg`}>
                   {item.icon}
@@ -268,7 +268,7 @@ const EdificioPhotoGallery = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-amber-50 to-slate-100 py-12 sm:py-24 text-gray-900 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900 dark:text-white">
+    <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-amber-50 to-slate-100 py-12 sm:py-24 text-gray-900 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg dark:text-white">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_2px,transparent_2px)] bg-[size:50px_50px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_2px,transparent_2px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_2px,transparent_2px)]"></div>
       

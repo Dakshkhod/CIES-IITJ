@@ -85,7 +85,7 @@ export default function DevelopersPage() {
                 <FadeInOnScroll key={dev.id} delay={index * 0.15}>
                   <motion.div
                     whileHover={{ y: -8, scale: 1.02 }}
-                    className="group relative flex flex-col items-center rounded-2xl bg-white/10 backdrop-blur-md p-6 sm:p-8 shadow-xl border border-white/20 w-[280px] sm:w-[320px]"
+                    className="group relative flex flex-col items-center rounded-2xl bg-white/10 backdrop-blur-md p-6 sm:p-8 shadow-xl border border-white/20 w-full max-w-[280px] sm:max-w-[320px] min-w-0"
                   >
                     <div className="relative mb-4 h-24 w-24 sm:h-28 sm:w-28 rounded-full overflow-hidden ring-4 ring-white/30">
                       <Image

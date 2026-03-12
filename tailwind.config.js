@@ -37,6 +37,9 @@ module.exports = {
           900: '#7f1d1d',
           950: '#450a0a',
         },
+        // Dark mode - very dark background (#0a0a0a)
+        'dark-bg': '#0a0a0a',
+        'dark-bg-elevated': '#141414',
         // Blueprint grid colors
         blueprint: {
           light: 'rgba(128, 128, 128, 0.07)',

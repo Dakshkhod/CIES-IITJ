@@ -121,7 +121,7 @@ export default function RecentActivities() {
 
     return (
         <section id="activities" className="relative overflow-hidden py-10 sm:py-16 -mt-4">
-            <div className="absolute inset-0 -z-20 bg-gradient-to-b from-white via-gray-50 to-white dark:from-slate-900/80 dark:via-slate-900 dark:to-slate-900/80"></div>
+            <div className="absolute inset-0 -z-20 bg-gradient-to-b from-white via-gray-50 to-white dark:from-dark-bg/80 dark:via-dark-bg dark:to-dark-bg/80"></div>
             <div className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.08)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,61,145,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,61,145,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.04)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
@@ -142,7 +142,7 @@ export default function RecentActivities() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="bg-white/90 dark:bg-gray-800/50 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border border-gray-300 dark:border-gray-700/80 p-4 sm:p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
+                        className="bg-white/90 dark:bg-dark-bg-elevated/50 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border border-gray-300 dark:border-dark-bg-elevated/80 p-4 sm:p-6 md:p-8 max-w-6xl mx-auto overflow-hidden relative"
                     >
                         <div className="flex flex-col lg:flex-row gap-4 sm:gap-8 items-center min-h-[24rem] sm:min-h-[28rem]">
                             <div className="w-full lg:w-2/5 flex-shrink-0 h-48 sm:h-64 lg:h-80 relative">
@@ -191,14 +191,14 @@ export default function RecentActivities() {
 
                         <button
                             onClick={prevActivity}
-                            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
+                            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-dark-bg/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-dark-bg-elevated transition-colors z-10 shadow-xl border border-gray-200 dark:border-dark-bg-elevated"
                             aria-label="Previous Activity"
                         >
                             <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 text-gray-800 dark:text-gray-300" />
                         </button>
                         <button
                             onClick={nextActivity}
-                            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-900/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 shadow-xl border border-gray-200 dark:border-gray-700"
+                            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/95 dark:bg-dark-bg/80 backdrop-blur-sm rounded-full p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-dark-bg-elevated transition-colors z-10 shadow-xl border border-gray-200 dark:border-dark-bg-elevated"
                             aria-label="Next Activity"
                         >
                             <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-gray-800 dark:text-gray-300" />
@@ -209,7 +209,7 @@ export default function RecentActivities() {
                                 <button
                                     key={index}
                                     onClick={() => goToActivity(index)}
-                                    className={`h-2 sm:h-3 rounded-full transition-all duration-300 ${currentIndex === index
+                                    className={`h-3 w-3 sm:h-4 sm:w-4 rounded-full transition-all duration-300 touch-manipulation flex-shrink-0 ${currentIndex === index
                                         ? 'bg-[#0b3d91] dark:bg-cyan-400 w-6 sm:w-8'
                                         : 'bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500 w-2 sm:w-3'
                                         }`}

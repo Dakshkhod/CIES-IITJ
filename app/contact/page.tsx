@@ -234,7 +234,7 @@ export default function ContactPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg transition-colors duration-300">
         {/* Blueprint Grid Background */}
         <div className="fixed inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#0b3d91_1px,transparent_1px),linear-gradient(to_bottom,#0b3d91_1px,transparent_1px)] bg-[size:40px_40px]" />

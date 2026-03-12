@@ -436,7 +436,7 @@ export default function RoadmapPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-300">
         {/* Static Blueprint Grid Background */}
         <div className="fixed inset-0 opacity-5 dark:opacity-10 pointer-events-none">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,204,21,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,204,21,0.3)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.3)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -1291,7 +1291,7 @@ export default function RoadmapPage() {
                                   setCurrentImageIndex(Math.max(0, currentImageIndex - 1));
                                 }}
                                 disabled={currentImageIndex === 0}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white disabled:opacity-30 hover:bg-black/70 transition-all backdrop-blur-sm"
+                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-transparent text-white disabled:opacity-30 hover:bg-black/30 transition-all"
                                 aria-label="Previous image"
                               >
                                 <ChevronLeft className="h-6 w-6" />
@@ -1302,7 +1302,7 @@ export default function RoadmapPage() {
                                   setCurrentImageIndex(Math.min(selectedEvent.images.length - 1, currentImageIndex + 1));
                                 }}
                                 disabled={currentImageIndex === selectedEvent.images.length - 1}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white disabled:opacity-30 hover:bg-black/70 transition-all backdrop-blur-sm"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-transparent text-white disabled:opacity-30 hover:bg-black/30 transition-all"
                                 aria-label="Next image"
                               >
                                 <ChevronRight className="h-6 w-6" />

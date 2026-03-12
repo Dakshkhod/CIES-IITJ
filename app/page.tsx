@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <AppLayout>
       <div
-        className={`bg-gray-50 font-sans text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-200`}
+        className={`bg-gray-50 font-sans text-gray-800 transition-colors duration-300 dark:bg-dark-bg dark:text-gray-200`}
       >
         {/* Blueprint background pattern */}
         <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)]"></div>
@@ -456,7 +456,7 @@ const CIEHeroDesign = () => {
 const HeroSection = () => (
   <section className="relative mx-auto flex min-h-[70vh] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-2 sm:px-6 pb-6 sm:pb-12 pt-4 sm:pt-16">
     {/* Theme-aware background overlay */}
-    <div className="absolute inset-0 bg-white dark:bg-slate-900/80 z-0"></div>
+    <div className="absolute inset-0 bg-white dark:bg-dark-bg/80 z-0"></div>
 
     {/* Engineering Grid Background - Dark blue-gray for light mode */}
     <div className="absolute inset-0 z-0">

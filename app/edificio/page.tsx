@@ -43,7 +43,12 @@ const EdificioHeroSection = () => (
   <section className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden flex items-center">
     {/* Background */}
     <div className="absolute inset-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0b3d91] via-blue-800 to-cyan-700 dark:via-blue-900 dark:to-slate-900"></div>
+      <img
+        src="/e4779c2ff71f.jpg"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        aria-hidden
+      />
       
       {/* Engineering Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_2px,transparent_2px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_2px,transparent_2px)] bg-[size:60px_60px]"></div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cies.iitj.ac.in'),
   title: {
     default: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
-    template: '%s | Civil and Infrastructure Engineering Society',
+    template: '%s | Civil and Infrastructure Engineering Society | IIT Jodhpur',
   },
   description:
     'CIES IIT Jodhpur – Official website of the Civil & Infrastructure Engineering Society at Indian Institute of Technology Jodhpur. Explore workshops, seminars, EDIFICIO fest, events, team, and student community initiatives in civil engineering.',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 
   // Open Graph Meta Tags
   openGraph: {
-    title: 'CIES IIT Jodhpur - Civil Engineering Society',
+    title: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
     description:
       'Official website of the Civil & Infrastructure Engineering Society at IIT Jodhpur. Building Futures, Strengthening Foundations. Workshops, seminars, EDIFICIO fest, and more.',
     type: 'website',
@@ -62,35 +62,35 @@ export const metadata: Metadata = {
         url: '/logo.jpg',
         width: 800,
         height: 800,
-        alt: 'CIES IIT Jodhpur - Civil Engineering Society Logo',
+        alt: 'Civil and Infrastructure Engineering Society | IIT Jodhpur Logo',
       },
     ],
-    siteName: 'CIES IIT Jodhpur - Civil Engineering Society',
+    siteName: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
   },
 
   // Twitter Card Meta Tags
   twitter: {
     card: 'summary_large_image',
-    title: 'CIES IIT Jodhpur - Civil Engineering Society',
+    title: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
     description:
       'Official website of the Civil & Infrastructure Engineering Society at IIT Jodhpur. Workshops, seminars, EDIFICIO fest, and more.',
     images: ['/logo.jpg'],
   },
 
   // PWA and Theme
-  applicationName: 'CIES IIT Jodhpur',
+  applicationName: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'CIES IIT Jodhpur',
+    title: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
   },
 
-  // Icons - CIES society logo as primary favicon
+  // Icons - circular CIES logo favicon (generated from logo.jpg)
   icons: {
     icon: [
-      { url: '/logo.jpg', sizes: '32x32', type: 'image/jpeg' },
-      { url: '/logo.jpg', sizes: '16x16', type: 'image/jpeg' },
       { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [{ url: '/logo.jpg', sizes: '180x180', type: 'image/jpeg' }],
   },
@@ -118,7 +118,7 @@ export const metadata: Metadata = {
 
   // Additional Meta
   other: {
-    'application-name': 'CIES IIT Jodhpur',
+    'application-name': 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
     'msapplication-TileColor': '#0b3d91',
   },
 };
@@ -181,8 +181,8 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': 'https://cies.iitj.ac.in/#website',
-  name: 'CIES IIT Jodhpur',
-  alternateName: ['CIES IITJ', 'Civil Engineering Society IIT Jodhpur'],
+  name: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
+  alternateName: ['CIES IITJ', 'Civil Engineering Society IIT Jodhpur', 'CIES IIT Jodhpur'],
   url: 'https://cies.iitj.ac.in',
   description: 'Official website of the Civil & Infrastructure Engineering Society at IIT Jodhpur',
   publisher: {
@@ -253,7 +253,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo.jpg" type="image/jpeg" />
         {/* Theme initialization script - runs before React hydrates to prevent FOUC */}
         <script
           dangerouslySetInnerHTML={{

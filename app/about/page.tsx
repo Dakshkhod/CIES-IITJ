@@ -214,23 +214,12 @@ const Block1Section = () => (
               transition={{ duration: 0.3 }}
               className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
             >
-              {/* CMS Placeholder Image - Enhanced with better visuals */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b3d91] via-blue-700 to-cyan-600">
-                {/* Engineering pattern overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
-                
-                {/* Central icon */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Building2 className="h-40 w-40 text-white/20" strokeWidth={1.5} />
-                </div>
-                
-                {/* Logo overlay */}
-                <img
-                  src="/CIE%20Design.png"
-                  alt="CIES IIT Jodhpur"
-                  className="absolute inset-0 h-full w-full object-cover opacity-15 mix-blend-overlay"
-                />
-              </div>
+              {/* Image */}
+              <img
+                src="/d3ab809c030c.jpeg"
+                alt="CIES IIT Jodhpur"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
               
               {/* Decorative Corner Frames - Enhanced */}
               <div className="absolute left-4 top-4 h-20 w-20 border-l-4 border-t-4 border-cyan-300/70"></div>
@@ -242,25 +231,6 @@ const Block1Section = () => (
                 animate={{ rotate: [0, 90, 0] }}
                 transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
               />
-            </motion.div>
-            
-            {/* Floating Stats Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="absolute -bottom-8 -left-8 max-w-xs rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800"
-            >
-              <div className="flex items-center gap-4">
-                <div className="rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 p-4">
-                  <Users className="h-8 w-8 text-white" />
-                </div>
-                <div>
-                  <p className="text-3xl font-extrabold text-gray-900 dark:text-white">500+</p>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Members</p>
-                </div>
-              </div>
             </motion.div>
 
             {/* Background decorative blob */}
@@ -377,6 +347,11 @@ interface PillarPanel {
   shortDescription: string;
   fullDescription: string;
   image: string;
+  imageUrl?: string;
+  objectPosition?: 'top' | 'center' | 'bottom';
+  objectPositionCustom?: string;
+  imageScale?: number;
+  hideOverlay?: boolean;
 }
 
 const PillarPanelsSection = () => {
@@ -393,6 +368,10 @@ const PillarPanelsSection = () => {
       shortDescription: 'Fostering technical growth, ethical practices, and industry-readiness through transformative initiatives.',
       fullDescription: 'CIES is committed to fostering technical growth, ethical practices, and industry-readiness through a range of initiatives such as seminars, workshops, technical sessions, and hands-on experiences. Through active student-faculty engagement, it also promotes leadership, collaboration, and sustainable thinking, in line with the society\'s guiding motto: "Constructing a Better Future: Integrity in Design, Sustainability in Action, Cementing Community with Compassion."',
       image: 'from-blue-600 to-purple-600',
+      imageUrl: '/e9a09616e6f0.jpeg',
+      objectPositionCustom: '50% 35%',
+      imageScale: 1.5,
+      hideOverlay: true,
     },
     {
       id: 'edificio',
@@ -403,6 +382,9 @@ const PillarPanelsSection = () => {
       shortDescription: 'Our flagship technical festival—a national platform for innovation and experiential learning.',
       fullDescription: 'EDIFICIO is the flagship technical festival of the department, organized entirely by the student society. It offers budding civil engineers a national platform to explore and innovate through design challenges, workshops, lectures, panel discussions, and collaborative problem-solving. EDIFICIO continues to evolve as a space for experiential learning, interdisciplinary dialogue, and industry-academia synergy.',
       image: 'from-cyan-600 to-blue-600',
+      imageUrl: '/GOPR4186.JPG',
+      objectPosition: 'center',
+      hideOverlay: true,
     },
     {
       id: 'vision',
@@ -413,6 +395,8 @@ const PillarPanelsSection = () => {
       shortDescription: 'Building a nationally collaborative platform that catalyzes innovation and professional development.',
       fullDescription: 'The society aspires to foster a nationally collaborative platform for the Civil Engineering discipline—bringing together academic institutions, industry stakeholders, and research partners to catalyze innovation, professional development, and cross-institute engagement. It envisions infrastructure as a true driver of human progress, bridging academia and industry, and empowering all who pursue excellence in this vital domain.',
       image: 'from-indigo-600 to-cyan-600',
+      imageUrl: '/f5aaec063d81.jpeg',
+      hideOverlay: true,
     },
   ];
 
@@ -467,29 +451,43 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, isExpanded, onToggle, i
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="absolute inset-0 flex items-center justify-center text-white">
-              <div className="relative z-10 text-center">
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="[&>svg]:h-6 [&>svg]:w-6 sm:[&>svg]:h-8 sm:[&>svg]:w-8"
-                >
-                  {pillar.icon}
-                </motion.div>
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="mt-3 sm:mt-6"
-                >
-                  <div className="text-3xl sm:text-5xl font-extrabold tracking-tight">{pillar.stat}</div>
-                  <div className="mt-1 sm:mt-2 text-sm sm:text-base font-medium opacity-95">{pillar.statLabel}</div>
-                </motion.div>
+            {pillar.imageUrl && (
+              <img
+                src={pillar.imageUrl}
+                alt="CIES IIT Jodhpur"
+                className={`absolute inset-0 h-full w-full object-cover ${pillar.objectPositionCustom ? '' : pillar.objectPosition === 'center' ? 'object-center' : pillar.objectPosition === 'bottom' ? 'object-bottom' : 'object-top'}`}
+                style={{
+                  ...(pillar.objectPositionCustom && { objectPosition: pillar.objectPositionCustom }),
+                  ...(pillar.imageScale && { transform: `scale(${pillar.imageScale})` }),
+                }}
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" aria-hidden />
+            {!pillar.hideOverlay && (
+              <div className="absolute inset-0 flex items-center justify-center text-white">
+                <div className="relative z-10 text-center">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="[&>svg]:h-6 [&>svg]:w-6 sm:[&>svg]:h-8 sm:[&>svg]:w-8"
+                  >
+                    {pillar.icon}
+                  </motion.div>
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="mt-3 sm:mt-6"
+                  >
+                    <div className="text-3xl sm:text-5xl font-extrabold tracking-tight">{pillar.stat}</div>
+                    <div className="mt-1 sm:mt-2 text-sm sm:text-base font-medium opacity-95">{pillar.statLabel}</div>
+                  </motion.div>
+                </div>
               </div>
-            </div>
+            )}
             
             {/* Decorative Elements - Enhanced */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] bg-[size:24px_24px]"></div>

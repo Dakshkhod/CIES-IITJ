@@ -54,7 +54,7 @@ export default function AboutPage() {
           </div>
           
           {/* PartnerLogoStrip - hidden, not in use currently */}
-          {/* <PartnerLogoStrip /> */}
+          {false && <PartnerLogoStrip />}
         </main>
       </div>
     </AppLayout>

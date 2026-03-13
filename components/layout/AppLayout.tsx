@@ -283,7 +283,7 @@ const Footer = () => (
           <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">Indian Institute of Technology Jodhpur</p>
           <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">NH-62, Nagour Road, Karwar (342030)</p>
           <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-400">Jodhpur, Rajasthan</p>
-          <p className="mt-2 text-xs sm:text-sm text-slate-800 dark:text-slate-400">Email: office@civil.iitj.ac.in</p>
+          <p className="mt-2 text-xs sm:text-sm text-slate-800 dark:text-slate-400">Email: bds@cie.iitj.ac.in</p>
         </div>
 
         {/* CIES Logo */}

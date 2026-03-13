@@ -53,8 +53,8 @@ export default function AboutPage() {
             <EdificioPhotoEssay />
           </div>
           
-          
-          <PartnerLogoStrip />
+          {/* PartnerLogoStrip - hidden, not in use currently */}
+          {/* <PartnerLogoStrip /> */}
         </main>
       </div>
     </AppLayout>

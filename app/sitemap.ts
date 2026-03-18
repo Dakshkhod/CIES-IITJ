@@ -15,6 +15,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             url: `${baseUrl}/about`,
             lastModified: now,
             changeFrequency: 'monthly',
+            priority: 0.95,
+        },
+        {
+            url: `${baseUrl}/activities`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.95,
+        },
+        {
+            url: `${baseUrl}/roadmap`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/contact`,
+            lastModified: now,
+            changeFrequency: 'monthly',
             priority: 0.9,
         },
         {
@@ -24,34 +42,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/activities`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/roadmap`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-        {
             url: `${baseUrl}/team`,
             lastModified: now,
             changeFrequency: 'monthly',
-            priority: 0.8,
+            priority: 0.85,
         },
         {
             url: `${baseUrl}/edificio`,
             lastModified: now,
             changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/contact`,
-            lastModified: now,
-            changeFrequency: 'yearly',
-            priority: 0.7,
+            priority: 0.85,
         },
         {
             url: `${baseUrl}/developers`,

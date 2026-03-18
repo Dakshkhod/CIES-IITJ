@@ -1,5 +1,14 @@
 import { Metadata } from 'next';
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://cies.iitj.ac.in' },
+    { '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://cies.iitj.ac.in/contact' },
+  ],
+};
+
 export const metadata: Metadata = {
     title: 'Contact Us',
     description:
@@ -12,8 +21,9 @@ export const metadata: Metadata = {
         'cies iitj contact',
     ],
     alternates: {
-        canonical: '/contact',
+        canonical: 'https://cies.iitj.ac.in/contact',
     },
+    robots: { index: true, follow: true },
     openGraph: {
         title: 'Contact Us - CIES IIT Jodhpur',
         description:
@@ -23,5 +33,13 @@ export const metadata: Metadata = {
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
-    return children;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+            />
+            {children}
+        </>
+    );
 }

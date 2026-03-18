@@ -201,56 +201,6 @@ const websiteJsonLd = {
   },
 };
 
-// JSON-LD — Breadcrumb for homepage
-const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: 'https://cies.iitj.ac.in',
-    },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: 'About',
-      item: 'https://cies.iitj.ac.in/about',
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      name: 'Events',
-      item: 'https://cies.iitj.ac.in/events',
-    },
-    {
-      '@type': 'ListItem',
-      position: 4,
-      name: 'Activities',
-      item: 'https://cies.iitj.ac.in/activities',
-    },
-    {
-      '@type': 'ListItem',
-      position: 5,
-      name: 'EDIFICIO',
-      item: 'https://cies.iitj.ac.in/edificio',
-    },
-    {
-      '@type': 'ListItem',
-      position: 6,
-      name: 'Team',
-      item: 'https://cies.iitj.ac.in/team',
-    },
-    {
-      '@type': 'ListItem',
-      position: 7,
-      name: 'Contact',
-      item: 'https://cies.iitj.ac.in/contact',
-    },
-  ],
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -284,11 +234,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        {/* Structured Data — BreadcrumbList */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
       </head>
       <body className={`${inter.className} antialiased`}>{children}</body>

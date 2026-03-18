@@ -1,5 +1,14 @@
 import { Metadata } from 'next';
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://cies.iitj.ac.in' },
+    { '@type': 'ListItem', position: 2, name: 'Activities', item: 'https://cies.iitj.ac.in/activities' },
+  ],
+};
+
 export const metadata: Metadata = {
     title: 'Activities - Workshops, Seminars & More',
     description:
@@ -13,8 +22,9 @@ export const metadata: Metadata = {
         'IIT Jodhpur workshops',
     ],
     alternates: {
-        canonical: '/activities',
+        canonical: 'https://cies.iitj.ac.in/activities',
     },
+    robots: { index: true, follow: true },
     openGraph: {
         title: 'Activities - CIES IIT Jodhpur | Workshops, Seminars & More',
         description:
@@ -24,5 +34,13 @@ export const metadata: Metadata = {
 };
 
 export default function ActivitiesLayout({ children }: { children: React.ReactNode }) {
-    return children;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+            />
+            {children}
+        </>
+    );
 }

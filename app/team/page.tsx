@@ -152,7 +152,7 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
   {
     id: "daksh",
     name: "Daksh",
-    role: "Tech-Lead(UG)\nWeb Dev Executive",
+    role: "Web Dev Executive",
     committee: "Technical Committee",
     batch: "UG 2024",
     photo: "/Other images/1759265474674~3.jpg",
@@ -382,7 +382,7 @@ const MemberCard = ({ member, setSelectedImage }: MemberCardProps & { setSelecte
     <div className="mt-3 sm:mt-4 flex-grow">
       <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white line-clamp-2">{member.name}</h3>
       <p className="text-xs sm:text-sm text-slate-700 dark:text-blue-400 font-semibold mt-0.5 whitespace-pre-line">
-  {(member.role || '').replace('Tech-Lead (UG)-Web Dev Executive', 'Tech-Lead(UG)\nWeb Dev Executive')}
+  {(member.role || '').replace('Tech-Lead (UG)-Web Dev Executive', 'Web Dev Executive')}
 </p>
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{member.batch}</p>
     </div>

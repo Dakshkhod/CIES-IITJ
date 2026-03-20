@@ -162,26 +162,7 @@ const HeroSection = () => (
             <span className="font-semibold text-slate-200 dark:text-cyan-300">Cementing Community with Compassion</span>
           </motion.p>
 
-          {/* Statistics Row - Scrollable on mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="mt-4 sm:mt-12 flex sm:grid sm:grid-cols-3 gap-2 sm:gap-6 text-white overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide"
-          >
-            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
-              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">500+</div>
-              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Active Members</div>
-            </div>
-            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
-              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">50+</div>
-              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Events Annually</div>
-            </div>
-            <div className="flex-shrink-0 w-[120px] sm:w-auto rounded-lg sm:rounded-xl border border-white/30 bg-transparent p-2.5 sm:p-4 shadow-lg">
-              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg md:text-4xl">100+</div>
-              <div className="mt-1 text-[10px] sm:text-sm text-white drop-shadow-md md:text-base font-medium">Industry Partners</div>
-            </div>
-          </motion.div>
+          {/* Statistics Row removed */}
         </motion.div>
       </div>
     </div>

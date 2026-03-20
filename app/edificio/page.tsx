@@ -8,7 +8,6 @@ import AppLayout from '@/components/layout/AppLayout';
 import {
   Users,
   Target,
-  Download,
   BookOpen,
   Rocket,
   Calendar,
@@ -122,26 +121,7 @@ const EdificioHeroSection = () => (
             <span className="font-semibold text-green-300"> collaboration</span>.
           </motion.p>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="mt-8 sm:mt-12 flex justify-center gap-4 sm:gap-8 flex-wrap"
-          >
-            <div className="text-center">
-              <div className="text-2xl sm:text-4xl font-bold text-yellow-400">1000+</div>
-              <div className="text-xs sm:text-sm text-gray-200">Participants</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-4xl font-bold text-cyan-400">20+</div>
-              <div className="text-xs sm:text-sm text-gray-200">Events</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-4xl font-bold text-green-400">50+</div>
-              <div className="text-xs sm:text-sm text-gray-200">Institutions</div>
-            </div>
-          </motion.div>
+          {/* Stats removed (no confirmed values available yet) */}
         </motion.div>
       </div>
     </div>
@@ -341,23 +321,7 @@ const EdificioPhotoGallery = () => {
           </div>
         </FadeInOnScroll>
 
-        {/* Download Brochure */}
-        <FadeInOnScroll delay={0.4}>
-          <div className="mt-10 sm:mt-16 text-center">
-            <motion.a
-              href="#"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-2 sm:gap-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-6 sm:px-10 py-3 sm:py-5 text-sm sm:text-lg font-bold text-white shadow-xl sm:shadow-2xl transition-all hover:shadow-amber-500/50"
-            >
-              <Download className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-y-1" />
-              Download Brochure
-            </motion.a>
-            <p className="mt-3 sm:mt-5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              <span className="font-semibold text-amber-600 dark:text-amber-400">PDF</span> · 5.2 MB · Complete Event Details
-            </p>
-          </div>
-        </FadeInOnScroll>
+        {/* Download Brochure intentionally hidden until brochure asset is available */}
       </div>
     </section>
   );

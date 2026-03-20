@@ -62,10 +62,10 @@ export default function DevelopersPage() {
         <div className="container mx-auto px-4 py-12 sm:py-16">
           <FadeInOnScroll>
             <div className="mb-10 sm:mb-16 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white drop-shadow-lg">
                 Developed By
               </h1>
-              <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
+              <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-gray-700 dark:text-white/90">
                 The developers who built and maintain the CIES IITJ website.
               </p>
             </div>
@@ -73,10 +73,10 @@ export default function DevelopersPage() {
 
           {loading ? (
             <div className="flex justify-center py-16">
-              <Loader2 className="h-12 w-12 animate-spin text-white/80" />
+              <Loader2 className="h-12 w-12 animate-spin text-gray-500 dark:text-white/80" />
             </div>
           ) : developers.length === 0 ? (
-            <p className="text-center text-white/80 py-8">
+            <p className="text-center text-gray-600 dark:text-white/80 py-8">
               No developers added yet. Add developers in Sanity Studio → Developer.
             </p>
           ) : (
@@ -85,9 +85,9 @@ export default function DevelopersPage() {
                 <FadeInOnScroll key={dev.id} delay={index * 0.15}>
                   <motion.div
                     whileHover={{ y: -8, scale: 1.02 }}
-                    className="group relative flex flex-col items-center rounded-2xl bg-white/10 backdrop-blur-md p-6 sm:p-8 shadow-xl border border-white/20 w-full max-w-[280px] sm:max-w-[320px] min-w-0"
+                    className="group relative flex flex-col items-center rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md p-6 sm:p-8 shadow-xl border border-gray-200/60 dark:border-white/20 w-full max-w-[280px] sm:max-w-[320px] min-w-0"
                   >
-                    <div className="relative mb-4 h-24 w-24 sm:h-28 sm:w-28 rounded-full overflow-hidden ring-4 ring-white/30">
+                    <div className="relative mb-4 h-24 w-24 sm:h-28 sm:w-28 rounded-full overflow-hidden ring-4 ring-gray-200 dark:ring-white/30">
                       <Image
                         src={dev.photo || PLACEHOLDER_PHOTO}
                         alt={dev.name}
@@ -97,11 +97,11 @@ export default function DevelopersPage() {
                         unoptimized={dev.photo?.startsWith('data:')}
                       />
                     </div>
-                    <h2 className="text-lg sm:text-xl font-bold text-white">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                       {dev.name}
                     </h2>
                     {dev.designation && (
-                      <p className="text-sm text-white/80 mb-4">{dev.designation}</p>
+                      <p className="text-sm text-gray-600 dark:text-white/80 mb-4">{dev.designation}</p>
                     )}
                     <div className="flex gap-3">
                       {dev.linkedin && (
@@ -109,7 +109,7 @@ export default function DevelopersPage() {
                           href={dev.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/80 hover:text-white transition-colors"
+                          className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
                           aria-label="LinkedIn"
                         >
                           <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -120,7 +120,7 @@ export default function DevelopersPage() {
                           href={dev.instagram}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/80 hover:text-white transition-colors"
+                          className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
                           aria-label="Instagram"
                         >
                           <Instagram className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -131,7 +131,7 @@ export default function DevelopersPage() {
                           href={dev.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/80 hover:text-white transition-colors"
+                          className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
                           aria-label="GitHub"
                         >
                           <Github className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -140,7 +140,7 @@ export default function DevelopersPage() {
                       {dev.email && (
                         <a
                           href={dev.email}
-                          className="text-white/80 hover:text-white transition-colors"
+                          className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
                           aria-label="Email"
                         >
                           <Mail className="h-5 w-5 sm:h-6 sm:w-6" />

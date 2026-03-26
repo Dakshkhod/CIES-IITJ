@@ -10,7 +10,6 @@ import {
   Users,
   Target,
   ChevronDown,
-  Download,
   ExternalLink,
   Lightbulb,
   BookOpen,
@@ -656,25 +655,6 @@ const EdificioPhotoEssay = () => {
           </div>
         </FadeInOnScroll>
 
-        {/* PDF Download - Enhanced */}
-        <FadeInOnScroll delay={0.4}>
-          <div className="mt-10 sm:mt-20 text-center">
-            <motion.a
-              href="#"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-2 sm:gap-3 rounded-full bg-gradient-to-r from-[#0b3d91] to-blue-600 px-6 sm:px-10 py-3 sm:py-5 text-sm sm:text-lg font-bold text-white shadow-xl sm:shadow-2xl transition-all hover:shadow-blue-500/50 dark:from-cyan-500 dark:to-blue-500 dark:hover:shadow-cyan-500/50"
-              aria-label="Download EDIFICIO Brochure PDF"
-            >
-              <Download className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-y-1" />
-              Download Brochure
-            </motion.a>
-            <p className="mt-3 sm:mt-5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              {/* CMS Placeholder: PDF size and format */}
-              <span className="font-semibold text-slate-800 dark:text-cyan-400">PDF</span> · 5.2 MB · Event Highlights
-            </p>
-          </div>
-        </FadeInOnScroll>
       </div>
     </section>
   );

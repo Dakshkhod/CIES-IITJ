@@ -21,11 +21,15 @@ export const metadata: Metadata = {
     template: '%s | Civil and Infrastructure Engineering Society | IIT Jodhpur',
   },
   description:
-    'CIES IIT Jodhpur – Official website of the Civil & Infrastructure Engineering Society at Indian Institute of Technology Jodhpur. Explore workshops, seminars, EDIFICIO fest, events, team, and student community initiatives in civil engineering.',
+    'CIES (Civil and Infrastructure Engineering Society) IIT Jodhpur – Official website. CIES IITJ organizes workshops, seminars, EDIFICIO fest, events, and student community initiatives in civil engineering at Indian Institute of Technology Jodhpur.',
   keywords: [
     'CIES',
     'CIES IITJ',
     'CIES IIT Jodhpur',
+    'cies iitj',
+    'cies iit jodhpur',
+    'Civil and Infrastructure Engineering Society',
+    'Civil and Infrastructure Engineering Society IIT Jodhpur',
     'Civil Engineering Society IIT Jodhpur',
     'civil engineering society iitj',
     'civil engineering iit jodhpur',
@@ -130,8 +134,8 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': 'https://cies.iitj.ac.in/#organization',
-  name: 'Civil & Infrastructure Engineering Society - IIT Jodhpur',
-  alternateName: ['CIES IIT Jodhpur', 'CIES IITJ', 'CIES', 'Civil Engineering Society IIT Jodhpur'],
+  name: 'Civil and Infrastructure Engineering Society (CIES) - IIT Jodhpur',
+  alternateName: ['CIES IIT Jodhpur', 'CIES IITJ', 'CIES', 'Civil Engineering Society IIT Jodhpur', 'Civil and Infrastructure Engineering Society'],
   url: 'https://cies.iitj.ac.in',
   logo: {
     '@type': 'ImageObject',
@@ -183,8 +187,8 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': 'https://cies.iitj.ac.in/#website',
-  name: 'Civil and Infrastructure Engineering Society | IIT Jodhpur',
-  alternateName: ['CIES IITJ', 'Civil Engineering Society IIT Jodhpur', 'CIES IIT Jodhpur'],
+  name: 'Civil and Infrastructure Engineering Society (CIES) | IIT Jodhpur',
+  alternateName: ['CIES IITJ', 'Civil Engineering Society IIT Jodhpur', 'CIES IIT Jodhpur', 'CIES', 'Civil and Infrastructure Engineering Society'],
   url: 'https://cies.iitj.ac.in',
   description: 'Official website of the Civil & Infrastructure Engineering Society at IIT Jodhpur',
   publisher: {

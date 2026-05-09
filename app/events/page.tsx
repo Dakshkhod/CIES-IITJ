@@ -5,17 +5,54 @@ import AppLayout from '@/components/layout/AppLayout';
 import { Calendar, Clock, MapPin, Users, Camera, ChevronRight, Filter, Grid, List, Loader2 } from 'lucide-react';
 import { getEvents as getSanityEvents } from '@/lib/sanity';
 
+type EventCategory =
+  | 'orientation'
+  | 'celebration'
+  | 'academic'
+  | 'cultural'
+  | 'workshop'
+  | 'community';
+
 type EventItem = {
   id: string;
   title: string;
   date: string;
-  category: 'orientation' | 'celebration' | 'academic' | 'cultural' | 'workshop';
+  category: EventCategory;
   description: string;
   location: string;
   attendees?: string;
   photos: string[];
   status: 'completed' | 'upcoming';
 };
+
+/** Map Sanity `category` when set; for `other`/unknown, use `inferCategoryFromTitle`. */
+function sanityCategoryToDisplay(
+  sanityCategory: string | undefined,
+  title: string
+): EventCategory {
+  const sc = (sanityCategory || '').trim();
+  if (sc === 'seminar' || sc === 'site-visit' || sc === 'guest-lecture' || sc === 'technical-talk') return 'academic';
+  if (sc === 'workshop') return 'workshop';
+  if (sc === 'edificio') return 'cultural';
+  if (sc === 'competition') return 'cultural';
+
+  return inferCategoryFromTitle(title);
+}
+
+/** When CMS uses generic "other", infer a reasonable Events page vertical from the title. */
+function inferCategoryFromTitle(title: string): EventCategory {
+  const t = (title || '').toLowerCase();
+  if (t.includes('orientation')) return 'orientation';
+  if (t.includes('freshers')) return 'cultural';
+  if (
+    /diwali|teacher'?s day|engineer'?s day|farewell|convocation|congratulations?\b|festival|holi|eid\b|christmas|ugadi|onam|pongal/.test(t)
+  ) {
+    return 'celebration';
+  }
+  if (/badminton|cricket|\bmatch\b|sports|tournament|marathon|relay|race\b/.test(t)) return 'community';
+  if (/field visit|site visit|excursion|industrial visit/.test(t)) return 'academic';
+  return 'community';
+}
 
 // Fallback events data (defined outside component to avoid recreation)
 const FALLBACK_EVENTS: EventItem[] = [
@@ -139,7 +176,15 @@ export default function EventsPage() {
   const [events, setEvents] = useState<EventItem[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
 
-  const categories = ['all', 'orientation', 'celebration', 'academic', 'cultural', 'workshop'];
+  const categories: (EventCategory | 'all')[] = [
+    'all',
+    'orientation',
+    'celebration',
+    'academic',
+    'cultural',
+    'workshop',
+    'community',
+  ];
 
   // All hooks must be called before any conditional returns
   const filteredEvents = useMemo(() => {
@@ -211,16 +256,6 @@ export default function EventsPage() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const eventsOnly = allEvents.filter((event: any) => event.eventCategory === 'event');
 
-        // Map Sanity category to frontend category
-        const categoryMap: Record<string, EventItem['category']> = {
-          'other': 'celebration',
-          'edificio': 'cultural',
-          'seminar': 'academic',
-          'workshop': 'workshop',
-          'site-visit': 'orientation',
-          'competition': 'celebration',
-        };
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedEvents: EventItem[] = eventsOnly.map((event: any) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -242,7 +277,7 @@ export default function EventsPage() {
             id: event._id,
             title: event.title,
             date: event.date,
-            category: categoryMap[event.category] || 'celebration',
+            category: sanityCategoryToDisplay(event.category, event.title || ''),
             description: event.description || '',
             location: event.location || 'IIT Jodhpur Campus',
             attendees: event.attendeesCount ? `${event.attendeesCount}+ Attendees` : undefined,
@@ -287,6 +322,7 @@ export default function EventsPage() {
       academic: 'from-green-500 to-emerald-500',
       cultural: 'from-orange-500 to-red-500',
       workshop: 'from-yellow-500 to-amber-500',
+      community: 'from-sky-500 to-indigo-500',
     };
     return colors[category] || 'from-slate-500 to-gray-500';
   };
@@ -298,6 +334,8 @@ export default function EventsPage() {
       academic: 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 border-green-300 dark:border-green-500/30',
       cultural: 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-500/30',
       workshop: 'bg-amber-100 dark:bg-yellow-500/20 text-amber-700 dark:text-yellow-300 border-amber-300 dark:border-yellow-500/30',
+      community:
+        'bg-sky-100 dark:bg-sky-500/20 text-sky-800 dark:text-sky-300 border-sky-300 dark:border-sky-500/30',
     };
     return badges[category] || 'bg-slate-100 dark:bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-500/30';
   };
@@ -330,22 +368,26 @@ export default function EventsPage() {
               </div>
 
               {/* Stats */}
-              <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4 max-w-4xl mx-auto">
+              <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-5 max-w-6xl mx-auto">
                 <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-slate-700 dark:text-blue-400">{events.length}</div>
                   <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Total Events</div>
                 </div>
-                <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{events.filter(e => e.category === 'cultural').length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Cultural Events</div>
+                <div className="rounded-xl border border-orange-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{events.filter(e => e.category === 'cultural').length}</div>
+                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Cultural</div>
                 </div>
                 <div className="rounded-xl border border-green-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
                   <div className="text-3xl font-bold text-green-600 dark:text-green-400">{events.filter(e => e.category === 'academic').length}</div>
-                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Academic Events</div>
+                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Academic</div>
                 </div>
-                <div className="rounded-xl border border-amber-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-amber-600 dark:text-yellow-400">{events.filter(e => e.category === 'celebration').length}</div>
+                <div className="rounded-xl border border-purple-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{events.filter(e => e.category === 'celebration').length}</div>
                   <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Celebrations</div>
+                </div>
+                <div className="rounded-xl border border-sky-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-bold text-sky-600 dark:text-sky-400">{events.filter(e => e.category === 'community').length}</div>
+                  <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">Community</div>
                 </div>
               </div>
             </div>

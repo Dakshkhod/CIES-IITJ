@@ -311,7 +311,7 @@ export default function RoadmapPage() {
           'site-visit': 'site-visit',
           'competition': 'competition',
           'edificio': 'edificio',
-          'other': 'research',
+          'other': 'other',
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

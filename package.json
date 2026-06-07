@@ -24,7 +24,7 @@
     "next": "^14.2.35",
     "next-sanity": "^9.12.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.2.7",
     "sanity": "^3.99.0",
     "styled-components": "^6.3.11",
     "tailwind-merge": "^2.0.0"
@@ -34,7 +34,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.8.0",
     "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.52.0",
     "eslint-config-next": "^14.0.0",

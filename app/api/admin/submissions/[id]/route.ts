@@ -1,5 +1,9 @@
 import { neon } from '@neondatabase/serverless'
 import { NextRequest, NextResponse } from 'next/server'
+import { isAuthenticated } from '@/lib/auth'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 // Initialize database connection lazily
 let sql: ReturnType<typeof neon> | null = null
@@ -14,11 +18,14 @@ function getDbClient() {
   return sql
 }
 
-// PATCH - Update a submission (mark as read, replied, add notes)
+// PATCH - Update a submission (mark as read, replied, add notes) - ADMIN ONLY
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!isAuthenticated(request)) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { id } = await params
     const submissionId = parseInt(id)
@@ -99,11 +106,14 @@ export async function PATCH(
   }
 }
 
-// DELETE - Delete a submission
+// DELETE - Delete a submission - ADMIN ONLY
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!isAuthenticated(request)) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { id } = await params
     const submissionId = parseInt(id)

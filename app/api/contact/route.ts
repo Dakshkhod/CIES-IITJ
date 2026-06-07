@@ -1,5 +1,9 @@
 import { neon } from '@neondatabase/serverless'
 import { NextRequest, NextResponse } from 'next/server'
+import { isAuthenticated } from '@/lib/auth'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 // Lazy initialization - only connect when needed (not at build time)
 function getDbClient() {
@@ -10,8 +14,11 @@ function getDbClient() {
   return neon(databaseUrl)
 }
 
-// Initialize database table (runs on first connection)
-async function initializeDatabase() {
+// Ensure the table exists. Guarded so it only runs once per warm instance
+// instead of on every request.
+let tableReady = false
+async function ensureTable() {
+  if (tableReady) return
   const sql = getDbClient()
   await sql`
     CREATE TABLE IF NOT EXISTS contact_submissions (
@@ -31,13 +38,63 @@ async function initializeDatabase() {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `
+  tableReady = true
 }
 
-// POST - Submit contact form
+// Best-effort in-memory rate limit for the public submit endpoint.
+const submitAttempts = new Map<string, { count: number; resetAt: number }>()
+const SUBMIT_MAX = 5
+const SUBMIT_WINDOW_MS = 10 * 60 * 1000
+
+function clientIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  )
+}
+
+function submitRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = submitAttempts.get(ip)
+  if (!entry || now > entry.resetAt) {
+    submitAttempts.set(ip, { count: 1, resetAt: now + SUBMIT_WINDOW_MS })
+    return false
+  }
+  entry.count += 1
+  return entry.count > SUBMIT_MAX
+}
+
+const LIMITS = {
+  name: 255,
+  email: 255,
+  phone: 20,
+  subject: 255,
+  message: 5000,
+}
+
+// POST - Submit contact form (public)
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, email, phone, subject, message } = body
+    const ip = clientIp(request)
+    if (submitRateLimited(ip)) {
+      return NextResponse.json(
+        { success: false, message: 'Too many submissions. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
+    const body = await request.json().catch(() => ({}))
+    const { name, email, phone, subject, message, website } = body
+
+    // Honeypot: real users never fill the hidden "website" field.
+    if (typeof website === 'string' && website.trim() !== '') {
+      // Silently accept to avoid signalling bots, but do not store.
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you for contacting us! We will get back to you soon.',
+      })
+    }
 
     // Validation
     if (!name || !email || !message) {
@@ -47,7 +104,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Email validation
+    if (
+      String(name).length > LIMITS.name ||
+      String(email).length > LIMITS.email ||
+      (phone && String(phone).length > LIMITS.phone) ||
+      (subject && String(subject).length > LIMITS.subject) ||
+      String(message).length > LIMITS.message
+    ) {
+      return NextResponse.json(
+        { success: false, message: 'One or more fields exceed the allowed length.' },
+        { status: 400 }
+      )
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -56,16 +125,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Initialize database table if not exists
-    await initializeDatabase()
+    await ensureTable()
 
-    // Get client info
-    const ip_address = request.headers.get('x-forwarded-for') || 
-                       request.headers.get('x-real-ip') || 
-                       'unknown'
+    const ip_address = ip
     const user_agent = request.headers.get('user-agent') || 'unknown'
 
-    // Insert into database
     const sql = getDbClient()
     const result = await sql`
       INSERT INTO contact_submissions (name, email, phone, subject, message, ip_address, user_agent)
@@ -87,18 +151,24 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Get contact submissions (admin only - add authentication later)
+// GET - Get contact submissions (ADMIN ONLY - requires valid session)
 export async function GET(request: NextRequest) {
-  try {
-    // TODO: Add authentication check here
-    // For now, this endpoint should be protected by Vercel/environment
+  // Server-side authorization. Without a valid admin session this returns 401
+  // and never touches the database.
+  if (!isAuthenticated(request)) {
+    return NextResponse.json(
+      { success: false, message: 'Unauthorized' },
+      { status: 401 }
+    )
+  }
 
+  try {
     const searchParams = request.nextUrl.searchParams
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '20')
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')))
     const offset = (page - 1) * limit
 
-    await initializeDatabase()
+    await ensureTable()
 
     const sql = getDbClient()
     const submissions = await sql`

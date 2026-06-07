@@ -22,17 +22,40 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Environment variables
-  env: {
-    CUSTOM_KEY: 'value',
-  },
-
-  // Headers for security, performance, and SEO
+  // Headers for security, performance, and SEO.
+  // Note: 'unsafe-inline'/'unsafe-eval' on script-src are currently required by
+  // the embedded Sanity Studio (/studio) and the Next.js runtime. This is a
+  // documented limitation; nonce-based CSP is planned hardening.
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+      "img-src 'self' data: blob: https://cdn.sanity.io https://images.unsplash.com https://placehold.co https://*.iitj.ac.in https://lh3.googleusercontent.com",
+      "font-src 'self' data:",
+      "style-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "connect-src 'self' https://*.sanity.io https://*.apicdn.sanity.io wss://*.sanity.io https://*.neon.tech",
+      "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com",
+      "worker-src 'self' blob:",
+      "media-src 'self' data:",
+      'upgrade-insecure-requests',
+    ].join('; ');
+
     return [
       {
         source: '/(.*)',
         headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: csp,
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
           // SAMEORIGIN allows Vercel deployment preview iframe; use DENY if you prefer stricter security
           {
             key: 'X-Frame-Options',

@@ -22,34 +22,50 @@ export default function AdminSubmissionsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false)
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
+  const [loggingIn, setLoggingIn] = useState(false)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Check password from localStorage or validate
-    const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'cies@admin2025'
-    
-    if (password === correctPassword) {
-      setIsAuthenticated(true)
-      localStorage.setItem('admin_auth', 'true')
-      setAuthError('')
-    } else {
-      setAuthError('Incorrect password')
+    setLoggingIn(true)
+    setAuthError('')
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+      if (res.ok) {
+        setIsAuthenticated(true)
+        setPassword('')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setAuthError(data.message || 'Incorrect password')
+      }
+    } catch {
+      setAuthError('Unable to reach the server. Please try again.')
+    } finally {
+      setLoggingIn(false)
     }
   }
 
-  const handleLogout = () => {
-    setIsAuthenticated(false)
-    localStorage.removeItem('admin_auth')
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/login', { method: 'DELETE' })
+    } finally {
+      setIsAuthenticated(false)
+    }
   }
 
   useEffect(() => {
-    // Check if already authenticated
-    const auth = localStorage.getItem('admin_auth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-    }
+    // Verify session against the server (HTTP-only cookie, not client state)
+    fetch('/api/admin/login')
+      .then((res) => res.json())
+      .then((data) => setIsAuthenticated(Boolean(data?.authenticated)))
+      .catch(() => setIsAuthenticated(false))
+      .finally(() => setAuthChecked(true))
   }, [])
 
   useEffect(() => {
@@ -120,6 +136,15 @@ export default function AdminSubmissionsPage() {
     })
   }
 
+  // Avoid flashing the login screen before the server session is verified
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <RefreshCw className="w-8 h-8 text-blue-400 animate-spin" />
+      </div>
+    )
+  }
+
   // Login Screen
   if (!isAuthenticated) {
     return (
@@ -151,9 +176,10 @@ export default function AdminSubmissionsPage() {
             
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors"
+              disabled={loggingIn}
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors"
             >
-              Login
+              {loggingIn ? 'Signing in...' : 'Login'}
             </button>
           </form>
           

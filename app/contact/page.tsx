@@ -47,6 +47,7 @@ async function submitContactForm(data: {
   phone?: string;
   subject?: string;
   message: string;
+  website?: string;
 }): Promise<{ success: boolean; message: string }> {
   const response = await fetch('/api/contact', {
     method: 'POST',
@@ -88,6 +89,8 @@ export default function ContactPage() {
     message: '',
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  // Honeypot field - hidden from humans, bots tend to fill it.
+  const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
@@ -170,6 +173,7 @@ export default function ContactPage() {
         phone: formData.phone.trim() || undefined,
         subject: formData.subject.trim() || undefined,
         message: formData.message.trim(),
+        website: honeypot,
       });
       
       setSubmitStatus('success');
@@ -474,6 +478,19 @@ export default function ContactPage() {
                   </AnimatePresence>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Honeypot field - hidden from users, used to catch bots */}
+                    <div aria-hidden="true" className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
+                      <label htmlFor="website">Website</label>
+                      <input
+                        type="text"
+                        id="website"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                      />
+                    </div>
                     {/* Name & Email Row */}
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Name */}

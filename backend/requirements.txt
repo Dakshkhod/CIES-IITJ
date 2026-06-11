@@ -1,5 +1,7 @@
 # Django and REST Framework
-Django==5.1
+# Pin to a patched 5.1.x (>=5.1.5 includes fixes for CVE-2024-53907,
+# CVE-2024-56374, etc.) rather than the unpatched 5.1.0 release.
+Django>=5.1.5,<5.2
 djangorestframework>=3.14.0,<4.0.0
 drf-spectacular>=0.27.0,<1.0.0
 

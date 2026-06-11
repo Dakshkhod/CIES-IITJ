@@ -12,6 +12,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 import dj_database_url
 
@@ -25,17 +26,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-0#ts9s6a2an6@s#%5ke$#=sy0m$z1%re7ws)wi98yp^b-#ah%*"
-)
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
-ENABLE_THROTTLE = os.environ.get("ENABLE_THROTTLE", "False").lower() == "true"
+# Fail secure: default to False so an unset env var never enables debug in prod.
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+# SECURITY WARNING: keep the secret key used in production secret!
+# Never ship a hard-coded production key. Outside DEBUG a real key is mandatory;
+# in local development we fall back to a clearly-marked insecure value.
+SECRET_KEY = os.environ.get("SECRET_KEY")
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = "django-insecure-dev-only-key-do-not-use-in-production"
+    else:
+        raise ImproperlyConfigured(
+            "SECRET_KEY environment variable must be set when DEBUG is False."
+        )
+
+ENABLE_THROTTLE = os.environ.get("ENABLE_THROTTLE", "True").lower() == "true"
+
+# Restrictive by default; set ALLOWED_HOSTS in the environment for production.
+ALLOWED_HOSTS = [
+    h.strip()
+    for h in os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+    if h.strip()
+]
 
 
 # CORS Configuration
@@ -52,16 +66,22 @@ CORS_ALLOW_HEADERS = [
     "ngrok-skip-browser-warning",
 ]
 
-# In development, allow all origins; in production, use specific origins
+# In development, allow all origins; in production, use specific origins.
+# Allowing credentials together with a reflected wildcard origin would let any
+# site make authenticated cross-origin requests, so credentials are only
+# enabled alongside an explicit origin allowlist (production).
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = False
 else:
-    CORS_ALLOWED_ORIGINS = os.environ.get(
-        "CORS_ALLOWED_ORIGINS",
-        "http://localhost:3000"
-    ).split(",")
-
-CORS_ALLOW_CREDENTIALS = True
+    CORS_ALLOWED_ORIGINS = [
+        o.strip()
+        for o in os.environ.get(
+            "CORS_ALLOWED_ORIGINS", "http://localhost:3000"
+        ).split(",")
+        if o.strip()
+    ]
+    CORS_ALLOW_CREDENTIALS = True
 
 # Session and Cookie settings
 SESSION_COOKIE_HTTPONLY = True

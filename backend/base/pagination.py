@@ -20,19 +20,3 @@ class DefaultPagination(PageNumberPagination):
             "results": data
         })
 
-
-class LargePagination(PageNumberPagination):
-    """Pagination for endpoints that may return more items."""
-    page_size = 50
-    page_query_param = "page"
-    page_size_query_param = "page_size"
-    max_page_size = 200
-
-
-class SmallPagination(PageNumberPagination):
-    """Pagination for endpoints with smaller datasets."""
-    page_size = 5
-    page_query_param = "page"
-    page_size_query_param = "page_size"
-    max_page_size = 20
-

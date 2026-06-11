@@ -42,10 +42,17 @@ from apps.core.models import (
 # ============== Dropdown Views ==============
 
 class DropdownAV(BaseAV):
-    authentication = False
+    # Reads are public; creating dropdown values is a privileged write.
+    authentication = {"get": False, "post": True}
 
     @extend_schema(request=DropDownSerializer)
     def post(self, request):
+        if not request.user.is_staff:
+            return Response(
+                {"error": "Permission denied"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         data = request.data
         serializer = DropDownSerializer(
             data=data, exclude=BaseModel.BASE_MODEL_FIELDS + ("parent",), many=True
@@ -96,6 +103,11 @@ class RegisterAV(BaseAV):
     )
     def post(self, request):
         data = request.data.copy()
+        # Defense in depth: strip privilege/internal fields so a self-service
+        # registration can never set is_staff/is_superuser/is_active/etc.,
+        # regardless of how the serializer's field filtering behaves.
+        for protected in User.USER_MODEL_FIELDS:
+            data.pop(protected, None)
         serializer = LoginSerializer(data=data, exclude=(User.USER_MODEL_FIELDS))
         if serializer.is_valid():
             serializer.save()
@@ -224,8 +236,18 @@ class ContactSubmitAV(BaseAV):
     )
     def post(self, request):
         serializer = ContactSubmissionCreateSerializer(data=request.data)
-        
+
         if serializer.is_valid():
+            # Verify reCAPTCHA (no-ops gracefully when not configured / no token)
+            from apps.core.services import RecaptchaService
+            if not RecaptchaService.verify(
+                serializer.validated_data.get("recaptcha_token")
+            ):
+                return Response(
+                    {"success": False, "message": "reCAPTCHA verification failed. Please try again."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             # Get client IP
             x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
             if x_forwarded_for:

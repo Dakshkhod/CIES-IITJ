@@ -405,7 +405,7 @@ export default function EventsPage() {
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
                       className={`rounded-lg px-3 sm:px-4 py-2.5 min-h-[44px] text-sm font-medium transition-all duration-200 touch-manipulation ${activeCategory === cat
-                        ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20'
+                        ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/30 dark:bg-white dark:text-gray-900 dark:shadow-white/20'
                         : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                         }`}
                     >
@@ -418,7 +418,7 @@ export default function EventsPage() {
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'grid'
-                      ? 'bg-blue-500 text-white shadow-md'
+                      ? 'bg-gray-900 text-white shadow-md dark:bg-white dark:text-gray-900'
                       : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
                     aria-label="Grid view"
@@ -428,7 +428,7 @@ export default function EventsPage() {
                   <button
                     onClick={() => setViewMode('timeline')}
                     className={`rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all touch-manipulation ${viewMode === 'timeline'
-                      ? 'bg-blue-500 text-white shadow-md'
+                      ? 'bg-gray-900 text-white shadow-md dark:bg-white dark:text-gray-900'
                       : 'bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                       }`}
                     aria-label="Timeline view"

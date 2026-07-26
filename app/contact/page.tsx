@@ -416,12 +416,12 @@ export default function ContactPage() {
                     />
                   </div>
                 ) : (
-                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl p-8 text-white shadow-xl">
+                  <div className="bg-teal-700 rounded-3xl p-8 text-white shadow-xl">
                     <div className="flex items-center gap-3 mb-4">
                       <MapPin className="h-8 w-8" />
                       <h3 className="text-xl font-bold">Find Us</h3>
                     </div>
-                    <p className="text-blue-100 mb-4">
+                    <p className="text-teal-50 mb-4">
                       Located at the Department of Civil and Infrastructure Engineering, IIT Jodhpur campus in the heart of Rajasthan.
                     </p>
                     <a
@@ -622,7 +622,7 @@ export default function ContactPage() {
                       className={`w-full py-4 px-6 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all duration-300 ${
                         isSubmitting
                           ? 'bg-gray-400 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
+                          : 'bg-indigo-700 hover:bg-indigo-800 shadow-lg shadow-indigo-700/25 hover:shadow-indigo-700/40'
                       }`}
                     >
                       {isSubmitting ? (

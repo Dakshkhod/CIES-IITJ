@@ -148,7 +148,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, isDarkMode, toggleTheme, isSticky, 
               href={item.href}
               className={`whitespace-nowrap rounded-full px-3 md:px-4 py-2 text-[14px] md:text-sm font-medium tracking-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b3d91] ${
                 isActive(item.href)
-                  ? 'bg-[#0b3d91] text-white shadow-md'
+                  ? 'bg-gray-900 text-white shadow-md dark:bg-white dark:text-gray-900'
                   : 'text-gray-800 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
             >
@@ -225,11 +225,11 @@ const MobileNav = ({ pathname }: MobileNavProps) => {
           href={item.href}
           className={`flex items-center rounded-lg px-3 py-3 min-h-[44px] font-medium transition-colors text-sm touch-manipulation ${
             isActive(item.href)
-              ? 'text-white bg-[#0b3d91] shadow-md dark:text-white'
+              ? 'text-white bg-gray-900 shadow-md dark:bg-white dark:text-gray-900'
               : 'text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
           }`}
         >
-          <item.icon className={`mr-2.5 h-4 w-4 flex-shrink-0 ${isActive(item.href) ? 'text-white' : 'text-[#0b3d91] dark:text-blue-400'}`} />
+          <item.icon className={`mr-2.5 h-4 w-4 flex-shrink-0 ${isActive(item.href) ? 'text-white dark:text-gray-900' : 'text-[#0b3d91] dark:text-blue-400'}`} />
           <span className="truncate">{item.name}</span>
         </Link>
       ))}

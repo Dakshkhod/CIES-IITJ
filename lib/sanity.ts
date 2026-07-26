@@ -178,25 +178,6 @@ export const galleryQuery = `*[_type == "gallery"] | order(isFeatured desc, disp
   }
 }`
 
-// Developers (Developers page)
-export const developersQuery = `*[_type == "developer"] | order(displayOrder asc, name asc) {
-  _id,
-  name,
-  designation,
-  profileImage {
-    asset->,
-    crop,
-    hotspot
-  },
-  displayOrder,
-  socials {
-    linkedin,
-    email,
-    instagram,
-    github
-  }
-}`
-
 // ============== Fetch Functions ==============
 
 export async function getTeamMembers() {
@@ -233,14 +214,5 @@ export async function getAnnouncements() {
 
 export async function getGallery() {
   return sanityClient.fetch(galleryQuery)
-}
-
-export async function getDevelopers() {
-  const data = await sanityClient.fetch(developersQuery)
-  return (data || []).map((d: { profileImage?: { asset?: unknown; crop?: unknown; hotspot?: unknown }; [key: string]: unknown }) => ({
-    ...d,
-    photo: d.profileImage ? urlFor(d.profileImage).url() : null,
-    profileImage: undefined,
-  }))
 }
 

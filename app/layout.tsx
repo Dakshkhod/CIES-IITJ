@@ -182,7 +182,7 @@ const organizationJsonLd = {
   },
 };
 
-// JSON-LD Structured Data — WebSite (enables sitelinks search box in Google)
+// JSON-LD Structured Data — WebSite (supports the site's name in Google)
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -195,14 +195,6 @@ const websiteJsonLd = {
     '@id': 'https://cies.iitj.ac.in/#organization',
   },
   inLanguage: 'en-IN',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://cies.iitj.ac.in/?q={search_term_string}',
-    },
-    'query-input': 'required name=search_term_string',
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -27,6 +27,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'isActive',
@@ -58,58 +59,11 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'expiryDate',
-      title: 'Legacy Expiry Date',
-      type: 'datetime',
-      description: 'Kept for existing records; it does not hide historical carousel items.',
-      validation: Rule =>
-        Rule.custom((expiryDate, context) => {
-          const publishDate = context.document?.publishDate;
-          if (!expiryDate || typeof publishDate !== 'string') return true;
-          return new Date(expiryDate) > new Date(publishDate)
-            ? true
-            : 'Expiry date must be later than the publish date';
-        }),
-    }),
-    defineField({
-      name: 'targetAudience',
-      title: 'Legacy Target Audience',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'All', value: 'all' },
-          { title: 'Students Only', value: 'students' },
-          { title: 'Faculty Only', value: 'faculty' },
-          { title: 'Undergraduate Students', value: 'ug' },
-          { title: 'Postgraduate Students', value: 'pg' },
-        ],
-      },
-      initialValue: 'all',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
       name: 'linkUrl',
       title: 'Link URL',
       type: 'url',
       description: 'Optional destination for the View More button.',
-      validation: Rule =>
-        Rule.uri({ scheme: ['http', 'https'] }).custom((linkUrl, context) => {
-          return !context.document?.linkText || linkUrl
-            ? true
-            : 'Add a URL when link text is provided';
-        }),
-    }),
-    defineField({
-      name: 'linkText',
-      title: 'Legacy Link Text',
-      type: 'string',
-      description: 'Kept for existing records; the carousel button is labelled View More.',
-      validation: Rule =>
-        Rule.max(50).custom((linkText, context) => {
-          return !context.document?.linkUrl || linkText
-            ? true
-            : 'Add link text when a URL is provided';
-        }),
+      validation: Rule => Rule.uri({ scheme: ['http', 'https'] }),
     }),
   ],
   preview: {
@@ -118,23 +72,18 @@ export default defineType({
       publishDate: 'publishDate',
       isActive: 'isActive',
       isPinned: 'isPinned',
-      targetAudience: 'targetAudience',
       media: 'image',
     },
-    prepare({ title, publishDate, isActive, isPinned, targetAudience, media }) {
+    prepare({ title, publishDate, isActive, isPinned, media }) {
       const status = isActive ? 'Active' : 'Inactive';
       const pinned = isPinned ? ' · Pinned' : '';
-      const audience =
-        targetAudience && targetAudience !== 'all'
-          ? ` · ${String(targetAudience).toUpperCase()}`
-          : '';
       const date = publishDate
         ? new Date(publishDate).toLocaleDateString('en-IN')
         : 'No publish date';
 
       return {
         title,
-        subtitle: `${status}${pinned}${audience} · ${date}`,
+        subtitle: `${status}${pinned} · ${date}`,
         media,
       };
     },

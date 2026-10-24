@@ -155,6 +155,7 @@ export const contactInfoQuery = `*[_type == "contactInfo"][0] {
 export const announcementsQuery = `*[
   _type == "announcement" &&
   isActive == true &&
+  defined(image.asset) &&
   (!defined(publishDate) || publishDate <= now())
 ] | order(isPinned desc, priority desc, publishDate desc) {
   _id,
@@ -163,10 +164,7 @@ export const announcementsQuery = `*[
   isPinned,
   priority,
   publishDate,
-  expiryDate,
-  targetAudience,
   linkUrl,
-  linkText,
   "image": image.asset->url
 }`;
 

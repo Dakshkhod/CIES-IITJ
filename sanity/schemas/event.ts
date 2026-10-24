@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'event',
@@ -9,7 +9,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -19,19 +19,25 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'date',
       title: 'Date',
       type: 'date',
-      validation: (Rule) => Rule.required(),
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'endDate',
       title: 'End Date',
       type: 'date',
       description: 'For multi-day events',
+      validation: Rule =>
+        Rule.custom((endDate, context) => {
+          const startDate = context.document?.date;
+          if (!endDate || typeof startDate !== 'string') return true;
+          return endDate >= startDate ? true : 'End date cannot be before the start date';
+        }),
     }),
     defineField({
       name: 'timeStart',
@@ -57,6 +63,7 @@ export default defineType({
         ],
       },
       initialValue: 'event',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -75,6 +82,7 @@ export default defineType({
         ],
       },
       initialValue: 'other',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'status',
@@ -88,6 +96,7 @@ export default defineType({
         ],
       },
       initialValue: 'upcoming',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'description',
@@ -132,6 +141,7 @@ export default defineType({
       name: 'attendeesCount',
       title: 'Attendees Count',
       type: 'number',
+      validation: Rule => Rule.integer().min(0),
     }),
     defineField({
       name: 'featured',
@@ -176,5 +186,4 @@ export default defineType({
       by: [{ field: 'date', direction: 'asc' }],
     },
   ],
-})
-
+});

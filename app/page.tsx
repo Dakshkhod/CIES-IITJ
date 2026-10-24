@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 
 import AppLayout from '@/components/layout/AppLayout';
+import Announcements from '@/components/home/Announcements';
 
 const RecentActivities = dynamic(() => import('@/components/home/RecentActivities'), {
   ssr: false,
@@ -22,6 +23,7 @@ export default function HomePage() {
 
         <main className="isolate pt-24">
           <HeroSection />
+          <Announcements limit={3} showAllLink />
           <RecentActivities />
         </main>
       </div>
@@ -44,7 +46,7 @@ const AnimatedCIESLogo = () => {
     visible: {
       pathLength: 1,
       opacity: 1,
-      transition: { duration: 2.2, ease: 'easeInOut' }
+      transition: { duration: 2.2, ease: 'easeInOut' },
     },
   };
 
@@ -53,7 +55,7 @@ const AnimatedCIESLogo = () => {
     visible: {
       pathLength: 1,
       opacity: 1,
-      transition: { duration: 1.8, ease: 'easeInOut', delay: 0.3 }
+      transition: { duration: 1.8, ease: 'easeInOut', delay: 0.3 },
     },
   };
 
@@ -62,7 +64,7 @@ const AnimatedCIESLogo = () => {
     visible: {
       pathLength: 1,
       opacity: 1,
-      transition: { duration: 2, ease: 'easeInOut', delay: 0.6 }
+      transition: { duration: 2, ease: 'easeInOut', delay: 0.6 },
     },
   };
 
@@ -71,7 +73,7 @@ const AnimatedCIESLogo = () => {
     visible: {
       pathLength: 1,
       opacity: 1,
-      transition: { duration: 1.5, ease: 'easeInOut', delay: 0.9 }
+      transition: { duration: 1.5, ease: 'easeInOut', delay: 0.9 },
     },
   };
 
@@ -80,7 +82,7 @@ const AnimatedCIESLogo = () => {
     visible: {
       pathLength: 1,
       opacity: 1,
-      transition: { duration: 1.8, ease: 'easeInOut', delay: 1.2 }
+      transition: { duration: 1.8, ease: 'easeInOut', delay: 1.2 },
     },
   };
 
@@ -88,7 +90,7 @@ const AnimatedCIESLogo = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 0.3,
-      transition: { duration: 0.8, ease: 'easeInOut', delay: 3.0 } // Start after main animation completes (~1.2 + 1.8)
+      transition: { duration: 0.8, ease: 'easeInOut', delay: 3.0 }, // Start after main animation completes (~1.2 + 1.8)
     },
   };
 
@@ -96,7 +98,7 @@ const AnimatedCIESLogo = () => {
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 700 320"
-      className="mx-auto h-auto w-full max-w-[90vw] sm:max-w-none text-black dark:text-cyan-400 drop-shadow-[0_0_30px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+      className="mx-auto h-auto w-full max-w-[90vw] text-black drop-shadow-[0_0_30px_rgba(0,0,0,0.2)] dark:text-cyan-400 dark:drop-shadow-[0_0_30px_rgba(56,189,248,0.5)] sm:max-w-none"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -204,13 +206,53 @@ const AnimatedCIESLogo = () => {
           strokeLinecap="round"
         />
         {/* C mechanical components - gears and systems */}
-        <motion.circle variants={detailVariants} cx="65" cy="125" r="10" strokeWidth="2.5" stroke="currentColor" fill="none" />
-        <motion.path variants={detailVariants} d="M58 120 L72 120 M58 130 L72 130 M65 113 L65 137 M60 118 L70 118 M60 132 L70 132" strokeWidth="1.5" stroke="currentColor" />
-        <motion.circle variants={detailVariants} cx="75" cy="180" r="8" strokeWidth="2" stroke="currentColor" fill="none" />
-        <motion.path variants={detailVariants} d="M70 175 L80 175 M70 185 L80 185 M75 172 L75 188 M72 177 L78 177 M72 183 L78 183" strokeWidth="1" stroke="currentColor" />
+        <motion.circle
+          variants={detailVariants}
+          cx="65"
+          cy="125"
+          r="10"
+          strokeWidth="2.5"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.path
+          variants={detailVariants}
+          d="M58 120 L72 120 M58 130 L72 130 M65 113 L65 137 M60 118 L70 118 M60 132 L70 132"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        />
+        <motion.circle
+          variants={detailVariants}
+          cx="75"
+          cy="180"
+          r="8"
+          strokeWidth="2"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.path
+          variants={detailVariants}
+          d="M70 175 L80 175 M70 185 L80 185 M75 172 L75 188 M72 177 L78 177 M72 183 L78 183"
+          strokeWidth="1"
+          stroke="currentColor"
+        />
         {/* C additional technical details */}
-        <motion.rect variants={detailVariants} x="58" y="195" width="12" height="8" strokeWidth="1.5" stroke="currentColor" fill="none" />
-        <motion.path variants={detailVariants} d="M60 197 L68 197 M60 201 L68 201" strokeWidth="0.8" stroke="currentColor" />
+        <motion.rect
+          variants={detailVariants}
+          x="58"
+          y="195"
+          width="12"
+          height="8"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.path
+          variants={detailVariants}
+          d="M60 197 L68 197 M60 201 L68 201"
+          strokeWidth="0.8"
+          stroke="currentColor"
+        />
 
         {/* Letter I - Enhanced tower with complex truss system */}
         <motion.path
@@ -248,9 +290,20 @@ const AnimatedCIESLogo = () => {
         <motion.circle variants={detailVariants} cx="200" cy="135" r="2" fill="currentColor" />
         <motion.circle variants={detailVariants} cx="200" cy="165" r="2" fill="currentColor" />
         {/* I internal mechanical systems */}
-        <motion.path variants={detailVariants} d="M185 115 L215 115 L210 125 L190 125 Z M185 145 L215 145 L210 155 L190 155 Z M185 175 L215 175 L210 185 L190 185 Z" strokeWidth="1.5" stroke="currentColor" fill="none" />
+        <motion.path
+          variants={detailVariants}
+          d="M185 115 L215 115 L210 125 L190 125 Z M185 145 L215 145 L210 155 L190 155 Z M185 175 L215 175 L210 185 L190 185 Z"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          fill="none"
+        />
         {/* I additional structural details */}
-        <motion.path variants={circuitVariants} d="M190 130 L210 130 M195 140 L205 140 M190 160 L210 160 M195 170 L205 170 M190 190 L210 190 M195 200 L205 200" strokeWidth="1" stroke="currentColor" />
+        <motion.path
+          variants={circuitVariants}
+          d="M190 130 L210 130 M195 140 L205 140 M190 160 L210 160 M195 170 L205 170 M190 190 L210 190 M195 200 L205 200"
+          strokeWidth="1"
+          stroke="currentColor"
+        />
 
         {/* Letter E - Enhanced with complex structural grid */}
         <motion.path
@@ -281,12 +334,49 @@ const AnimatedCIESLogo = () => {
           strokeLinecap="round"
         />
         {/* E mechanical components and systems */}
-        <motion.rect variants={detailVariants} x="330" y="110" width="12" height="10" strokeWidth="2" stroke="currentColor" fill="none" />
-        <motion.rect variants={detailVariants} x="345" y="180" width="8" height="8" strokeWidth="1.5" stroke="currentColor" fill="none" />
-        <motion.circle variants={detailVariants} cx="355" cy="135" r="6" strokeWidth="2" stroke="currentColor" fill="none" />
-        <motion.path variants={detailVariants} d="M352 130 L358 130 M352 140 L358 140 M355 127 L355 143" strokeWidth="1" stroke="currentColor" />
+        <motion.rect
+          variants={detailVariants}
+          x="330"
+          y="110"
+          width="12"
+          height="10"
+          strokeWidth="2"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.rect
+          variants={detailVariants}
+          x="345"
+          y="180"
+          width="8"
+          height="8"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.circle
+          variants={detailVariants}
+          cx="355"
+          cy="135"
+          r="6"
+          strokeWidth="2"
+          stroke="currentColor"
+          fill="none"
+        />
+        <motion.path
+          variants={detailVariants}
+          d="M352 130 L358 130 M352 140 L358 140 M355 127 L355 143"
+          strokeWidth="1"
+          stroke="currentColor"
+        />
         {/* E additional technical details */}
-        <motion.path variants={circuitVariants} d="M310 100 L385 100 M310 120 L375 120 M310 170 L375 170 M310 190 L385 190 M310 220 L385 220" strokeWidth="1" stroke="currentColor" opacity="0.7" />
+        <motion.path
+          variants={circuitVariants}
+          d="M310 100 L385 100 M310 120 L375 120 M310 170 L375 170 M310 190 L385 190 M310 220 L385 220"
+          strokeWidth="1"
+          stroke="currentColor"
+          opacity="0.7"
+        />
 
         {/* Letter S - Enhanced with complex curved systems (scaled up slightly) */}
         <motion.g transform="translate(20,0) translate(450,160) scale(1.12) translate(-450,-160)">
@@ -318,14 +408,44 @@ const AnimatedCIESLogo = () => {
             strokeLinecap="round"
           />
           {/* S mechanical gears and systems */}
-          <motion.circle variants={detailVariants} cx="425" cy="130" r="9" strokeWidth="2.5" stroke="currentColor" fill="none" />
-          <motion.path variants={detailVariants} d="M418 125 L432 125 M418 135 L432 135 M425 121 L425 139 M420 127 L430 127 M420 133 L430 133" strokeWidth="1.5" stroke="currentColor" />
-          <motion.circle variants={detailVariants} cx="465" cy="190" r="8" strokeWidth="2" stroke="currentColor" fill="none" />
-          <motion.path variants={detailVariants} d="M460 185 L470 185 M460 195 L470 195 M465 182 L465 198 M462 187 L468 187 M462 193 L468 193" strokeWidth="1" stroke="currentColor" />
+          <motion.circle
+            variants={detailVariants}
+            cx="425"
+            cy="130"
+            r="9"
+            strokeWidth="2.5"
+            stroke="currentColor"
+            fill="none"
+          />
+          <motion.path
+            variants={detailVariants}
+            d="M418 125 L432 125 M418 135 L432 135 M425 121 L425 139 M420 127 L430 127 M420 133 L430 133"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          />
+          <motion.circle
+            variants={detailVariants}
+            cx="465"
+            cy="190"
+            r="8"
+            strokeWidth="2"
+            stroke="currentColor"
+            fill="none"
+          />
+          <motion.path
+            variants={detailVariants}
+            d="M460 185 L470 185 M460 195 L470 195 M465 182 L465 198 M462 187 L468 187 M462 193 L468 193"
+            strokeWidth="1"
+            stroke="currentColor"
+          />
           {/* S additional curved details */}
-          <motion.path variants={detailVariants} d="M415 120 Q425 115 435 120 M455 195 Q465 190 475 195" strokeWidth="1.5" stroke="currentColor" />
+          <motion.path
+            variants={detailVariants}
+            d="M415 120 Q425 115 435 120 M455 195 Q465 190 475 195"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          />
         </motion.g>
-
       </motion.g>
 
       {/* Compact foundation structure */}
@@ -387,10 +507,38 @@ const AnimatedCIESLogo = () => {
       />
 
       {/* Additional micro-details and connection points */}
-      <motion.circle variants={detailVariants} cx="140" cy="160" r="2" fill="currentColor" opacity="0.7" />
-      <motion.circle variants={detailVariants} cx="280" cy="160" r="2" fill="currentColor" opacity="0.7" />
-      <motion.circle variants={detailVariants} cx="420" cy="160" r="2" fill="currentColor" opacity="0.7" />
-      <motion.circle variants={detailVariants} cx="560" cy="160" r="2" fill="currentColor" opacity="0.7" />
+      <motion.circle
+        variants={detailVariants}
+        cx="140"
+        cy="160"
+        r="2"
+        fill="currentColor"
+        opacity="0.7"
+      />
+      <motion.circle
+        variants={detailVariants}
+        cx="280"
+        cy="160"
+        r="2"
+        fill="currentColor"
+        opacity="0.7"
+      />
+      <motion.circle
+        variants={detailVariants}
+        cx="420"
+        cy="160"
+        r="2"
+        fill="currentColor"
+        opacity="0.7"
+      />
+      <motion.circle
+        variants={detailVariants}
+        cx="560"
+        cy="160"
+        r="2"
+        fill="currentColor"
+        opacity="0.7"
+      />
     </motion.svg>
   );
 };
@@ -398,28 +546,28 @@ const AnimatedCIESLogo = () => {
 // --- CIE Hero Design Component ---
 const CIEHeroDesign = () => {
   return (
-    <div className="relative w-full flex flex-col items-center justify-center">
+    <div className="relative flex w-full flex-col items-center justify-center">
       {/* Decorative diamond in bottom right - hidden on mobile */}
       <motion.div
-        className="absolute bottom-8 right-8 h-16 w-16 rotate-45 bg-gradient-to-br from-gray-400 to-gray-600 opacity-30 hidden sm:block"
+        className="absolute bottom-8 right-8 hidden h-16 w-16 rotate-45 bg-gradient-to-br from-gray-400 to-gray-600 opacity-30 sm:block"
         initial={{ opacity: 0, rotate: 0 }}
         animate={{ opacity: 0.3, rotate: 45 }}
         transition={{ duration: 1, delay: 1.2 }}
         style={{
-          clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+          clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
         }}
       />
 
-      <div className="w-full flex flex-col items-center space-y-4 sm:space-y-6">
+      <div className="flex w-full flex-col items-center space-y-4 sm:space-y-6">
         {/* Animated CIES Logo at the top - responsive size */}
-        <div className="w-full max-w-[90vw] sm:max-w-xl md:max-w-2xl mx-auto px-2 sm:px-0">
+        <div className="mx-auto w-full max-w-[90vw] px-2 sm:max-w-xl sm:px-0 md:max-w-2xl">
           <AnimatedCIESLogo />
         </div>
 
         {/* Text content below logo - responsive */}
-        <div className="w-full text-center space-y-2 sm:space-y-3 px-4 sm:px-0">
+        <div className="w-full space-y-2 px-4 text-center sm:space-y-3 sm:px-0">
           <motion.h1
-            className="text-2xl sm:text-3xl font-bold leading-tight text-gray-900 dark:text-white md:text-4xl lg:text-5xl"
+            className="text-2xl font-bold leading-tight text-gray-900 dark:text-white sm:text-3xl md:text-4xl lg:text-5xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -430,7 +578,7 @@ const CIEHeroDesign = () => {
           </motion.h1>
 
           <motion.h2
-            className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-blue-400 md:text-3xl lg:text-4xl"
+            className="text-xl font-bold text-slate-800 dark:text-blue-400 sm:text-2xl md:text-3xl lg:text-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
@@ -439,7 +587,7 @@ const CIEHeroDesign = () => {
           </motion.h2>
 
           <motion.p
-            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 md:text-lg lg:text-xl"
+            className="text-sm text-gray-700 dark:text-gray-300 sm:text-base md:text-lg lg:text-xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
@@ -454,31 +602,28 @@ const CIEHeroDesign = () => {
 
 // --- Hero Section ---
 const HeroSection = () => (
-  <section className="relative mx-auto flex min-h-[70vh] sm:min-h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden px-2 sm:px-6 pb-6 sm:pb-12 pt-4 sm:pt-16">
+  <section className="relative mx-auto flex min-h-[70vh] w-full items-center justify-center overflow-hidden px-2 pb-6 pt-4 sm:min-h-[calc(100vh-6rem)] sm:px-6 sm:pb-12 sm:pt-16">
     {/* Theme-aware background overlay */}
-    <div className="absolute inset-0 bg-white dark:bg-dark-bg/80 z-0"></div>
+    <div className="absolute inset-0 z-0 bg-white dark:bg-dark-bg/80"></div>
 
     {/* Engineering Grid Background - Dark blue-gray for light mode */}
     <div className="absolute inset-0 z-0">
       {/* Main grid lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.15)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.1)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.15)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.1)_1px,transparent_1px)]"></div>
       {/* Secondary grid - finer */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.05)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,41,59,0.08)_1px,transparent_1px)] bg-[size:10px_10px] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.05)_1px,transparent_1px)]"></div>
       {/* Major grid lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.25)_2px,transparent_2px),linear-gradient(to_bottom,rgba(30,41,59,0.25)_2px,transparent_2px)] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.15)_2px,transparent_2px),linear-gradient(to_bottom,rgba(56,189,248,0.15)_2px,transparent_2px)] bg-[size:200px_200px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,41,59,0.25)_2px,transparent_2px),linear-gradient(to_bottom,rgba(30,41,59,0.25)_2px,transparent_2px)] bg-[size:200px_200px] dark:bg-[linear-gradient(to_right,rgba(56,189,248,0.15)_2px,transparent_2px),linear-gradient(to_bottom,rgba(56,189,248,0.15)_2px,transparent_2px)]"></div>
     </div>
 
     {/* Subtle background effects - Dark navy tones for light mode */}
-    <div className="absolute inset-0 z-0 opacity-12 dark:opacity-20">
-      <div className="absolute left-1/2 top-1/2 h-[60rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-slate-800/8 dark:bg-blue-500/10 blur-3xl"></div>
-      <div className="absolute left-1/4 top-1/3 h-[40rem] w-[40rem] animate-pulse rounded-full bg-slate-900/6 dark:bg-cyan-500/8 blur-3xl [animation-delay:-3s]"></div>
+    <div className="opacity-12 absolute inset-0 z-0 dark:opacity-20">
+      <div className="bg-slate-800/8 absolute left-1/2 top-1/2 h-[60rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full blur-3xl dark:bg-blue-500/10"></div>
+      <div className="bg-slate-900/6 dark:bg-cyan-500/8 absolute left-1/4 top-1/3 h-[40rem] w-[40rem] animate-pulse rounded-full blur-3xl [animation-delay:-3s]"></div>
     </div>
 
-    <div className="relative z-10 w-full max-w-6xl flex items-center justify-center">
+    <div className="relative z-10 flex w-full max-w-6xl items-center justify-center">
       <CIEHeroDesign />
     </div>
   </section>
 );
-
-
-

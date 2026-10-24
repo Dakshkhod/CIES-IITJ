@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Linkedin, Mail, Instagram, Github } from 'lucide-react';
+import { Linkedin, Mail, Instagram, Github, Loader2 } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { GradientBackground } from '@/components/ui/gradient-background';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
+import { getDevelopers, subscribeToSanityQuery } from '@/lib/sanity';
 
 type Developer = {
   id: string;
@@ -19,7 +20,7 @@ type Developer = {
   github?: string;
 };
 
-const DEVELOPERS: Developer[] = [
+const FALLBACK_DEVELOPERS: Developer[] = [
   {
     id: 'daksh-khod',
     name: 'Daksh Khod',
@@ -33,93 +34,155 @@ const DEVELOPERS: Developer[] = [
 ];
 
 export default function DevelopersPage() {
+  const [developers, setDevelopers] = useState<Developer[]>(FALLBACK_DEVELOPERS);
+  const [loading, setLoading] = useState(true);
+
+  const refreshDevelopers = useCallback(async (showLoading = false) => {
+    if (showLoading) setLoading(true);
+
+    try {
+      const data = await getDevelopers();
+      const mapped: Developer[] = (data || []).map(
+        (developer: {
+          _id: string;
+          name: string;
+          designation?: string;
+          photo?: string | null;
+          socials?: {
+            linkedin?: string;
+            email?: string;
+            instagram?: string;
+            github?: string;
+          };
+        }) => ({
+          id: developer._id,
+          name: developer.name,
+          designation: developer.designation || 'CIES website contributor',
+          photo: developer.photo || '/logo.jpg',
+          linkedin: developer.socials?.linkedin,
+          email: developer.socials?.email
+            ? developer.socials.email.startsWith('mailto:')
+              ? developer.socials.email
+              : `mailto:${developer.socials.email}`
+            : undefined,
+          instagram: developer.socials?.instagram,
+          github: developer.socials?.github,
+        })
+      );
+
+      setDevelopers(mapped.length > 0 ? mapped : FALLBACK_DEVELOPERS);
+    } catch (error) {
+      console.error('Failed to fetch developers from Sanity:', error);
+      setDevelopers(FALLBACK_DEVELOPERS);
+    } finally {
+      if (showLoading) setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshDevelopers(true);
+    return subscribeToSanityQuery(
+      '*[_type == "developer"]',
+      () => void refreshDevelopers(),
+      error => console.warn('Sanity developer live updates are unavailable:', error)
+    );
+  }, [refreshDevelopers]);
+
   return (
     <AppLayout>
-      <GradientBackground
-        className="min-h-[calc(100vh-5rem)] pt-20"
-        overlay
-        overlayOpacity={0.25}
-      >
+      <GradientBackground className="min-h-[calc(100vh-5rem)] pt-20" overlay overlayOpacity={0.25}>
         <div className="container mx-auto px-4 py-12 sm:py-16">
           <FadeInOnScroll>
-            <div className="mb-10 sm:mb-16 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white drop-shadow-lg">
+            <div className="mb-10 text-center sm:mb-16">
+              <h1 className="text-3xl font-extrabold text-gray-900 drop-shadow-lg dark:text-white sm:text-4xl md:text-5xl">
                 Developed By
               </h1>
-              <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-gray-700 dark:text-white/90">
+              <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-700 dark:text-white/90 sm:text-base">
                 The developers who built and maintain the CIES IITJ website.
               </p>
             </div>
           </FadeInOnScroll>
 
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
-            {DEVELOPERS.map((dev, index) => (
-              <FadeInOnScroll key={dev.id} delay={index * 0.15}>
-                <motion.div
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group relative flex flex-col items-center rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md p-6 sm:p-8 shadow-xl border border-gray-200/60 dark:border-white/20 w-full max-w-[280px] sm:max-w-[320px] min-w-0"
-                >
-                  <div className="relative mb-4 h-24 w-24 sm:h-28 sm:w-28 rounded-full overflow-hidden ring-4 ring-gray-200 dark:ring-white/30">
-                    <Image
-                      src={dev.photo}
-                      alt={dev.name}
-                      fill
-                      className="object-cover"
-                      sizes="112px"
-                    />
-                  </div>
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                    {dev.name}
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-white/80 mb-4">{dev.designation}</p>
-                  <div className="flex gap-3">
-                    {dev.linkedin && (
-                      <a
-                        href={dev.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
-                        aria-label="LinkedIn"
-                      >
-                        <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
-                      </a>
-                    )}
-                    {dev.instagram && (
-                      <a
-                        href={dev.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
-                        aria-label="Instagram"
-                      >
-                        <Instagram className="h-5 w-5 sm:h-6 sm:w-6" />
-                      </a>
-                    )}
-                    {dev.github && (
-                      <a
-                        href={dev.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
-                        aria-label="GitHub"
-                      >
-                        <Github className="h-5 w-5 sm:h-6 sm:w-6" />
-                      </a>
-                    )}
-                    {dev.email && (
-                      <a
-                        href={dev.email}
-                        className="text-gray-500 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-colors"
-                        aria-label="Email"
-                      >
-                        <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
-              </FadeInOnScroll>
-            ))}
-          </div>
+          {loading ? (
+            <div
+              className="flex justify-center py-16"
+              role="status"
+              aria-label="Loading developers"
+            >
+              <Loader2 className="h-12 w-12 animate-spin text-gray-500 dark:text-white/80" />
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-12" aria-live="polite">
+              {developers.map((dev, index) => (
+                <FadeInOnScroll key={dev.id} delay={index * 0.15}>
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="group relative flex w-full min-w-0 max-w-[280px] flex-col items-center rounded-2xl border border-gray-200/60 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-white/20 dark:bg-white/10 sm:max-w-[320px] sm:p-8"
+                  >
+                    <div className="relative mb-4 h-24 w-24 overflow-hidden rounded-full ring-4 ring-gray-200 dark:ring-white/30 sm:h-28 sm:w-28">
+                      <Image
+                        src={dev.photo}
+                        alt={dev.name}
+                        fill
+                        className="object-cover"
+                        sizes="112px"
+                      />
+                    </div>
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-white sm:text-xl">
+                      {dev.name}
+                    </h2>
+                    <p className="mb-4 text-sm text-gray-600 dark:text-white/80">
+                      {dev.designation}
+                    </p>
+                    <div className="flex gap-3">
+                      {dev.linkedin && (
+                        <a
+                          href={dev.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 transition-colors hover:text-gray-900 dark:text-white/80 dark:hover:text-white"
+                          aria-label="LinkedIn"
+                        >
+                          <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </a>
+                      )}
+                      {dev.instagram && (
+                        <a
+                          href={dev.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 transition-colors hover:text-gray-900 dark:text-white/80 dark:hover:text-white"
+                          aria-label="Instagram"
+                        >
+                          <Instagram className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </a>
+                      )}
+                      {dev.github && (
+                        <a
+                          href={dev.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 transition-colors hover:text-gray-900 dark:text-white/80 dark:hover:text-white"
+                          aria-label="GitHub"
+                        >
+                          <Github className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </a>
+                      )}
+                      {dev.email && (
+                        <a
+                          href={dev.email}
+                          className="text-gray-500 transition-colors hover:text-gray-900 dark:text-white/80 dark:hover:text-white"
+                          aria-label="Email"
+                        >
+                          <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                </FadeInOnScroll>
+              ))}
+            </div>
+          )}
         </div>
       </GradientBackground>
     </AppLayout>

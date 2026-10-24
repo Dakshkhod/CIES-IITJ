@@ -19,12 +19,19 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
-  Loader2
+  Loader2,
 } from 'lucide-react';
-import { getActivities as getSanityActivities } from '@/lib/sanity';
+import { getActivities as getSanityActivities, subscribeToSanityQuery } from '@/lib/sanity';
 
 // Types
-type EventCategory = 'workshop' | 'seminar' | 'site-visit' | 'competition' | 'edificio' | 'research' | 'other';
+type EventCategory =
+  | 'workshop'
+  | 'seminar'
+  | 'site-visit'
+  | 'competition'
+  | 'edificio'
+  | 'research'
+  | 'other';
 
 interface TimelineEvent {
   id: string;
@@ -46,232 +53,254 @@ const FALLBACK_EVENTS: TimelineEvent[] = [
     title: 'PG Seminar Series 2025',
     category: 'seminar',
     date: '2025-05-15',
-    description: 'PhD scholars presented ongoing research in various domains of Civil and Infrastructure Engineering, initiated in collaboration with CIES.',
+    description:
+      'PhD scholars presented ongoing research in various domains of Civil and Infrastructure Engineering, initiated in collaboration with CIES.',
     location: 'IIT Jodhpur Campus',
     attendees: '50+ Faculty & Students',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '2',
     title: 'Congratulations to Class of 2025',
     category: 'other',
     date: '2025-06-01',
-    description: 'CIES congratulated the Class of 2025 (B.Tech 2021 & M.Tech 2023) on their convocation.',
+    description:
+      'CIES congratulated the Class of 2025 (B.Tech 2021 & M.Tech 2023) on their convocation.',
     location: 'IIT Jodhpur Campus',
     attendees: '200+ Graduates',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '3',
     title: 'Seminar by Prof. Ravindra Gettu – Technology Implementation in Concrete Research',
     category: 'seminar',
     date: '2025-06-30',
-    description: 'Prof. Ravindra Gettu (IIT Madras) delivered a seminar titled "Technology Implementation as a Primary Aim of Research: Examples from Concrete Research." The hybrid session featured active participation.',
+    description:
+      'Prof. Ravindra Gettu (IIT Madras) delivered a seminar titled "Technology Implementation as a Primary Aim of Research: Examples from Concrete Research." The hybrid session featured active participation.',
     location: 'IIT Jodhpur Campus',
     attendees: '100+ Attendees',
     speaker: 'Prof. Ravindra Gettu (IIT Madras)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '4',
     title: 'UG Orientation – Batch of 2025',
     category: 'other',
     date: '2025-08-05',
-    description: 'CIES conducted the Undergraduate Orientation for the 2025 batch. Included a welcome by the HoD, academic guidance, and interactions with the Student Council.',
+    description:
+      'CIES conducted the Undergraduate Orientation for the 2025 batch. Included a welcome by the HoD, academic guidance, and interactions with the Student Council.',
     location: 'IIT Jodhpur Campus',
     attendees: '80+ Students',
-    images: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg']
+    images: ['/Other images/WhatsApp Image 2025-10-24 at 14.29.02.jpeg'],
   },
   {
     id: '5',
     title: 'Prof. Akshay Gupta – Excellence in Doctoral Research Award',
     category: 'research',
     date: '2025-09-05',
-    description: 'CIES congratulated Prof. Akshay Gupta for receiving the Excellence in Doctoral Research Award at IIT Roorkee for his contributions to Transportation Engineering.',
+    description:
+      'CIES congratulated Prof. Akshay Gupta for receiving the Excellence in Doctoral Research Award at IIT Roorkee for his contributions to Transportation Engineering.',
     location: 'IIT Roorkee',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '6',
     title: "Engineer's Day 2025",
     category: 'other',
     date: '2025-09-15',
-    description: 'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India.',
+    description:
+      'Observed in honor of Sir M. Visvesvaraya, recognizing his legacy and contributions to civil engineering in India.',
     location: 'IIT Jodhpur Campus',
     attendees: '100+ Attendees',
-    images: ['/Other images/1757908205139.jpeg']
+    images: ['/Other images/1757908205139.jpeg'],
   },
   {
     id: '7',
     title: 'Plantation Drive with Green Cell',
     category: 'other',
     date: '2025-09-20',
-    description: 'Organized on campus with the Green Cell. Prof. Mitali Mukerji (PIC-Green Cell) promoted the initiative, which saw active participation from postgraduate members.',
+    description:
+      'Organized on campus with the Green Cell. Prof. Mitali Mukerji (PIC-Green Cell) promoted the initiative, which saw active participation from postgraduate members.',
     location: 'IIT Jodhpur Campus',
     attendees: '40+ Participants',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '8',
     title: 'Online Talk – Prof. Masiur Rahaman on Julia for Numerical Computations',
     category: 'seminar',
     date: '2025-09-27',
-    description: 'Online talk by Prof. Mohammad Masiur Rahaman (IIT Bhubaneswar) on "Julia for efficient numerical computations," focusing on applications in structural engineering research.',
+    description:
+      'Online talk by Prof. Mohammad Masiur Rahaman (IIT Bhubaneswar) on "Julia for efficient numerical computations," focusing on applications in structural engineering research.',
     location: 'Online (IIT Jodhpur)',
     attendees: '60+ Attendees',
     speaker: 'Prof. Mohammad Masiur Rahaman (IIT Bhubaneswar)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '9',
     title: 'Guest Lecture – Prof. Ligy Philip on Sustainable Wastewater Treatment',
     category: 'seminar',
     date: '2025-10-03',
-    description: 'Guest lecture by Prof. Ligy Philip (IIT Madras) on "Integrating sustainability and circular economy principles in wastewater treatment," highlighting innovative environmental engineering solutions.',
+    description:
+      'Guest lecture by Prof. Ligy Philip (IIT Madras) on "Integrating sustainability and circular economy principles in wastewater treatment," highlighting innovative environmental engineering solutions.',
     location: 'IIT Jodhpur Campus',
     attendees: '80+ Attendees',
     speaker: 'Prof. Ligy Philip (IIT Madras)',
-    images: ['/Other images/1759303624829.jpeg']
+    images: ['/Other images/1759303624829.jpeg'],
   },
   {
     id: '10',
     title: 'Survey of India Workshop on Geospatial Technologies',
     category: 'workshop',
     date: '2025-10-11',
-    description: 'Collaborative workshop on modern geospatial technologies, introduced participants to CORS, geoid models, and the Survey of India Map Portal.',
+    description:
+      'Collaborative workshop on modern geospatial technologies, introduced participants to CORS, geoid models, and the Survey of India Map Portal.',
     location: 'IIT Jodhpur Campus',
     attendees: '60+ Participants',
-    images: ['/Other images/PXL_20251011_075907856.jpg']
+    images: ['/Other images/PXL_20251011_075907856.jpg'],
   },
   {
     id: '11',
     title: 'Diwali Celebration',
     category: 'other',
     date: '2025-10-20',
-    description: 'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
+    description:
+      'CIES organized a vibrant Diwali celebration bringing together students and faculty to celebrate the festival of lights.',
     location: 'IIT Jodhpur Campus',
     attendees: '150+ Attendees',
-    images: ['/Other images/DSC03840.JPG']
+    images: ['/Other images/DSC03840.JPG'],
   },
   {
     id: '12',
     title: 'PG Seminar – Keshav Saini on Hybrid High Strength Steel I-Beams',
     category: 'seminar',
     date: '2025-10-20',
-    description: 'Mr. Keshav Saini presented on "Structural Performance of Hybrid High Strength Steel I-Beams," highlighting lighter and more efficient structural systems.',
+    description:
+      'Mr. Keshav Saini presented on "Structural Performance of Hybrid High Strength Steel I-Beams," highlighting lighter and more efficient structural systems.',
     location: 'IIT Jodhpur Campus',
     attendees: '40+ Attendees',
     speaker: 'Keshav Saini',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '13',
     title: 'PG Seminar – Koduru Sandeep on Moisture Resistance of Cold Mix Asphalt',
     category: 'seminar',
     date: '2025-10-25',
-    description: 'Mr. Koduru Sandeep presented on "Improving Moisture Resistance of Cold Mix Asphalt through Aggregate Surface Modification," emphasizing sustainable pavement solutions.',
+    description:
+      'Mr. Koduru Sandeep presented on "Improving Moisture Resistance of Cold Mix Asphalt through Aggregate Surface Modification," emphasizing sustainable pavement solutions.',
     location: 'IIT Jodhpur Campus',
     attendees: '40+ Attendees',
     speaker: 'Koduru Sandeep',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '14',
     title: 'Seminar – Dr. Ashutosh Kumar on Climate Resilience in Geotechnical Engineering',
     category: 'seminar',
     date: '2026-01-03',
-    description: 'Seminar by Dr. Ashutosh Kumar (IIT Mandi) on "Climate Resilience in Geotechnical Engineering: Why It Matters and How to Achieve It."',
+    description:
+      'Seminar by Dr. Ashutosh Kumar (IIT Mandi) on "Climate Resilience in Geotechnical Engineering: Why It Matters and How to Achieve It."',
     location: 'IIT Jodhpur Campus',
     attendees: '70+ Attendees',
     speaker: 'Dr. Ashutosh Kumar (IIT Mandi)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '15',
     title: 'Seminar – Shri S.L. Kapil on Geophysical Technologies for Dam Projects',
     category: 'seminar',
     date: '2026-01-07',
-    description: 'Seminar by Shri S. L. Kapil on "Cutting Edge Geophysical Technologies for Dam and Infrastructure Projects."',
+    description:
+      'Seminar by Shri S. L. Kapil on "Cutting Edge Geophysical Technologies for Dam and Infrastructure Projects."',
     location: 'IIT Jodhpur Campus',
     attendees: '60+ Attendees',
     speaker: 'Shri S. L. Kapil',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '16',
     title: 'Seminar – Prof. Animesh Das on Studying Pavement Materials Through Imaging',
     category: 'seminar',
     date: '2026-01-09',
-    description: 'Seminar by Prof. Animesh Das (IIT Kanpur) on "Studying Pavement Materials Through Imaging," highlighting advanced techniques to understand material behavior like bitumen bonding.',
+    description:
+      'Seminar by Prof. Animesh Das (IIT Kanpur) on "Studying Pavement Materials Through Imaging," highlighting advanced techniques to understand material behavior like bitumen bonding.',
     location: 'IIT Jodhpur Campus',
     attendees: '70+ Attendees',
     speaker: 'Prof. Animesh Das (IIT Kanpur)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '17',
     title: 'Seminar – Dr. Deeksha Arya on Multinational Road Damage Detection AI',
     category: 'seminar',
     date: '2026-01-29',
-    description: 'Seminar by Dr. Deeksha Arya (University of Tokyo) on "Can One Country\'s AI Work Elsewhere? Evidence from Multinational Road Damage Detection Research."',
+    description:
+      'Seminar by Dr. Deeksha Arya (University of Tokyo) on "Can One Country\'s AI Work Elsewhere? Evidence from Multinational Road Damage Detection Research."',
     location: 'IIT Jodhpur Campus',
     attendees: '60+ Attendees',
     speaker: 'Dr. Deeksha Arya (University of Tokyo)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '18',
     title: 'Seminar – Prof. Nemkumar Banthia on Nano-Materials in Concrete',
     category: 'seminar',
     date: '2026-02-03',
-    description: 'Technical talk by Prof. Nemkumar Banthia (University of British Columbia) on "The Promise of Nano-Materials as Functional Additives in Concrete," focusing on UHPC and sustainable infrastructure.',
+    description:
+      'Technical talk by Prof. Nemkumar Banthia (University of British Columbia) on "The Promise of Nano-Materials as Functional Additives in Concrete," focusing on UHPC and sustainable infrastructure.',
     location: 'IIT Jodhpur Campus',
     attendees: '80+ Attendees',
     speaker: 'Prof. Nemkumar Banthia (University of British Columbia)',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '19',
     title: 'BIS Essay Competition – Role of Standards in Engineering Life',
     category: 'competition',
     date: '2026-02-13',
-    description: 'Essay writing competition on "Role of Standards in Engineering Life" in collaboration with the Bureau of Indian Standards (BIS).',
+    description:
+      'Essay writing competition on "Role of Standards in Engineering Life" in collaboration with the Bureau of Indian Standards (BIS).',
     location: 'IIT Jodhpur Campus',
     attendees: '50+ Participants',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '20',
     title: 'Seminar – Dr. Sarath Chandra Reddy on Multiscale Landslide Dynamics',
     category: 'seminar',
     date: '2026-02-27',
-    description: 'Technical seminar on "Multiscale Mechanisms of Landslide Dynamics," presenting experimental and simulation-based studies.',
+    description:
+      'Technical seminar on "Multiscale Mechanisms of Landslide Dynamics," presenting experimental and simulation-based studies.',
     location: 'IIT Jodhpur Campus',
     attendees: '60+ Attendees',
     speaker: 'Dr. Sarath Chandra Reddy Nallala',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '21',
     title: 'Alumni Meet – Abhinav Singh Tawar on Placement Preparation',
     category: 'other',
     date: '2026-02-28',
-    description: 'Interaction session with Abhinav Singh Tawar focused on placement preparation, resume building, and aligning academic profiles.',
+    description:
+      'Interaction session with Abhinav Singh Tawar focused on placement preparation, resume building, and aligning academic profiles.',
     location: 'IIT Jodhpur Campus',
     attendees: '40+ Students',
     speaker: 'Abhinav Singh Tawar',
-    images: ['/CIE Design.png']
+    images: ['/CIE Design.png'],
   },
   {
     id: '22',
     title: 'M.Tech Alumni Meet – Batch 2020 on Industry Expectations',
     category: 'other',
     date: '2026-02-28',
-    description: 'Alumni interaction session with M.Tech CIE (Environment) Batch 2020, focusing on industry expectations and placement readiness.',
+    description:
+      'Alumni interaction session with M.Tech CIE (Environment) Batch 2020, focusing on industry expectations and placement readiness.',
     location: 'IIT Jodhpur Campus',
     attendees: '30+ Students',
-    images: ['/CIE Design.png']
-  }
+    images: ['/CIE Design.png'],
+  },
 ];
 
 export default function RoadmapPage() {
@@ -298,20 +327,20 @@ export default function RoadmapPage() {
 
   // Fetch roadmap data from Sanity
   useEffect(() => {
-    async function fetchRoadmapData() {
+    async function fetchRoadmapData(showLoading = false) {
       try {
-        setLoading(true);
+        if (showLoading) setLoading(true);
 
         const allActivities = await getSanityActivities();
 
         // Map Sanity category to roadmap category
         const categoryMap: Record<string, EventCategory> = {
-          'workshop': 'workshop',
-          'seminar': 'seminar',
+          workshop: 'workshop',
+          seminar: 'seminar',
           'site-visit': 'site-visit',
-          'competition': 'competition',
-          'edificio': 'edificio',
-          'other': 'other',
+          competition: 'competition',
+          edificio: 'edificio',
+          other: 'other',
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -322,7 +351,9 @@ export default function RoadmapPage() {
           date: activity.date,
           description: activity.description || 'Details coming soon.',
           location: activity.location || 'IIT Jodhpur Campus',
-          attendees: activity.attendeesCount ? `${activity.attendeesCount}+ Participants` : undefined,
+          attendees: activity.attendeesCount
+            ? `${activity.attendeesCount}+ Participants`
+            : undefined,
           images: activity.coverImage ? [activity.coverImage] : ['/CIE Design.png'],
         }));
 
@@ -333,18 +364,26 @@ export default function RoadmapPage() {
         console.error('Failed to fetch roadmap data from Sanity, using fallback:', err);
         // Keep using fallback data - no error shown to user
       } finally {
-        setLoading(false);
+        if (showLoading) setLoading(false);
       }
     }
 
-    fetchRoadmapData();
+    void fetchRoadmapData(true);
+    return subscribeToSanityQuery(
+      '*[_type == "activity"]',
+      () => void fetchRoadmapData(),
+      error => console.warn('Sanity roadmap live updates are unavailable:', error)
+    );
   }, []);
 
   // Auto-update current month
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMonth(new Date());
-    }, 1000 * 60 * 60); // Update every hour
+    const interval = setInterval(
+      () => {
+        setCurrentMonth(new Date());
+      },
+      1000 * 60 * 60
+    ); // Update every hour
 
     return () => clearInterval(interval);
   }, []);
@@ -353,8 +392,10 @@ export default function RoadmapPage() {
   const currentMonthEvents = useMemo(() => {
     return sortedEvents.filter(event => {
       const eventDate = new Date(event.date);
-      return eventDate.getMonth() === currentMonth.getMonth() &&
-        eventDate.getFullYear() === currentMonth.getFullYear();
+      return (
+        eventDate.getMonth() === currentMonth.getMonth() &&
+        eventDate.getFullYear() === currentMonth.getFullYear()
+      );
     });
   }, [sortedEvents, currentMonth]);
 
@@ -367,7 +408,11 @@ export default function RoadmapPage() {
         setSelectedEvent(null);
       } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
         setCurrentImageIndex(prev => prev - 1);
-      } else if (e.key === 'ArrowRight' && selectedEvent.images && currentImageIndex < selectedEvent.images.length - 1) {
+      } else if (
+        e.key === 'ArrowRight' &&
+        selectedEvent.images &&
+        currentImageIndex < selectedEvent.images.length - 1
+      ) {
         setCurrentImageIndex(prev => prev + 1);
       }
     };
@@ -397,9 +442,9 @@ export default function RoadmapPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
             <p className="text-gray-600 dark:text-gray-400">Loading roadmap...</p>
           </div>
         </div>
@@ -427,53 +472,63 @@ export default function RoadmapPage() {
   const categoryConfig = {
     workshop: { icon: Hammer, color: 'from-purple-500 to-pink-500', glow: 'shadow-purple-500/50' },
     seminar: { icon: BookOpen, color: 'from-blue-500 to-cyan-500', glow: 'shadow-blue-500/50' },
-    'site-visit': { icon: Building2, color: 'from-green-500 to-emerald-500', glow: 'shadow-green-500/50' },
+    'site-visit': {
+      icon: Building2,
+      color: 'from-green-500 to-emerald-500',
+      glow: 'shadow-green-500/50',
+    },
     competition: { icon: Award, color: 'from-orange-500 to-red-500', glow: 'shadow-orange-500/50' },
-    edificio: { icon: TrendingUp, color: 'from-yellow-500 to-amber-500', glow: 'shadow-yellow-500/50' },
-    research: { icon: Sparkles, color: 'from-indigo-500 to-violet-500', glow: 'shadow-indigo-500/50' },
-    other: { icon: Sparkles, color: 'from-slate-500 to-gray-500', glow: 'shadow-slate-500/50' }
+    edificio: {
+      icon: TrendingUp,
+      color: 'from-yellow-500 to-amber-500',
+      glow: 'shadow-yellow-500/50',
+    },
+    research: {
+      icon: Sparkles,
+      color: 'from-indigo-500 to-violet-500',
+      glow: 'shadow-indigo-500/50',
+    },
+    other: { icon: Sparkles, color: 'from-slate-500 to-gray-500', glow: 'shadow-slate-500/50' },
   };
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-300">
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 text-slate-900 transition-colors duration-300 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg dark:text-white">
         {/* Static Blueprint Grid Background */}
-        <div className="fixed inset-0 opacity-5 dark:opacity-10 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,204,21,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,204,21,0.3)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.3)_1px,transparent_1px)] bg-[size:60px_60px]" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,204,21,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,204,21,0.15)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.15)_1px,transparent_1px)] bg-[size:20px_20px]" />
+        <div className="pointer-events-none fixed inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,204,21,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,204,21,0.3)_1px,transparent_1px)] bg-[size:60px_60px] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.3)_1px,transparent_1px)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,204,21,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,204,21,0.15)_1px,transparent_1px)] bg-[size:20px_20px] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.15)_1px,transparent_1px)]" />
         </div>
 
         {/* Header */}
-        <header className="relative pt-20 sm:pt-24 pb-8 sm:pb-16 px-4 sm:px-6 z-20">
-          <div className="max-w-7xl mx-auto">
+        <header className="relative z-20 px-4 pb-8 pt-20 sm:px-6 sm:pb-16 sm:pt-24">
+          <div className="mx-auto max-w-7xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8 }}
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                <motion.div
-                  className="relative p-3 sm:p-4 rounded-xl bg-yellow-500/10 dark:bg-cyan-500/10 border-2 border-yellow-500/40 dark:border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-yellow-500/10 dark:shadow-cyan-500/20"
-                >
-                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-slate-700 dark:text-cyan-400" />
+              <div className="mb-4 flex flex-col items-start gap-3 sm:mb-6 sm:flex-row sm:items-center sm:gap-4">
+                <motion.div className="relative rounded-xl border-2 border-yellow-500/40 bg-yellow-500/10 p-3 shadow-lg shadow-yellow-500/10 backdrop-blur-sm dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:shadow-cyan-500/20 sm:p-4">
+                  <Zap className="h-6 w-6 text-slate-700 dark:text-cyan-400 sm:h-8 sm:w-8" />
                   <motion.div
                     className="absolute inset-0 rounded-xl bg-yellow-400/20 dark:bg-cyan-400/20"
                     animate={{
                       scale: [1, 1.2, 1],
-                      opacity: [0.5, 0, 0.5]
+                      opacity: [0.5, 0, 0.5],
                     }}
                     transition={{
                       duration: 2,
                       repeat: Infinity,
-                      ease: 'easeOut'
+                      ease: 'easeOut',
                     }}
                   />
                 </motion.div>
                 <div>
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                  <h1 className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 bg-clip-text text-2xl font-bold text-transparent dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 sm:text-4xl md:text-5xl lg:text-6xl">
                     Roadmap and Calendar
                   </h1>
-                  <p className="text-slate-600 dark:text-cyan-300/70 mt-1 sm:mt-2 flex items-center gap-2 text-sm sm:text-base">
+                  <p className="mt-1 flex items-center gap-2 text-sm text-slate-600 dark:text-cyan-300/70 sm:mt-2 sm:text-base">
                     <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
                     Academic Year 2025-26
                   </p>
@@ -481,15 +536,21 @@ export default function RoadmapPage() {
               </div>
 
               {/* Time Status Indicator */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 sm:mt-8">
-                <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
-                  <div className="h-2 w-2 rounded-full bg-green-500 dark:bg-cyan-400 animate-pulse" />
-                  <span className="text-xs sm:text-sm text-slate-700 dark:text-cyan-300 font-medium">System Online</span>
+              <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-4">
+                <div className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur-sm dark:border-cyan-500/30 dark:bg-slate-800/50 sm:px-4 sm:py-2">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-green-500 dark:bg-cyan-400" />
+                  <span className="text-xs font-medium text-slate-700 dark:text-cyan-300 sm:text-sm">
+                    System Online
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white/80 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/30 backdrop-blur-sm shadow-sm">
-                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-slate-600 dark:text-cyan-400" />
-                  <span className="text-xs sm:text-sm text-slate-700 dark:text-cyan-300 font-medium">
-                    {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                <div className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur-sm dark:border-cyan-500/30 dark:bg-slate-800/50 sm:px-4 sm:py-2">
+                  <Clock className="h-3 w-3 text-slate-600 dark:text-cyan-400 sm:h-4 sm:w-4" />
+                  <span className="text-xs font-medium text-slate-700 dark:text-cyan-300 sm:text-sm">
+                    {new Date().toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
                   </span>
                 </div>
               </div>
@@ -498,28 +559,31 @@ export default function RoadmapPage() {
         </header>
 
         {/* Timeline Beam with Current Month Events */}
-        <section className="relative px-4 sm:px-6 py-6 sm:py-8 overflow-hidden">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative overflow-hidden px-4 py-6 sm:px-6 sm:py-8">
+          <div className="mx-auto max-w-7xl">
             {/* Section Header */}
-            <div className="text-center mb-4 sm:mb-6">
+            <div className="mb-4 text-center sm:mb-6">
               <motion.h2
-                className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-1"
+                className="mb-1 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 bg-clip-text text-xl font-bold text-transparent dark:from-cyan-400 dark:via-blue-400 dark:to-cyan-400 sm:text-2xl md:text-3xl"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 {getCurrentMonthName()} Timeline
               </motion.h2>
-              <p className="text-slate-600 dark:text-cyan-400/70 mb-2 sm:mb-3 font-medium text-sm sm:text-base">
-                {currentMonthEvents.length} {currentMonthEvents.length === 1 ? 'Event' : 'Events'} This Month
+              <p className="mb-2 text-sm font-medium text-slate-600 dark:text-cyan-400/70 sm:mb-3 sm:text-base">
+                {currentMonthEvents.length} {currentMonthEvents.length === 1 ? 'Event' : 'Events'}{' '}
+                This Month
               </p>
               {currentMonthEvents.length > 0 && (
                 <motion.p
-                  className="text-slate-500 dark:text-cyan-500/60 text-xs sm:text-sm flex items-center justify-center gap-2"
+                  className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-cyan-500/60 sm:text-sm"
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Hover over events for details • Click to view full information</span>
+                  <span className="hidden sm:inline">
+                    Hover over events for details • Click to view full information
+                  </span>
                   <span className="sm:hidden">Tap events for details</span>
                 </motion.p>
               )}
@@ -529,7 +593,7 @@ export default function RoadmapPage() {
             {/* Mobile Layout - Horizontal Scroll */}
             <div className="md:hidden">
               {currentMonthEvents.length > 0 ? (
-                <div className="flex overflow-x-auto pb-4 gap-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4">
+                <div className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4">
                   {currentMonthEvents.map((event, index) => {
                     const config = categoryConfig[event.category];
                     const Icon = config.icon;
@@ -542,15 +606,17 @@ export default function RoadmapPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.3 }}
                         onClick={() => setSelectedEvent(event)}
-                        className="flex-shrink-0 w-[200px] snap-center cursor-pointer"
+                        className="w-[200px] flex-shrink-0 cursor-pointer snap-center"
                       >
-                        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-xl p-4 border border-slate-200 dark:border-cyan-500/30 shadow-lg h-full">
+                        <div className="h-full rounded-xl border border-slate-200 bg-white/90 p-4 shadow-lg backdrop-blur-sm dark:border-cyan-500/30 dark:bg-slate-800/90">
                           {/* Icon */}
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center mb-3 shadow-lg mx-auto`}>
+                          <div
+                            className={`h-12 w-12 rounded-xl bg-gradient-to-br ${config.color} mx-auto mb-3 flex items-center justify-center shadow-lg`}
+                          >
                             <Icon className="h-6 w-6 text-white" />
                             {status === 'present' && (
                               <motion.div
-                                className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-green-400 border-2 border-white dark:border-slate-800"
+                                className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-white bg-green-400 dark:border-slate-800"
                                 animate={{ scale: [1, 1.2, 1] }}
                                 transition={{ duration: 1.5, repeat: Infinity }}
                               />
@@ -558,22 +624,28 @@ export default function RoadmapPage() {
                           </div>
 
                           {/* Title */}
-                          <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-2 text-center line-clamp-2">
+                          <h4 className="mb-2 line-clamp-2 text-center text-sm font-bold text-slate-800 dark:text-white">
                             {event.title}
                           </h4>
 
                           {/* Date Badge */}
-                          <div className={`px-3 py-1 rounded-full text-xs font-semibold text-center ${status === 'present'
-                            ? 'bg-green-500/20 border border-green-500/50 text-green-700 dark:text-green-300'
-                            : status === 'past'
-                              ? 'bg-slate-200 border border-slate-300 text-slate-600 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-400'
-                              : 'bg-blue-500/20 border border-blue-500/50 text-blue-700 dark:text-blue-300'
-                            }`}>
-                            {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          <div
+                            className={`rounded-full px-3 py-1 text-center text-xs font-semibold ${
+                              status === 'present'
+                                ? 'border border-green-500/50 bg-green-500/20 text-green-700 dark:text-green-300'
+                                : status === 'past'
+                                  ? 'border border-slate-300 bg-slate-200 text-slate-600 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                                  : 'border border-blue-500/50 bg-blue-500/20 text-blue-700 dark:text-blue-300'
+                            }`}
+                          >
+                            {new Date(event.date).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                            })}
                           </div>
 
                           {/* Location */}
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
+                          <p className="mt-2 flex items-center justify-center gap-1 text-center text-xs text-slate-500 dark:text-slate-400">
                             <MapPin className="h-3 w-3" />
                             <span className="truncate">{event.location}</span>
                           </p>
@@ -585,59 +657,61 @@ export default function RoadmapPage() {
               ) : (
                 <div className="flex items-center justify-center py-12">
                   <div className="text-center">
-                    <Calendar className="h-12 w-12 text-slate-400 dark:text-cyan-500/30 mx-auto mb-3" />
-                    <p className="text-slate-600 dark:text-cyan-400/60 text-base font-medium">No events this month</p>
+                    <Calendar className="mx-auto mb-3 h-12 w-12 text-slate-400 dark:text-cyan-500/30" />
+                    <p className="text-base font-medium text-slate-600 dark:text-cyan-400/60">
+                      No events this month
+                    </p>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Desktop Layout - Positioned along diagonal beam */}
-            <div className="hidden md:block relative h-[360px]">
+            <div className="relative hidden h-[360px] md:block">
               {/* Diagonal Beam - Connecting Line Through Events */}
-              <div className="absolute inset-0 flex items-center pointer-events-none overflow-hidden z-0">
+              <div className="pointer-events-none absolute inset-0 z-0 flex items-center overflow-hidden">
                 {/* Main connecting beam */}
                 <motion.div
-                  className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-yellow-400 dark:via-cyan-400 to-transparent shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
+                  className="absolute h-[2px] w-[120%] bg-gradient-to-r from-transparent via-yellow-400 to-transparent shadow-[0_0_20px_rgba(250,204,21,0.5)] dark:via-cyan-400 dark:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
                   style={{
                     left: '-10%',
                     top: '58%',
-                    transform: 'rotate(-8deg)'
+                    transform: 'rotate(-8deg)',
                   }}
                 >
                   {/* Traveling light */}
                   <motion.div
-                    className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80"
+                    className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-transparent via-white to-transparent opacity-80"
                     animate={{
-                      x: ['-100%', '1000%']
+                      x: ['-100%', '1000%'],
                     }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
                       ease: 'linear',
-                      repeatDelay: 1
+                      repeatDelay: 1,
                     }}
                     style={{
                       filter: 'blur(2px)',
-                      boxShadow: '0 0 30px rgba(255,255,255,0.8)'
+                      boxShadow: '0 0 30px rgba(255,255,255,0.8)',
                     }}
                   />
                 </motion.div>
                 {/* Glow layer */}
                 <motion.div
-                  className="absolute w-[120%] h-8 bg-gradient-to-r from-transparent via-yellow-400/30 dark:via-cyan-400/30 to-transparent blur-xl"
+                  className="absolute h-8 w-[120%] bg-gradient-to-r from-transparent via-yellow-400/30 to-transparent blur-xl dark:via-cyan-400/30"
                   style={{
                     left: '-10%',
                     top: '58%',
-                    transform: 'rotate(-8deg)'
+                    transform: 'rotate(-8deg)',
                   }}
                   animate={{
-                    opacity: [0.4, 0.7, 0.4]
+                    opacity: [0.4, 0.7, 0.4],
                   }}
                   transition={{
                     duration: 2,
                     repeat: Infinity,
-                    ease: 'easeInOut'
+                    ease: 'easeInOut',
                   }}
                 />
               </div>
@@ -663,91 +737,101 @@ export default function RoadmapPage() {
                       transition={{ delay: index * 0.1, duration: 0.5 }}
                       whileHover={{ scale: 1.1, y: -8, zIndex: 50 }}
                       onClick={() => setSelectedEvent(event)}
-                      className="absolute cursor-pointer group"
+                      className="group absolute cursor-pointer"
                       style={{
                         left: `${leftPercent}%`,
                         bottom: `${bottomPercent}%`,
-                        transform: 'translate(-50%, 50%)'
+                        transform: 'translate(-50%, 50%)',
                       }}
                     >
-
                       {/* Event Node */}
                       <div className="relative flex flex-col items-center">
                         {/* Connection point - outer ring */}
                         <motion.div
-                          className="absolute w-20 h-20 rounded-full border-2 border-cyan-400/30 pointer-events-none"
+                          className="pointer-events-none absolute h-20 w-20 rounded-full border-2 border-cyan-400/30"
                           animate={{
                             scale: [1, 1.15, 1],
-                            opacity: [0.3, 0.6, 0.3]
+                            opacity: [0.3, 0.6, 0.3],
                           }}
                           transition={{
                             duration: 2,
                             repeat: Infinity,
-                            ease: 'easeInOut'
+                            ease: 'easeInOut',
                           }}
                         />
 
                         {/* Icon Container - Node */}
                         <motion.div
-                          className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${config.color} border-2 ${status === 'present'
-                            ? 'border-green-400'
-                            : status === 'past'
-                              ? 'border-slate-600'
-                              : 'border-cyan-400'
-                            } backdrop-blur-sm flex items-center justify-center transition-all duration-300 shadow-xl z-10`}
-                          animate={status === 'present' ? {
-                            boxShadow: [
-                              '0 0 20px rgba(34,197,94,0.5)',
-                              '0 0 40px rgba(34,197,94,0.7)',
-                              '0 0 20px rgba(34,197,94,0.5)'
-                            ],
-                            borderColor: [
-                              'rgba(34,197,94,1)',
-                              'rgba(6,182,212,1)',
-                              'rgba(34,197,94,1)'
-                            ]
-                          } : {
-                            boxShadow: `0 0 25px ${config.glow}`
-                          }}
+                          className={`relative h-16 w-16 rounded-2xl bg-gradient-to-br ${config.color} border-2 ${
+                            status === 'present'
+                              ? 'border-green-400'
+                              : status === 'past'
+                                ? 'border-slate-600'
+                                : 'border-cyan-400'
+                          } z-10 flex items-center justify-center shadow-xl backdrop-blur-sm transition-all duration-300`}
+                          animate={
+                            status === 'present'
+                              ? {
+                                  boxShadow: [
+                                    '0 0 20px rgba(34,197,94,0.5)',
+                                    '0 0 40px rgba(34,197,94,0.7)',
+                                    '0 0 20px rgba(34,197,94,0.5)',
+                                  ],
+                                  borderColor: [
+                                    'rgba(34,197,94,1)',
+                                    'rgba(6,182,212,1)',
+                                    'rgba(34,197,94,1)',
+                                  ],
+                                }
+                              : {
+                                  boxShadow: `0 0 25px ${config.glow}`,
+                                }
+                          }
                           transition={{
                             duration: 2,
                             repeat: Infinity,
-                            ease: 'easeInOut'
+                            ease: 'easeInOut',
                           }}
                         >
-                          <Icon className={`h-7 w-7 ${status === 'past' ? 'text-slate-500' : 'text-white'
-                            }`} />
+                          <Icon
+                            className={`h-7 w-7 ${
+                              status === 'past' ? 'text-slate-500' : 'text-white'
+                            }`}
+                          />
 
                           {/* Live indicator */}
                           {status === 'present' && (
                             <motion.div
-                              className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-slate-900"
+                              className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-slate-900 bg-green-400"
                               animate={{
-                                scale: [1, 1.2, 1]
+                                scale: [1, 1.2, 1],
                               }}
                               transition={{
                                 duration: 1.5,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'easeInOut',
                               }}
                             />
                           )}
                         </motion.div>
 
                         {/* Event Title - Always Visible */}
-                        <div className="mt-2 text-center max-w-[150px]">
-                          <h4 className="text-[11px] font-bold text-slate-800 dark:text-white mb-1 line-clamp-2 leading-tight">
+                        <div className="mt-2 max-w-[150px] text-center">
+                          <h4 className="mb-1 line-clamp-2 text-[11px] font-bold leading-tight text-slate-800 dark:text-white">
                             {event.title}
                           </h4>
-                          <div className={`px-2 py-0.5 rounded-full text-[9px] font-semibold inline-block ${status === 'present'
-                            ? 'bg-green-500/30 border border-green-500/60 text-green-800 dark:bg-green-500/20 dark:border-green-400/50 dark:text-green-300'
-                            : status === 'past'
-                              ? 'bg-slate-200 border border-slate-400/50 text-slate-700 dark:bg-slate-800/50 dark:border-slate-600/30 dark:text-slate-500'
-                              : 'bg-slate-100 border border-slate-400/60 text-slate-800 dark:bg-cyan-500/20 dark:border-cyan-400/50 dark:text-cyan-300'
-                            } backdrop-blur-sm`}>
+                          <div
+                            className={`inline-block rounded-full px-2 py-0.5 text-[9px] font-semibold ${
+                              status === 'present'
+                                ? 'border border-green-500/60 bg-green-500/30 text-green-800 dark:border-green-400/50 dark:bg-green-500/20 dark:text-green-300'
+                                : status === 'past'
+                                  ? 'border border-slate-400/50 bg-slate-200 text-slate-700 dark:border-slate-600/30 dark:bg-slate-800/50 dark:text-slate-500'
+                                  : 'border border-slate-400/60 bg-slate-100 text-slate-800 dark:border-cyan-400/50 dark:bg-cyan-500/20 dark:text-cyan-300'
+                            } backdrop-blur-sm`}
+                          >
                             {new Date(event.date).toLocaleDateString('en-US', {
                               month: 'short',
-                              day: 'numeric'
+                              day: 'numeric',
                             })}
                           </div>
                         </div>
@@ -756,40 +840,42 @@ export default function RoadmapPage() {
                         <motion.div
                           initial={{ opacity: 0, scale: 0.9 }}
                           whileHover={{ opacity: 1, scale: 1 }}
-                          className="absolute top-full mt-2 w-72 pointer-events-none z-50"
+                          className="pointer-events-none absolute top-full z-50 mt-2 w-72"
                         >
-                          <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl border-2 border-slate-300 dark:border-cyan-500/40 rounded-xl p-4 shadow-2xl">
-                            <div className="flex items-start gap-3 mb-3">
-                              <div className={`p-2.5 rounded-lg bg-gradient-to-br ${config.color} flex-shrink-0 shadow-lg`}>
+                          <div className="bg-white/98 dark:bg-slate-900/98 rounded-xl border-2 border-slate-300 p-4 shadow-2xl backdrop-blur-xl dark:border-cyan-500/40">
+                            <div className="mb-3 flex items-start gap-3">
+                              <div
+                                className={`rounded-lg bg-gradient-to-br p-2.5 ${config.color} flex-shrink-0 shadow-lg`}
+                              >
                                 <Icon className="h-5 w-5 text-white" />
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <h4 className="text-base font-bold text-slate-800 dark:text-cyan-300 mb-1">
+                              <div className="min-w-0 flex-1">
+                                <h4 className="mb-1 text-base font-bold text-slate-800 dark:text-cyan-300">
                                   {event.title}
                                 </h4>
-                                <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1">
+                                <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
                                   <Calendar className="h-3 w-3" />
                                   {new Date(event.date).toLocaleDateString('en-US', {
                                     weekday: 'long',
                                     month: 'long',
                                     day: 'numeric',
-                                    year: 'numeric'
+                                    year: 'numeric',
                                   })}
                                 </p>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 mb-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg p-2">
+                            <div className="mb-3 flex items-center gap-2 rounded-lg bg-slate-100 p-2 text-xs text-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
                               <MapPin className="h-4 w-4 text-slate-600 dark:text-cyan-400" />
                               <span>{event.location}</span>
                             </div>
                             {status === 'present' && (
-                              <div className="flex items-center gap-2 text-xs text-green-800 dark:text-green-400 font-semibold bg-green-500/20 dark:bg-green-500/10 rounded-lg p-2 border border-green-500/50 dark:border-green-500/30">
-                                <div className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse" />
+                              <div className="flex items-center gap-2 rounded-lg border border-green-500/50 bg-green-500/20 p-2 text-xs font-semibold text-green-800 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-400">
+                                <div className="h-2 w-2 animate-pulse rounded-full bg-green-500 dark:bg-green-400" />
                                 Happening Now - Click for Details
                               </div>
                             )}
                             {status === 'future' && (
-                              <div className="text-xs text-slate-700 dark:text-cyan-400 font-medium bg-slate-100 dark:bg-cyan-500/10 rounded-lg p-2 border border-slate-300 dark:border-cyan-500/30">
+                              <div className="rounded-lg border border-slate-300 bg-slate-100 p-2 text-xs font-medium text-slate-700 dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-400">
                                 Click to view full details
                               </div>
                             )}
@@ -802,8 +888,10 @@ export default function RoadmapPage() {
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <Calendar className="h-16 w-16 text-slate-400 dark:text-cyan-500/30 mx-auto mb-4" />
-                    <p className="text-slate-600 dark:text-cyan-400/60 text-lg font-medium">No events scheduled for {getCurrentMonthName()}</p>
+                    <Calendar className="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-cyan-500/30" />
+                    <p className="text-lg font-medium text-slate-600 dark:text-cyan-400/60">
+                      No events scheduled for {getCurrentMonthName()}
+                    </p>
                   </div>
                 </div>
               )}
@@ -812,22 +900,28 @@ export default function RoadmapPage() {
             {/* Legend */}
             {currentMonthEvents.length > 0 && (
               <motion.div
-                className="mt-4 sm:mt-6 flex justify-center gap-2 sm:gap-4 flex-wrap px-2"
+                className="mt-4 flex flex-wrap justify-center gap-2 px-2 sm:mt-6 sm:gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600/30 shadow-sm">
-                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-slate-400 dark:bg-slate-600"></div>
-                  <span className="text-[10px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium">Past Event</span>
+                <div className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-slate-100 px-2 py-1.5 shadow-sm dark:border-slate-600/30 dark:bg-slate-800/50 sm:gap-2 sm:px-4 sm:py-2">
+                  <div className="h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-600 sm:h-3 sm:w-3"></div>
+                  <span className="text-[10px] font-medium text-slate-600 dark:text-slate-400 sm:text-xs">
+                    Past Event
+                  </span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-green-500/20 dark:bg-green-500/10 border border-green-500/50 dark:border-green-400/50 shadow-sm">
-                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500 dark:bg-green-400 animate-pulse"></div>
-                  <span className="text-[10px] sm:text-xs text-green-800 dark:text-green-300 font-medium">Happening Now</span>
+                <div className="flex items-center gap-1.5 rounded-lg border border-green-500/50 bg-green-500/20 px-2 py-1.5 shadow-sm dark:border-green-400/50 dark:bg-green-500/10 sm:gap-2 sm:px-4 sm:py-2">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-green-500 dark:bg-green-400 sm:h-3 sm:w-3"></div>
+                  <span className="text-[10px] font-medium text-green-800 dark:text-green-300 sm:text-xs">
+                    Happening Now
+                  </span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-blue-100 dark:bg-cyan-500/10 border border-blue-400 dark:border-cyan-400/50 shadow-sm">
-                  <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-blue-500 dark:bg-cyan-400"></div>
-                  <span className="text-[10px] sm:text-xs text-slate-800 dark:text-cyan-300 font-medium">Upcoming Event</span>
+                <div className="flex items-center gap-1.5 rounded-lg border border-blue-400 bg-blue-100 px-2 py-1.5 shadow-sm dark:border-cyan-400/50 dark:bg-cyan-500/10 sm:gap-2 sm:px-4 sm:py-2">
+                  <div className="h-2 w-2 rounded-full bg-blue-500 dark:bg-cyan-400 sm:h-3 sm:w-3"></div>
+                  <span className="text-[10px] font-medium text-slate-800 dark:text-cyan-300 sm:text-xs">
+                    Upcoming Event
+                  </span>
                 </div>
               </motion.div>
             )}
@@ -835,31 +929,38 @@ export default function RoadmapPage() {
         </section>
 
         {/* Filter Chips */}
-        <div className="sticky top-16 z-30 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-y border-slate-200 dark:border-cyan-500/20 shadow-sm">
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4">
-            <div className="flex overflow-x-auto gap-2 scrollbar-hide pb-1 -mx-1 px-1">
+        <div className="sticky top-16 z-30 border-y border-slate-200 bg-white/95 shadow-sm backdrop-blur-xl dark:border-cyan-500/20 dark:bg-slate-950/95">
+          <div className="mx-auto max-w-7xl px-3 py-3 sm:px-6 sm:py-4">
+            <div className="scrollbar-hide -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
               <button
                 onClick={() => setActiveFilter('all')}
-                className={`flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${activeFilter === 'all'
-                  ? 'bg-cyan-500/20 dark:bg-cyan-500/20 border-cyan-500/70 dark:border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-lg shadow-cyan-500/30'
-                  : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                  }`}
+                className={`flex-shrink-0 rounded-lg border px-3 py-1.5 text-xs transition-all sm:px-4 sm:py-2 sm:text-sm ${
+                  activeFilter === 'all'
+                    ? 'border-cyan-500/70 bg-cyan-500/20 text-cyan-700 shadow-lg shadow-cyan-500/30 dark:border-cyan-500 dark:bg-cyan-500/20 dark:text-cyan-300'
+                    : 'border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:border-cyan-500/30 dark:bg-slate-800/50 dark:text-cyan-400 dark:hover:bg-slate-800'
+                }`}
               >
                 All Events
               </button>
-              {(Object.entries(categoryConfig) as [EventCategory, typeof categoryConfig[EventCategory]][]).map(([key, config]) => {
+              {(
+                Object.entries(categoryConfig) as [
+                  EventCategory,
+                  (typeof categoryConfig)[EventCategory],
+                ][]
+              ).map(([key, config]) => {
                 const Icon = config.icon;
                 return (
                   <button
                     key={key}
                     onClick={() => setActiveFilter(key)}
-                    className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all text-xs sm:text-sm ${activeFilter === key
-                      ? `bg-gradient-to-r ${config.color} border-transparent text-white shadow-lg ${config.glow}`
-                      : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-cyan-500/30 text-slate-700 dark:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                      }`}
+                    className={`flex flex-shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition-all sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
+                      activeFilter === key
+                        ? `bg-gradient-to-r ${config.color} border-transparent text-white shadow-lg ${config.glow}`
+                        : 'border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:border-cyan-500/30 dark:bg-slate-800/50 dark:text-cyan-400 dark:hover:bg-slate-800'
+                    }`}
                   >
                     <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="capitalize whitespace-nowrap">{key.replace('-', ' ')}</span>
+                    <span className="whitespace-nowrap capitalize">{key.replace('-', ' ')}</span>
                   </button>
                 );
               })}
@@ -869,62 +970,64 @@ export default function RoadmapPage() {
 
         {/* Current Month Events Section - Hidden, timeline above shows this */}
         {false && currentMonthEvents.length > 0 && (
-          <section className="relative px-6 py-12 z-20">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
+          <section className="relative z-20 px-6 py-12">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <motion.div
-                    className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-500/40"
+                    className="rounded-xl border-2 border-cyan-500/40 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-3"
                     animate={{
                       boxShadow: [
                         '0 0 20px rgba(6,182,212,0.3)',
                         '0 0 30px rgba(6,182,212,0.5)',
-                        '0 0 20px rgba(6,182,212,0.3)'
-                      ]
+                        '0 0 20px rgba(6,182,212,0.3)',
+                      ],
                     }}
                     transition={{
                       duration: 2,
                       repeat: Infinity,
-                      ease: 'easeInOut'
+                      ease: 'easeInOut',
                     }}
                   >
                     <Calendar className="h-6 w-6 text-cyan-400" />
                   </motion.div>
                   <div>
                     <h2 className="text-3xl font-bold text-cyan-300">This Month's Events</h2>
-                    <p className="text-cyan-400/70 mt-1">{getCurrentMonthName()} • {currentMonthEvents.length} Events</p>
+                    <p className="mt-1 text-cyan-400/70">
+                      {getCurrentMonthName()} • {currentMonthEvents.length} Events
+                    </p>
                   </div>
                 </div>
 
                 {/* Live Clock */}
                 <motion.div
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-cyan-500/30"
+                  className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-slate-800/50 px-4 py-2"
                   animate={{
                     boxShadow: [
                       '0 0 10px rgba(6,182,212,0.2)',
                       '0 0 15px rgba(6,182,212,0.4)',
-                      '0 0 10px rgba(6,182,212,0.2)'
-                    ]
+                      '0 0 10px rgba(6,182,212,0.2)',
+                    ],
                   }}
                   transition={{
                     duration: 2,
                     repeat: Infinity,
-                    ease: 'easeInOut'
+                    ease: 'easeInOut',
                   }}
                 >
                   <Clock className="h-4 w-4 text-cyan-400" />
-                  <span className="text-sm text-cyan-300 font-mono">
+                  <span className="font-mono text-sm text-cyan-300">
                     {currentMonth.toLocaleTimeString('en-US', {
                       hour: '2-digit',
                       minute: '2-digit',
-                      hour12: true
+                      hour12: true,
                     })}
                   </span>
                 </motion.div>
               </div>
 
               {/* Sequential Event Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {currentMonthEvents.map((event, index) => {
                   const config = categoryConfig[event.category];
                   const Icon = config.icon;
@@ -938,74 +1041,91 @@ export default function RoadmapPage() {
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.03, y: -5 }}
                       onClick={() => setSelectedEvent(event)}
-                      className="relative group cursor-pointer"
+                      className="group relative cursor-pointer"
                     >
                       <motion.div
-                        className={`relative rounded-xl border-2 overflow-hidden transition-all duration-300 ${status === 'past'
-                          ? 'bg-slate-800/50 border-cyan-500/50 hover:border-cyan-400'
-                          : status === 'present'
-                            ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-cyan-400 shadow-lg shadow-cyan-500/30'
-                            : 'bg-slate-800/50 border-cyan-500/50 hover:border-cyan-400'
-                          }`}
-                        animate={status === 'present' ? {
-                          borderColor: ['rgba(6,182,212,1)', 'rgba(34,197,94,1)', 'rgba(6,182,212,1)']
-                        } : {}}
+                        className={`relative overflow-hidden rounded-xl border-2 transition-all duration-300 ${
+                          status === 'past'
+                            ? 'border-cyan-500/50 bg-slate-800/50 hover:border-cyan-400'
+                            : status === 'present'
+                              ? 'border-cyan-400 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 shadow-lg shadow-cyan-500/30'
+                              : 'border-cyan-500/50 bg-slate-800/50 hover:border-cyan-400'
+                        }`}
+                        animate={
+                          status === 'present'
+                            ? {
+                                borderColor: [
+                                  'rgba(6,182,212,1)',
+                                  'rgba(34,197,94,1)',
+                                  'rgba(6,182,212,1)',
+                                ],
+                              }
+                            : {}
+                        }
                         transition={{
                           duration: 2,
                           repeat: Infinity,
-                          ease: 'easeInOut'
+                          ease: 'easeInOut',
                         }}
                       >
                         {/* Status indicator */}
                         {status === 'present' && (
                           <motion.div
-                            className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 border border-green-400/50"
+                            className="absolute right-2 top-2 flex items-center gap-1 rounded-full border border-green-400/50 bg-green-500/20 px-2 py-1"
                             animate={{
                               boxShadow: [
                                 '0 0 10px rgba(34,197,94,0.3)',
                                 '0 0 20px rgba(34,197,94,0.6)',
-                                '0 0 10px rgba(34,197,94,0.3)'
-                              ]
+                                '0 0 10px rgba(34,197,94,0.3)',
+                              ],
                             }}
                             transition={{
                               duration: 2,
                               repeat: Infinity,
-                              ease: 'easeInOut'
+                              ease: 'easeInOut',
                             }}
                           >
-                            <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                            <span className="text-xs text-green-300 font-semibold">Live</span>
+                            <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+                            <span className="text-xs font-semibold text-green-300">Live</span>
                           </motion.div>
                         )}
 
                         <div className="p-5">
                           {/* Icon and Category */}
-                          <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-lg bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`}>
+                          <div className="mb-4 flex items-center justify-between">
+                            <div
+                              className={`rounded-lg bg-gradient-to-br p-3 ${config.color} shadow-lg ${config.glow}`}
+                            >
                               <Icon className="h-6 w-6 text-white" />
                             </div>
                             <span className="text-xs text-slate-400">
-                              {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              {new Date(event.date).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                              })}
                             </span>
                           </div>
 
                           {/* Title */}
-                          <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-cyan-300 transition-colors">
+                          <h3 className="mb-2 line-clamp-2 text-lg font-bold text-white transition-colors group-hover:text-cyan-300">
                             {event.title}
                           </h3>
 
                           {/* Location */}
-                          <div className="flex items-center gap-2 text-sm text-slate-400 mb-3">
+                          <div className="mb-3 flex items-center gap-2 text-sm text-slate-400">
                             <MapPin className="h-4 w-4" />
                             <span className="truncate">{event.location}</span>
                           </div>
 
                           {/* Progress bar for sequential timing */}
-                          <div className="relative h-1 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="relative h-1 overflow-hidden rounded-full bg-slate-700">
                             <motion.div
                               className={`absolute inset-y-0 left-0 bg-gradient-to-r ${config.color}`}
                               initial={{ width: '0%' }}
-                              animate={{ width: status === 'past' ? '100%' : status === 'present' ? '50%' : '0%' }}
+                              animate={{
+                                width:
+                                  status === 'past' ? '100%' : status === 'present' ? '50%' : '0%',
+                              }}
                               transition={{ duration: 1, delay: index * 0.1 }}
                             />
                           </div>
@@ -1020,8 +1140,8 @@ export default function RoadmapPage() {
         )}
 
         {/* Timeline */}
-        <main className="relative px-4 sm:px-6 py-8 sm:py-16 z-20" ref={timelineRef}>
-          <div className="max-w-7xl mx-auto">
+        <main className="relative z-20 px-4 py-8 sm:px-6 sm:py-16" ref={timelineRef}>
+          <div className="mx-auto max-w-7xl">
             <div className="space-y-6 sm:space-y-12">
               {filteredEvents.map((event, index) => {
                 const status = getEventStatus(event.date);
@@ -1038,34 +1158,37 @@ export default function RoadmapPage() {
                   >
                     {/* Timeline connector */}
                     {index < filteredEvents.length - 1 && (
-                      <div className="absolute left-5 sm:left-8 top-20 sm:top-24 bottom-[-24px] sm:bottom-[-48px] w-px bg-gradient-to-b from-yellow-500/50 dark:from-cyan-500/50 via-yellow-500/20 dark:via-cyan-500/20 to-transparent" />
+                      <div className="absolute bottom-[-24px] left-5 top-20 w-px bg-gradient-to-b from-yellow-500/50 via-yellow-500/20 to-transparent dark:from-cyan-500/50 dark:via-cyan-500/20 sm:bottom-[-48px] sm:left-8 sm:top-24" />
                     )}
 
                     {/* Event Card */}
                     <motion.button
                       onClick={() => setSelectedEvent(event)}
-                      className="relative w-full group text-left"
+                      className="group relative w-full text-left"
                       whileHover={{ scale: shouldReduceMotion ? 1 : 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className={`relative rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all duration-500 ${status === 'past'
-                        ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl'
-                        : status === 'future'
-                          ? 'bg-white/90 dark:bg-slate-900/50 border-cyan-500/60 dark:border-cyan-500/50 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50'
-                          : 'bg-white/95 dark:bg-slate-900/70 border-cyan-500/80 dark:border-cyan-500 shadow-2xl shadow-cyan-500/60'
-                        }`}>
+                      <div
+                        className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 sm:rounded-2xl ${
+                          status === 'past'
+                            ? 'border-cyan-500/60 bg-white/90 shadow-lg hover:shadow-2xl dark:border-cyan-500/50 dark:bg-slate-900/50'
+                            : status === 'future'
+                              ? 'border-cyan-500/60 bg-white/90 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50 dark:border-cyan-500/50 dark:bg-slate-900/50'
+                              : 'border-cyan-500/80 bg-white/95 shadow-2xl shadow-cyan-500/60 dark:border-cyan-500 dark:bg-slate-900/70'
+                        }`}
+                      >
                         {/* Holographic effect for future events */}
                         {status === 'future' && (
                           <motion.div
                             className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent"
                             animate={{
-                              x: ['-100%', '200%']
+                              x: ['-100%', '200%'],
                             }}
                             transition={{
                               duration: 3,
                               repeat: Infinity,
                               repeatDelay: 2,
-                              ease: 'easeInOut'
+                              ease: 'easeInOut',
                             }}
                           />
                         )}
@@ -1076,23 +1199,26 @@ export default function RoadmapPage() {
                             className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 blur-xl"
                             animate={{
                               opacity: [0.3, 0.6, 0.3],
-                              scale: [1, 1.05, 1]
+                              scale: [1, 1.05, 1],
                             }}
                             transition={{
                               duration: 2,
                               repeat: Infinity,
-                              ease: 'easeInOut'
+                              ease: 'easeInOut',
                             }}
                           />
                         )}
 
-                        <div className="relative p-4 sm:p-6 flex items-start gap-3 sm:gap-6">
+                        <div className="relative flex items-start gap-3 p-4 sm:gap-6 sm:p-6">
                           {/* Icon */}
-                          <div className={`relative p-2.5 sm:p-4 rounded-lg sm:rounded-xl flex-shrink-0 ${status === 'past'
-                            ? `bg-gradient-to-br ${config.color} shadow-lg`
-                            : `bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`
-                            }`}>
-                            <Icon className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
+                          <div
+                            className={`relative flex-shrink-0 rounded-lg p-2.5 sm:rounded-xl sm:p-4 ${
+                              status === 'past'
+                                ? `bg-gradient-to-br ${config.color} shadow-lg`
+                                : `bg-gradient-to-br ${config.color} shadow-lg ${config.glow}`
+                            }`}
+                          >
+                            <Icon className="h-5 w-5 text-white sm:h-8 sm:w-8" />
 
                             {/* Pulse effect for present */}
                             {status === 'present' && (
@@ -1100,67 +1226,97 @@ export default function RoadmapPage() {
                                 className="absolute inset-0 rounded-xl bg-white"
                                 animate={{
                                   scale: [1, 1.3, 1],
-                                  opacity: [0.5, 0, 0.5]
+                                  opacity: [0.5, 0, 0.5],
                                 }}
                                 transition={{
                                   duration: 2,
                                   repeat: Infinity,
-                                  ease: 'easeOut'
+                                  ease: 'easeOut',
                                 }}
                               />
                             )}
                           </div>
 
                           {/* Content */}
-                          <div className="flex-1 text-left min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
+                          <div className="min-w-0 flex-1 text-left">
+                            <div className="mb-2 flex flex-col gap-2 sm:mb-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                               <div className="min-w-0">
-                                <h3 className={`text-base sm:text-xl font-bold mb-1 sm:mb-2 line-clamp-2 ${status === 'past'
-                                  ? 'text-slate-500 dark:text-slate-500'
-                                  : status === 'future'
-                                    ? 'text-slate-800 dark:text-cyan-300'
-                                    : 'text-slate-800 dark:text-cyan-200'
-                                  }`}>
+                                <h3
+                                  className={`mb-1 line-clamp-2 text-base font-bold sm:mb-2 sm:text-xl ${
+                                    status === 'past'
+                                      ? 'text-slate-500 dark:text-slate-500'
+                                      : status === 'future'
+                                        ? 'text-slate-800 dark:text-cyan-300'
+                                        : 'text-slate-800 dark:text-cyan-200'
+                                  }`}
+                                >
                                   {event.title}
                                 </h3>
-                                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm">
-                                  <span className={`flex items-center gap-1 sm:gap-2 ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
-                                    }`}>
+                                <div className="flex flex-wrap items-center gap-2 text-xs sm:gap-4 sm:text-sm">
+                                  <span
+                                    className={`flex items-center gap-1 sm:gap-2 ${
+                                      status === 'past'
+                                        ? 'text-slate-600 dark:text-slate-600'
+                                        : 'text-slate-700 dark:text-cyan-400/70'
+                                    }`}
+                                  >
                                     <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                                     {new Date(event.date).toLocaleDateString('en-US', {
                                       month: 'short',
                                       day: 'numeric',
-                                      year: 'numeric'
+                                      year: 'numeric',
                                     })}
                                   </span>
-                                  <span className={`flex items-center gap-1 sm:gap-2 truncate ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/70'
-                                    }`}>
-                                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                  <span
+                                    className={`flex items-center gap-1 truncate sm:gap-2 ${
+                                      status === 'past'
+                                        ? 'text-slate-600 dark:text-slate-600'
+                                        : 'text-slate-700 dark:text-cyan-400/70'
+                                    }`}
+                                  >
+                                    <MapPin className="h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
                                     <span className="truncate">{event.location}</span>
                                   </span>
                                 </div>
                               </div>
 
                               {/* Status badge */}
-                              <div className={`self-start flex-shrink-0 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${status === 'past'
-                                ? 'bg-slate-200 dark:bg-slate-800/30 border-slate-400 dark:border-slate-700/30 text-slate-600 dark:text-slate-600'
-                                : status === 'future'
-                                  ? 'bg-slate-100 dark:bg-cyan-500/20 border-slate-400 dark:border-cyan-500/50 text-slate-800 dark:text-cyan-300'
-                                  : 'bg-green-500/30 dark:bg-cyan-500/30 border-green-500/60 dark:border-cyan-500 text-green-800 dark:text-cyan-200 animate-pulse'
-                                }`}>
-                                {status === 'past' ? 'Completed' : status === 'future' ? 'Upcoming' : 'Active'}
+                              <div
+                                className={`flex-shrink-0 self-start rounded-full border px-2 py-0.5 text-[10px] font-semibold sm:px-3 sm:py-1 sm:text-xs ${
+                                  status === 'past'
+                                    ? 'border-slate-400 bg-slate-200 text-slate-600 dark:border-slate-700/30 dark:bg-slate-800/30 dark:text-slate-600'
+                                    : status === 'future'
+                                      ? 'border-slate-400 bg-slate-100 text-slate-800 dark:border-cyan-500/50 dark:bg-cyan-500/20 dark:text-cyan-300'
+                                      : 'animate-pulse border-green-500/60 bg-green-500/30 text-green-800 dark:border-cyan-500 dark:bg-cyan-500/30 dark:text-cyan-200'
+                                }`}
+                              >
+                                {status === 'past'
+                                  ? 'Completed'
+                                  : status === 'future'
+                                    ? 'Upcoming'
+                                    : 'Active'}
                               </div>
                             </div>
 
-                            <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-none ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-300/60'
-                              }`}>
+                            <p
+                              className={`line-clamp-2 text-xs leading-relaxed sm:line-clamp-none sm:text-sm ${
+                                status === 'past'
+                                  ? 'text-slate-600 dark:text-slate-600'
+                                  : 'text-slate-700 dark:text-cyan-300/60'
+                              }`}
+                            >
                               {event.description}
                             </p>
 
                             {event.speaker && (
-                              <div className={`mt-2 sm:mt-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm ${status === 'past' ? 'text-slate-600 dark:text-slate-600' : 'text-slate-700 dark:text-cyan-400/80'
-                                }`}>
-                                <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <div
+                                className={`mt-2 flex items-center gap-1 text-xs sm:mt-3 sm:gap-2 sm:text-sm ${
+                                  status === 'past'
+                                    ? 'text-slate-600 dark:text-slate-600'
+                                    : 'text-slate-700 dark:text-cyan-400/80'
+                                }`}
+                              >
+                                <Users className="h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
                                 <span className="truncate">{event.speaker}</span>
                               </div>
                             )}
@@ -1169,7 +1325,7 @@ export default function RoadmapPage() {
 
                         {/* Corner accent */}
                         {status !== 'present' && (
-                          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-bl-3xl" />
+                          <div className="absolute right-0 top-0 h-20 w-20 rounded-bl-3xl bg-gradient-to-br from-cyan-500/20 to-transparent" />
                         )}
                       </div>
                     </motion.button>
@@ -1190,7 +1346,7 @@ export default function RoadmapPage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedEvent(null)}
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
+                className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
               />
 
               {/* Panel */}
@@ -1198,71 +1354,110 @@ export default function RoadmapPage() {
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
-                transition={{ type: shouldReduceMotion ? 'tween' : 'spring', damping: 30, stiffness: 300 }}
-                className="fixed right-0 top-0 bottom-0 w-full sm:max-w-2xl bg-white dark:bg-slate-900 border-l-2 border-cyan-500/60 dark:border-cyan-500 shadow-2xl z-50 overflow-y-auto"
+                transition={{
+                  type: shouldReduceMotion ? 'tween' : 'spring',
+                  damping: 30,
+                  stiffness: 300,
+                }}
+                className="fixed bottom-0 right-0 top-0 z-50 w-full overflow-y-auto border-l-2 border-cyan-500/60 bg-white shadow-2xl dark:border-cyan-500 dark:bg-slate-900 sm:max-w-2xl"
               >
                 <div className="relative">
                   {/* Animated background */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none" />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:30px_30px] dark:bg-[linear-gradient(to_right,rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.05)_1px,transparent_1px)]" />
 
                   <div className="relative p-4 sm:p-6">
                     {/* Header */}
-                    <div className="flex items-start justify-between mb-4 sm:mb-6 gap-3">
-                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                    <div className="mb-4 flex items-start justify-between gap-3 sm:mb-6">
+                      <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
                         {(() => {
                           const config = categoryConfig[selectedEvent.category];
                           const Icon = config.icon;
                           return (
                             <motion.div
-                              className={`p-3 sm:p-4 rounded-xl bg-gradient-to-br ${config.color} shadow-lg ${config.glow} flex-shrink-0`}
+                              className={`rounded-xl bg-gradient-to-br p-3 sm:p-4 ${config.color} shadow-lg ${config.glow} flex-shrink-0`}
                               animate={{
                                 boxShadow: [
-                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' :
-                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
-                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
-                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
-                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
-                                            'rgba(99, 102, 241, 0.5)'}`,
-                                  `0 0 40px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.8)' :
-                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.8)' :
-                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.8)' :
-                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.8)' :
-                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.8)' :
-                                            'rgba(99, 102, 241, 0.8)'}`,
-                                  `0 0 20px ${config.glow.includes('purple') ? 'rgba(168, 85, 247, 0.5)' :
-                                    config.glow.includes('blue') ? 'rgba(59, 130, 246, 0.5)' :
-                                      config.glow.includes('green') ? 'rgba(34, 197, 94, 0.5)' :
-                                        config.glow.includes('orange') ? 'rgba(249, 115, 22, 0.5)' :
-                                          config.glow.includes('yellow') ? 'rgba(234, 179, 8, 0.5)' :
-                                            'rgba(99, 102, 241, 0.5)'}`
-                                ]
+                                  `0 0 20px ${
+                                    config.glow.includes('purple')
+                                      ? 'rgba(168, 85, 247, 0.5)'
+                                      : config.glow.includes('blue')
+                                        ? 'rgba(59, 130, 246, 0.5)'
+                                        : config.glow.includes('green')
+                                          ? 'rgba(34, 197, 94, 0.5)'
+                                          : config.glow.includes('orange')
+                                            ? 'rgba(249, 115, 22, 0.5)'
+                                            : config.glow.includes('yellow')
+                                              ? 'rgba(234, 179, 8, 0.5)'
+                                              : 'rgba(99, 102, 241, 0.5)'
+                                  }`,
+                                  `0 0 40px ${
+                                    config.glow.includes('purple')
+                                      ? 'rgba(168, 85, 247, 0.8)'
+                                      : config.glow.includes('blue')
+                                        ? 'rgba(59, 130, 246, 0.8)'
+                                        : config.glow.includes('green')
+                                          ? 'rgba(34, 197, 94, 0.8)'
+                                          : config.glow.includes('orange')
+                                            ? 'rgba(249, 115, 22, 0.8)'
+                                            : config.glow.includes('yellow')
+                                              ? 'rgba(234, 179, 8, 0.8)'
+                                              : 'rgba(99, 102, 241, 0.8)'
+                                  }`,
+                                  `0 0 20px ${
+                                    config.glow.includes('purple')
+                                      ? 'rgba(168, 85, 247, 0.5)'
+                                      : config.glow.includes('blue')
+                                        ? 'rgba(59, 130, 246, 0.5)'
+                                        : config.glow.includes('green')
+                                          ? 'rgba(34, 197, 94, 0.5)'
+                                          : config.glow.includes('orange')
+                                            ? 'rgba(249, 115, 22, 0.5)'
+                                            : config.glow.includes('yellow')
+                                              ? 'rgba(234, 179, 8, 0.5)'
+                                              : 'rgba(99, 102, 241, 0.5)'
+                                  }`,
+                                ],
                               }}
                               transition={{
                                 duration: 2,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'easeInOut',
                               }}
                             >
-                              <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                              <Icon className="h-5 w-5 text-white sm:h-6 sm:w-6" />
                             </motion.div>
                           );
                         })()}
                         <div className="min-w-0">
-                          <span className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-1 sm:mb-2 ${categoryConfig[selectedEvent.category].color.includes('purple') ? 'bg-purple-500/30 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/60 dark:border-purple-500/50' :
-                            categoryConfig[selectedEvent.category].color.includes('blue') ? 'bg-slate-500/30 dark:bg-blue-500/20 text-slate-700 dark:text-blue-300 border border-slate-500/60 dark:border-blue-500/50' :
-                              categoryConfig[selectedEvent.category].color.includes('green') ? 'bg-green-500/30 dark:bg-green-500/20 text-green-700 dark:text-green-300 border border-green-500/60 dark:border-green-500/50' :
-                                categoryConfig[selectedEvent.category].color.includes('orange') ? 'bg-orange-500/30 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-500/60 dark:border-orange-500/50' :
-                                  categoryConfig[selectedEvent.category].color.includes('yellow') ? 'bg-yellow-500/30 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-500/60 dark:border-yellow-500/50' :
-                                    'bg-indigo-500/30 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/60 dark:border-indigo-500/50'
-                            }`}>
+                          <span
+                            className={`mb-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold sm:mb-2 sm:px-3 sm:py-1 sm:text-xs ${
+                              categoryConfig[selectedEvent.category].color.includes('purple')
+                                ? 'border border-purple-500/60 bg-purple-500/30 text-purple-700 dark:border-purple-500/50 dark:bg-purple-500/20 dark:text-purple-300'
+                                : categoryConfig[selectedEvent.category].color.includes('blue')
+                                  ? 'border border-slate-500/60 bg-slate-500/30 text-slate-700 dark:border-blue-500/50 dark:bg-blue-500/20 dark:text-blue-300'
+                                  : categoryConfig[selectedEvent.category].color.includes('green')
+                                    ? 'border border-green-500/60 bg-green-500/30 text-green-700 dark:border-green-500/50 dark:bg-green-500/20 dark:text-green-300'
+                                    : categoryConfig[selectedEvent.category].color.includes(
+                                          'orange'
+                                        )
+                                      ? 'border border-orange-500/60 bg-orange-500/30 text-orange-700 dark:border-orange-500/50 dark:bg-orange-500/20 dark:text-orange-300'
+                                      : categoryConfig[selectedEvent.category].color.includes(
+                                            'yellow'
+                                          )
+                                        ? 'border border-yellow-500/60 bg-yellow-500/30 text-yellow-700 dark:border-yellow-500/50 dark:bg-yellow-500/20 dark:text-yellow-300'
+                                        : 'border border-indigo-500/60 bg-indigo-500/30 text-indigo-700 dark:border-indigo-500/50 dark:bg-indigo-500/20 dark:text-indigo-300'
+                            }`}
+                          >
                             {selectedEvent.category.replace('-', ' ').toUpperCase()}
                           </span>
-                          <h2 className="text-lg sm:text-2xl font-bold text-slate-800 dark:text-cyan-200 line-clamp-2">{selectedEvent.title}</h2>
+                          <h2 className="line-clamp-2 text-lg font-bold text-slate-800 dark:text-cyan-200 sm:text-2xl">
+                            {selectedEvent.title}
+                          </h2>
                         </div>
                       </div>
                       <button
                         onClick={() => setSelectedEvent(null)}
-                        className="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-cyan-500/20 text-slate-700 dark:text-cyan-300 transition-all flex-shrink-0"
+                        className="flex-shrink-0 rounded-lg p-2 text-slate-700 transition-all hover:bg-slate-200 dark:text-cyan-300 dark:hover:bg-cyan-500/20"
                         aria-label="Close panel"
                       >
                         <X className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -1271,14 +1466,14 @@ export default function RoadmapPage() {
 
                     {/* Image Carousel */}
                     {selectedEvent.images && selectedEvent.images.length > 0 && (
-                      <div className="relative mb-6 rounded-xl overflow-hidden border-2 border-cyan-500/40 dark:border-cyan-500/30">
-                        <div className="aspect-video relative bg-slate-200 dark:bg-slate-800">
+                      <div className="relative mb-6 overflow-hidden rounded-xl border-2 border-cyan-500/40 dark:border-cyan-500/30">
+                        <div className="relative aspect-video bg-slate-200 dark:bg-slate-800">
                           <img
                             src={selectedEvent.images[currentImageIndex]}
                             alt={`${selectedEvent.title} - Image ${currentImageIndex + 1}`}
-                            className="w-full h-full object-cover"
+                            className="h-full w-full object-cover"
                             loading="lazy"
-                            onError={(e) => {
+                            onError={e => {
                               e.currentTarget.src = '/CIE Design.png';
                             }}
                           />
@@ -1286,38 +1481,43 @@ export default function RoadmapPage() {
                           {selectedEvent.images.length > 1 && (
                             <>
                               <button
-                                onClick={(e) => {
+                                onClick={e => {
                                   e.stopPropagation();
                                   setCurrentImageIndex(Math.max(0, currentImageIndex - 1));
                                 }}
                                 disabled={currentImageIndex === 0}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-transparent text-white disabled:opacity-30 hover:bg-black/30 transition-all"
+                                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-2 text-white transition-all hover:bg-black/30 disabled:opacity-30"
                                 aria-label="Previous image"
                               >
                                 <ChevronLeft className="h-6 w-6" />
                               </button>
                               <button
-                                onClick={(e) => {
+                                onClick={e => {
                                   e.stopPropagation();
-                                  setCurrentImageIndex(Math.min(selectedEvent.images.length - 1, currentImageIndex + 1));
+                                  setCurrentImageIndex(
+                                    Math.min(selectedEvent.images.length - 1, currentImageIndex + 1)
+                                  );
                                 }}
                                 disabled={currentImageIndex === selectedEvent.images.length - 1}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-transparent text-white disabled:opacity-30 hover:bg-black/30 transition-all"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-2 text-white transition-all hover:bg-black/30 disabled:opacity-30"
                                 aria-label="Next image"
                               >
                                 <ChevronRight className="h-6 w-6" />
                               </button>
 
-                              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
                                 {selectedEvent.images.map((_, idx) => (
                                   <button
                                     key={idx}
-                                    onClick={(e) => {
+                                    onClick={e => {
                                       e.stopPropagation();
                                       setCurrentImageIndex(idx);
                                     }}
-                                    className={`h-2 rounded-full transition-all ${idx === currentImageIndex ? 'w-8 bg-cyan-400' : 'w-2 bg-white/50'
-                                      }`}
+                                    className={`h-2 rounded-full transition-all ${
+                                      idx === currentImageIndex
+                                        ? 'w-8 bg-cyan-400'
+                                        : 'w-2 bg-white/50'
+                                    }`}
                                     aria-label={`Go to image ${idx + 1}`}
                                   />
                                 ))}
@@ -1330,50 +1530,55 @@ export default function RoadmapPage() {
 
                     {/* Event Details */}
                     <div className="space-y-4">
-                      <div className="p-4 rounded-xl bg-blue-50 dark:bg-cyan-500/10 border border-blue-200 dark:border-cyan-500/30 shadow-sm">
-                        <div className="flex items-center gap-2 text-slate-700 dark:text-cyan-300 mb-2">
+                      <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-sm dark:border-cyan-500/30 dark:bg-cyan-500/10">
+                        <div className="mb-2 flex items-center gap-2 text-slate-700 dark:text-cyan-300">
                           <Calendar className="h-5 w-5" />
                           <span className="font-semibold">Date</span>
                         </div>
-                        <p className="text-slate-900 dark:text-white font-medium">
+                        <p className="font-medium text-slate-900 dark:text-white">
                           {new Date(selectedEvent.date).toLocaleDateString('en-US', {
                             weekday: 'long',
                             year: 'numeric',
                             month: 'long',
-                            day: 'numeric'
+                            day: 'numeric',
                           })}
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 shadow-sm">
-                        <div className="flex items-center gap-2 text-green-700 dark:text-green-300 mb-2">
+                      <div className="rounded-xl border border-green-200 bg-green-50 p-4 shadow-sm dark:border-green-500/30 dark:bg-green-500/10">
+                        <div className="mb-2 flex items-center gap-2 text-green-700 dark:text-green-300">
                           <MapPin className="h-5 w-5" />
                           <span className="font-semibold">Location</span>
                         </div>
-                        <p className="text-slate-900 dark:text-white font-medium">{selectedEvent.location}</p>
+                        <p className="font-medium text-slate-900 dark:text-white">
+                          {selectedEvent.location}
+                        </p>
                       </div>
 
-
                       {selectedEvent.speaker && (
-                        <div className="p-4 rounded-xl bg-purple-50 dark:bg-blue-500/10 border border-purple-200 dark:border-blue-500/30 shadow-sm">
-                          <div className="flex items-center gap-2 text-slate-700 dark:text-blue-300 mb-2">
+                        <div className="rounded-xl border border-purple-200 bg-purple-50 p-4 shadow-sm dark:border-blue-500/30 dark:bg-blue-500/10">
+                          <div className="mb-2 flex items-center gap-2 text-slate-700 dark:text-blue-300">
                             <Award className="h-5 w-5" />
                             <span className="font-semibold">Speaker/Presenter</span>
                           </div>
-                          <p className="text-slate-900 dark:text-white font-medium">{selectedEvent.speaker}</p>
+                          <p className="font-medium text-slate-900 dark:text-white">
+                            {selectedEvent.speaker}
+                          </p>
                         </div>
                       )}
 
-                      <div className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-cyan-500/20 shadow-sm">
-                        <div className="flex items-center gap-2 text-slate-700 dark:text-cyan-300 mb-2">
+                      <div className="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm dark:border-cyan-500/20 dark:bg-slate-800/50">
+                        <div className="mb-2 flex items-center gap-2 text-slate-700 dark:text-cyan-300">
                           <Sparkles className="h-5 w-5" />
                           <span className="font-semibold">Description</span>
                         </div>
-                        <p className="text-slate-700 dark:text-slate-200 leading-relaxed">{selectedEvent.description}</p>
+                        <p className="leading-relaxed text-slate-700 dark:text-slate-200">
+                          {selectedEvent.description}
+                        </p>
                       </div>
 
                       {/* Action Button */}
-                      <button className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg shadow-cyan-500/30">
+                      <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-4 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:from-cyan-600 hover:to-blue-600">
                         <Calendar className="h-5 w-5" />
                         Add to Calendar
                       </button>
@@ -1388,4 +1593,3 @@ export default function RoadmapPage() {
     </AppLayout>
   );
 }
-

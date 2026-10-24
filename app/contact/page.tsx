@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppLayout from '@/components/layout/AppLayout';
-import { 
-  Mail, 
-  MapPin, 
-  Send, 
-  Loader2, 
-  CheckCircle, 
+import {
+  Mail,
+  MapPin,
+  Send,
+  Loader2,
+  CheckCircle,
   AlertCircle,
   Linkedin,
   Instagram,
@@ -17,9 +17,9 @@ import {
   Facebook,
   Building2,
   Users,
-  MessageSquare
+  MessageSquare,
 } from 'lucide-react';
-import { getContactInfo as getSanityContactInfo } from '@/lib/sanity';
+import { getContactInfo as getSanityContactInfo, subscribeToSanityQuery } from '@/lib/sanity';
 
 // Contact Info type (from Sanity)
 interface ContactInfo {
@@ -79,7 +79,7 @@ export default function ContactPage() {
   // Contact info state
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Form state
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -97,7 +97,8 @@ export default function ContactPage() {
 
   // Fetch contact info from Sanity
   useEffect(() => {
-    async function fetchContactInfo() {
+    async function fetchContactInfo(showLoading = false) {
+      if (showLoading) setLoading(true);
       try {
         const data = await getSanityContactInfo();
         if (data) {
@@ -126,33 +127,38 @@ export default function ContactPage() {
           },
         });
       } finally {
-        setLoading(false);
+        if (showLoading) setLoading(false);
       }
     }
-    
-    fetchContactInfo();
+
+    void fetchContactInfo(true);
+    return subscribeToSanityQuery(
+      '*[_type == "contactInfo"]',
+      () => void fetchContactInfo(),
+      error => console.warn('Sanity contact live updates are unavailable:', error)
+    );
   }, []);
 
   // Validate form
   const validateForm = (): boolean => {
     const errors: FormErrors = {};
-    
+
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
     }
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = 'Please enter a valid email';
     }
-    
+
     if (!formData.message.trim()) {
       errors.message = 'Message is required';
     } else if (formData.message.trim().length < 10) {
       errors.message = 'Message must be at least 10 characters';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -160,12 +166,12 @@ export default function ContactPage() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
-    
+
     try {
       const response = await submitContactForm({
         name: formData.name.trim(),
@@ -175,10 +181,10 @@ export default function ContactPage() {
         message: formData.message.trim(),
         website: honeypot,
       });
-      
+
       setSubmitStatus('success');
       setSubmitMessage(response.message || 'Your message has been sent successfully!');
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -197,10 +203,12 @@ export default function ContactPage() {
   };
 
   // Handle input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (formErrors[name as keyof FormErrors]) {
       setFormErrors(prev => ({ ...prev, [name]: undefined }));
@@ -226,9 +234,9 @@ export default function ContactPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+            <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
             <p className="text-gray-600 dark:text-gray-400">Loading contact information...</p>
           </div>
         </div>
@@ -238,62 +246,62 @@ export default function ContactPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 transition-colors duration-300 dark:from-dark-bg dark:via-dark-bg dark:to-dark-bg">
         {/* Blueprint Grid Background */}
-        <div className="fixed inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+        <div className="pointer-events-none fixed inset-0 opacity-[0.03] dark:opacity-[0.05]">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#0b3d91_1px,transparent_1px),linear-gradient(to_bottom,#0b3d91_1px,transparent_1px)] bg-[size:40px_40px]" />
         </div>
 
         {/* Hero Section */}
-        <section className="relative pt-24 sm:pt-32 pb-10 sm:pb-16 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto text-center">
+        <section className="relative px-4 pb-10 pt-24 sm:px-6 sm:pb-16 sm:pt-32">
+          <div className="mx-auto max-w-7xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 sm:mb-6 sm:px-4 sm:py-2 sm:text-sm">
                 <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Get in Touch
               </div>
-              
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
+
+              <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
                 Contact{' '}
                 <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
                   Us
                 </span>
               </h1>
-              
-              <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-2">
-                Have questions about our society, events, or want to collaborate? 
-                We&apos;d love to hear from you!
+
+              <p className="mx-auto max-w-2xl px-2 text-sm text-gray-600 dark:text-gray-400 sm:text-lg md:text-xl">
+                Have questions about our society, events, or want to collaborate? We&apos;d love to
+                hear from you!
               </p>
             </motion.div>
           </div>
         </section>
 
         {/* Main Content */}
-        <section className="relative pb-16 sm:pb-24 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative px-4 pb-16 sm:px-6 sm:pb-24">
+          <div className="mx-auto max-w-7xl">
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid lg:grid-cols-5 gap-6 lg:gap-12"
+              className="grid gap-6 lg:grid-cols-5 lg:gap-12"
             >
               {/* Contact Information - Left Side */}
-              <motion.div variants={itemVariants} className="lg:col-span-2 space-y-4 sm:space-y-6">
+              <motion.div variants={itemVariants} className="space-y-4 sm:space-y-6 lg:col-span-2">
                 {/* Info Card */}
-                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
-                  <div className="flex items-start sm:items-center gap-3 mb-5 sm:mb-6">
-                    <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex-shrink-0">
+                <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/50 sm:rounded-3xl sm:p-8">
+                  <div className="mb-5 flex items-start gap-3 sm:mb-6 sm:items-center">
+                    <div className="flex-shrink-0 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 p-2.5 text-white sm:rounded-2xl sm:p-3">
                       <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                      <h2 className="text-lg font-bold leading-tight text-gray-900 dark:text-white sm:text-xl">
                         {contactInfo?.departmentName}
                       </h2>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
+                      <p className="truncate text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
                         {contactInfo?.institutionName}
                       </p>
                     </div>
@@ -301,42 +309,47 @@ export default function ContactPage() {
 
                   <div className="space-y-4 sm:space-y-5">
                     {/* Address */}
-                    <div className="flex items-start gap-3 sm:gap-4 group">
-                      <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex-shrink-0">
+                    <div className="group flex items-start gap-3 sm:gap-4">
+                      <div className="flex-shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 sm:rounded-xl sm:p-2.5">
                         <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Address</p>
-                        <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{contactInfo?.address}</p>
+                        <p className="mb-0.5 text-xs font-medium text-gray-500 dark:text-gray-400 sm:mb-1 sm:text-sm">
+                          Address
+                        </p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 sm:text-base">
+                          {contactInfo?.address}
+                        </p>
                       </div>
                     </div>
 
                     {/* Email */}
-                    <div className="flex items-start gap-3 sm:gap-4 group">
-                      <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex-shrink-0">
+                    <div className="group flex items-start gap-3 sm:gap-4">
+                      <div className="flex-shrink-0 rounded-lg bg-green-50 p-2 text-green-600 dark:bg-green-900/20 dark:text-green-400 sm:rounded-xl sm:p-2.5">
                         <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">Email</p>
-                        <a 
+                        <p className="mb-0.5 text-xs font-medium text-gray-500 dark:text-gray-400 sm:mb-1 sm:text-sm">
+                          Email
+                        </p>
+                        <a
                           href={`mailto:${contactInfo?.email}`}
-                          className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors break-all"
+                          className="break-all text-sm text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 sm:text-base"
                         >
                           {contactInfo?.email}
                         </a>
                       </div>
                     </div>
-
                   </div>
                 </div>
 
                 {/* Social Links Card */}
-                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-slate-700/50">
-                  <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-                    <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white">
+                <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/50 sm:rounded-3xl sm:p-8">
+                  <div className="mb-4 flex items-center gap-2.5 sm:mb-6 sm:gap-3">
+                    <div className="rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 p-2.5 text-white sm:rounded-2xl sm:p-3">
                       <Users className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white sm:text-xl">
                       Connect With Us
                     </h3>
                   </div>
@@ -346,64 +359,66 @@ export default function ContactPage() {
                       href="https://www.linkedin.com/company/107540236"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all duration-300"
+                      className="flex items-center gap-2 rounded-xl bg-[#0077b5]/10 px-4 py-2.5 text-[#0077b5] transition-all duration-300 hover:bg-[#0077b5] hover:text-white"
                     >
                       <Linkedin className="h-5 w-5" />
                       <span className="font-medium">LinkedIn</span>
                     </a>
-                    
+
                     <a
-                      href={contactInfo?.socialLinks?.instagram || 'https://www.instagram.com/cies_iitj/'}
+                      href={
+                        contactInfo?.socialLinks?.instagram ||
+                        'https://www.instagram.com/cies_iitj/'
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-pink-600 hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300"
+                      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2.5 text-pink-600 transition-all duration-300 hover:from-purple-500 hover:to-pink-500 hover:text-white"
                     >
                       <Instagram className="h-5 w-5" />
                       <span className="font-medium">Instagram</span>
                     </a>
-                    
+
                     {contactInfo?.socialLinks?.twitter && (
                       <a
                         href={contactInfo.socialLinks.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white transition-all duration-300"
+                        className="flex items-center gap-2 rounded-xl bg-[#1DA1F2]/10 px-4 py-2.5 text-[#1DA1F2] transition-all duration-300 hover:bg-[#1DA1F2] hover:text-white"
                       >
                         <Twitter className="h-5 w-5" />
                         <span className="font-medium">Twitter</span>
                       </a>
                     )}
-                    
+
                     {contactInfo?.socialLinks?.youtube && (
                       <a
                         href={contactInfo.socialLinks.youtube}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white transition-all duration-300"
+                        className="flex items-center gap-2 rounded-xl bg-[#FF0000]/10 px-4 py-2.5 text-[#FF0000] transition-all duration-300 hover:bg-[#FF0000] hover:text-white"
                       >
                         <Youtube className="h-5 w-5" />
                         <span className="font-medium">YouTube</span>
                       </a>
                     )}
-                    
+
                     {contactInfo?.socialLinks?.facebook && (
                       <a
                         href={contactInfo.socialLinks.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300"
+                        className="flex items-center gap-2 rounded-xl bg-[#1877F2]/10 px-4 py-2.5 text-[#1877F2] transition-all duration-300 hover:bg-[#1877F2] hover:text-white"
                       >
                         <Facebook className="h-5 w-5" />
                         <span className="font-medium">Facebook</span>
                       </a>
                     )}
-                    
                   </div>
                 </div>
 
                 {/* Map Embed */}
                 {contactInfo?.mapEmbedUrl ? (
-                  <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-slate-700/50">
+                  <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/50">
                     <iframe
                       src={contactInfo.mapEmbedUrl}
                       width="100%"
@@ -416,19 +431,20 @@ export default function ContactPage() {
                     />
                   </div>
                 ) : (
-                  <div className="bg-teal-700 rounded-3xl p-8 text-white shadow-xl">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-3xl bg-teal-700 p-8 text-white shadow-xl">
+                    <div className="mb-4 flex items-center gap-3">
                       <MapPin className="h-8 w-8" />
                       <h3 className="text-xl font-bold">Find Us</h3>
                     </div>
-                    <p className="text-teal-50 mb-4">
-                      Located at the Department of Civil and Infrastructure Engineering, IIT Jodhpur campus in the heart of Rajasthan.
+                    <p className="mb-4 text-teal-50">
+                      Located at the Department of Civil and Infrastructure Engineering, IIT Jodhpur
+                      campus in the heart of Rajasthan.
                     </p>
                     <a
                       href="https://maps.app.goo.gl/A1Y2Yn4UXAfJ8VqS9"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/90 hover:bg-emerald-600 text-white rounded-xl transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/90 px-4 py-2 text-white transition-colors hover:bg-emerald-600"
                     >
                       <MapPin className="h-4 w-4" />
                       View on Google Maps
@@ -439,9 +455,9 @@ export default function ContactPage() {
 
               {/* Contact Form - Right Side */}
               <motion.div variants={itemVariants} className="lg:col-span-3">
-                <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-xl border border-gray-100 dark:border-slate-700/50">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
+                <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/50 md:p-10">
+                  <div className="mb-8 flex items-center gap-3">
+                    <div className="rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 p-3 text-white">
                       <Send className="h-6 w-6" />
                     </div>
                     <div>
@@ -461,10 +477,10 @@ export default function ContactPage() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className={`mb-6 p-4 rounded-2xl flex items-center gap-3 ${
+                        className={`mb-6 flex items-center gap-3 rounded-2xl p-4 ${
                           submitStatus === 'success'
-                            ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
-                            : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+                            ? 'border border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-900/20 dark:text-green-300'
+                            : 'border border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300'
                         }`}
                       >
                         {submitStatus === 'success' ? (
@@ -479,7 +495,10 @@ export default function ContactPage() {
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Honeypot field - hidden from users, used to catch bots */}
-                    <div aria-hidden="true" className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden"
+                    >
                       <label htmlFor="website">Website</label>
                       <input
                         type="text"
@@ -488,14 +507,17 @@ export default function ContactPage() {
                         tabIndex={-1}
                         autoComplete="off"
                         value={honeypot}
-                        onChange={(e) => setHoneypot(e.target.value)}
+                        onChange={e => setHoneypot(e.target.value)}
                       />
                     </div>
                     {/* Name & Email Row */}
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid gap-6 md:grid-cols-2">
                       {/* Name */}
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="name"
+                          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
                           Full Name <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -505,14 +527,14 @@ export default function ContactPage() {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="Your Name"
-                          className={`w-full px-4 py-3 rounded-xl border ${
+                          className={`w-full rounded-xl border px-4 py-3 ${
                             formErrors.name
-                              ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
-                              : 'border-gray-200 dark:border-slate-600 focus:ring-blue-500'
-                          } bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                              ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
+                              : 'border-gray-200 focus:ring-blue-500 dark:border-slate-600'
+                          } bg-gray-50 text-gray-900 placeholder-gray-400 transition-all focus:border-transparent focus:outline-none focus:ring-2 dark:bg-slate-700/50 dark:text-white dark:placeholder-gray-500`}
                         />
                         {formErrors.name && (
-                          <p className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+                          <p className="mt-1.5 flex items-center gap-1 text-sm text-red-500">
                             <AlertCircle className="h-3.5 w-3.5" />
                             {formErrors.name}
                           </p>
@@ -521,7 +543,10 @@ export default function ContactPage() {
 
                       {/* Email */}
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="email"
+                          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
                           Email Address <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -531,14 +556,14 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="john@example.com"
-                          className={`w-full px-4 py-3 rounded-xl border ${
+                          className={`w-full rounded-xl border px-4 py-3 ${
                             formErrors.email
-                              ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
-                              : 'border-gray-200 dark:border-slate-600 focus:ring-blue-500'
-                          } bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                              ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
+                              : 'border-gray-200 focus:ring-blue-500 dark:border-slate-600'
+                          } bg-gray-50 text-gray-900 placeholder-gray-400 transition-all focus:border-transparent focus:outline-none focus:ring-2 dark:bg-slate-700/50 dark:text-white dark:placeholder-gray-500`}
                         />
                         {formErrors.email && (
-                          <p className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+                          <p className="mt-1.5 flex items-center gap-1 text-sm text-red-500">
                             <AlertCircle className="h-3.5 w-3.5" />
                             {formErrors.email}
                           </p>
@@ -547,10 +572,13 @@ export default function ContactPage() {
                     </div>
 
                     {/* Phone & Subject Row */}
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid gap-6 md:grid-cols-2">
                       {/* Phone */}
                       <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="phone"
+                          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
                           Phone Number <span className="text-gray-400">(optional)</span>
                         </label>
                         <input
@@ -560,13 +588,16 @@ export default function ContactPage() {
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="Phone Number"
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700/50 dark:text-white dark:placeholder-gray-500"
                         />
                       </div>
 
                       {/* Subject */}
                       <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="subject"
+                          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
                           Subject <span className="text-gray-400">(optional)</span>
                         </label>
                         <select
@@ -574,7 +605,7 @@ export default function ContactPage() {
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700/50 dark:text-white"
                         >
                           <option value="">Select a subject...</option>
                           <option value="general">General Inquiry</option>
@@ -589,7 +620,10 @@ export default function ContactPage() {
 
                     {/* Message */}
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="message"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         Your Message <span className="text-red-500">*</span>
                       </label>
                       <textarea
@@ -599,14 +633,14 @@ export default function ContactPage() {
                         onChange={handleChange}
                         rows={6}
                         placeholder="Tell us how we can help you..."
-                        className={`w-full px-4 py-3 rounded-xl border ${
+                        className={`w-full rounded-xl border px-4 py-3 ${
                           formErrors.message
-                            ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
-                            : 'border-gray-200 dark:border-slate-600 focus:ring-blue-500'
-                        } bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all resize-none`}
+                            ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
+                            : 'border-gray-200 focus:ring-blue-500 dark:border-slate-600'
+                        } resize-none bg-gray-50 text-gray-900 placeholder-gray-400 transition-all focus:border-transparent focus:outline-none focus:ring-2 dark:bg-slate-700/50 dark:text-white dark:placeholder-gray-500`}
                       />
                       {formErrors.message && (
-                        <p className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+                        <p className="mt-1.5 flex items-center gap-1 text-sm text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" />
                           {formErrors.message}
                         </p>
@@ -619,10 +653,10 @@ export default function ContactPage() {
                       disabled={isSubmitting}
                       whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                       whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      className={`w-full py-4 px-6 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all duration-300 ${
+                      className={`flex w-full items-center justify-center gap-2 rounded-xl px-6 py-4 font-semibold text-white transition-all duration-300 ${
                         isSubmitting
-                          ? 'bg-gray-400 cursor-not-allowed'
-                          : 'bg-indigo-700 hover:bg-indigo-800 shadow-lg shadow-indigo-700/25 hover:shadow-indigo-700/40'
+                          ? 'cursor-not-allowed bg-gray-400'
+                          : 'bg-indigo-700 shadow-lg shadow-indigo-700/25 hover:bg-indigo-800 hover:shadow-indigo-700/40'
                       }`}
                     >
                       {isSubmitting ? (
@@ -637,7 +671,6 @@ export default function ContactPage() {
                         </>
                       )}
                     </motion.button>
-
                   </form>
                 </div>
               </motion.div>
@@ -648,4 +681,3 @@ export default function ContactPage() {
     </AppLayout>
   );
 }
-

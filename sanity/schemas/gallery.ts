@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'gallery',
@@ -9,7 +9,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'description',
@@ -31,6 +31,7 @@ export default defineType({
         ],
       },
       initialValue: 'other',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'isFeatured',
@@ -43,6 +44,7 @@ export default defineType({
       title: 'Display Order',
       type: 'number',
       initialValue: 0,
+      validation: Rule => Rule.integer().min(0),
     }),
     defineField({
       name: 'dateTaken',
@@ -73,6 +75,7 @@ export default defineType({
           ],
         },
       ],
+      validation: Rule => Rule.required().min(1).error('Add at least one image'),
     }),
   ],
   preview: {
@@ -82,5 +85,4 @@ export default defineType({
       media: 'images.0',
     },
   },
-})
-
+});

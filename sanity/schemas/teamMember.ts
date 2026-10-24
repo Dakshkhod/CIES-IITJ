@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'teamMember',
@@ -9,7 +9,7 @@ export default defineType({
       name: 'name',
       title: 'Name',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'role',
@@ -28,6 +28,7 @@ export default defineType({
           { title: 'Member', value: 'Member' },
         ],
       },
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'committee',
@@ -37,13 +38,20 @@ export default defineType({
         list: [
           { title: 'Faculty Leadership', value: 'Faculty Leadership' },
           { title: 'Coordination Committee', value: 'Coordination Committee' },
-          { title: 'Events & Community Engagement Committee', value: 'Events & Community Engagement Committee' },
+          {
+            title: 'Events & Community Engagement Committee',
+            value: 'Events & Community Engagement Committee',
+          },
           { title: 'Technical Committee', value: 'Technical Committee' },
-          { title: 'Seminars & Academic Engagement Committee', value: 'Seminars & Academic Engagement Committee' },
+          {
+            title: 'Seminars & Academic Engagement Committee',
+            value: 'Seminars & Academic Engagement Committee',
+          },
           { title: 'Media & Design Committee', value: 'Media & Design Committee' },
           { title: 'Outreach & Publicity Committee', value: 'Outreach & Publicity Committee' },
         ],
       },
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'batch',
@@ -99,6 +107,7 @@ export default defineType({
       type: 'number',
       description: 'Order in team listing (lower = first)',
       initialValue: 0,
+      validation: Rule => Rule.integer().min(0),
     }),
     defineField({
       name: 'socials',
@@ -106,7 +115,12 @@ export default defineType({
       type: 'object',
       fields: [
         { name: 'linkedin', title: 'LinkedIn URL', type: 'url' },
-        { name: 'email', title: 'Email', type: 'string' },
+        {
+          name: 'email',
+          title: 'Email',
+          type: 'string',
+          validation: Rule => Rule.email(),
+        },
         { name: 'instagram', title: 'Instagram URL', type: 'url' },
         { name: 'twitter', title: 'Twitter URL', type: 'url' },
         { name: 'github', title: 'GitHub URL', type: 'url' },
@@ -133,5 +147,4 @@ export default defineType({
       by: [{ field: 'name', direction: 'asc' }],
     },
   ],
-})
-
+});

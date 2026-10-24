@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'contactInfo',
@@ -11,12 +11,14 @@ export default defineType({
       title: 'Department Name',
       type: 'string',
       initialValue: 'Civil & Infrastructure Engineering Society',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'institutionName',
       title: 'Institution Name',
       type: 'string',
       initialValue: 'Indian Institute of Technology Jodhpur',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'address',
@@ -24,12 +26,14 @@ export default defineType({
       type: 'text',
       rows: 3,
       initialValue: 'NH 62, Nagaur Road, Karwar, Jodhpur, Rajasthan 342030',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'email',
       title: 'Email',
       type: 'string',
       initialValue: 'cies@iitj.ac.in',
+      validation: Rule => Rule.required().email(),
     }),
     defineField({
       name: 'phone',
@@ -65,8 +69,7 @@ export default defineType({
       return {
         title: 'Contact Information',
         subtitle: 'Site-wide contact details',
-      }
+      };
     },
   },
-})
-
+});

@@ -185,25 +185,6 @@ export const galleryQuery = `*[_type == "gallery"] | order(isFeatured desc, disp
   }
 }`;
 
-// Developers
-export const developersQuery = `*[_type == "developer"] | order(displayOrder asc, name asc) {
-  _id,
-  name,
-  designation,
-  profileImage {
-    asset->,
-    crop,
-    hotspot
-  },
-  displayOrder,
-  socials {
-    linkedin,
-    email,
-    instagram,
-    github
-  }
-}`;
-
 /**
  * Watch a Sanity document type and debounce refetches until the mutation is
  * query-visible. Returns a cleanup function suitable for React effects.
@@ -277,18 +258,4 @@ export async function getAnnouncements() {
 
 export async function getGallery() {
   return sanityClient.fetch(galleryQuery);
-}
-
-export async function getDevelopers() {
-  const data = await sanityClient.fetch(developersQuery);
-  return (data || []).map(
-    (developer: {
-      profileImage?: { asset?: unknown; crop?: unknown; hotspot?: unknown };
-      [key: string]: unknown;
-    }) => ({
-      ...developer,
-      photo: developer.profileImage ? urlFor(developer.profileImage).url() : null,
-      profileImage: undefined,
-    })
-  );
 }

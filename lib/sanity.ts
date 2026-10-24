@@ -151,12 +151,11 @@ export const contactInfoQuery = `*[_type == "contactInfo"][0] {
   }
 }`;
 
-// Announcements
+// Homepage Recent Activities (managed under "Announcement" in Studio)
 export const announcementsQuery = `*[
   _type == "announcement" &&
   isActive == true &&
-  (!defined(publishDate) || publishDate <= now()) &&
-  (!defined(expiryDate) || expiryDate > now())
+  (!defined(publishDate) || publishDate <= now())
 ] | order(isPinned desc, priority desc, publishDate desc) {
   _id,
   title,
@@ -167,7 +166,8 @@ export const announcementsQuery = `*[
   expiryDate,
   targetAudience,
   linkUrl,
-  linkText
+  linkText,
+  "image": image.asset->url
 }`;
 
 // Gallery

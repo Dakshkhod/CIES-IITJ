@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 
 import AppLayout from '@/components/layout/AppLayout';
-import Announcements from '@/components/home/Announcements';
 
 const RecentActivities = dynamic(() => import('@/components/home/RecentActivities'), {
   ssr: false,
@@ -23,7 +22,6 @@ export default function HomePage() {
 
         <main className="isolate pt-24">
           <HeroSection />
-          <Announcements limit={3} showAllLink />
           <RecentActivities />
         </main>
       </div>

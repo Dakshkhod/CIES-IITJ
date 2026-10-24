@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeInOnScroll from '@/components/layout/FadeInOnScroll';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { getActivities as getSanityActivities, subscribeToSanityQuery } from '@/lib/sanity';
+import { getAnnouncements, subscribeToSanityQuery } from '@/lib/sanity';
 
 const FALLBACK_ACTIVITIES = [
   {
@@ -58,7 +58,7 @@ export default function RecentActivities() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [recentActivities, setRecentActivities] = useState<
     Array<{
-      id: number;
+      id: number | string;
       title: string;
       date: string;
       description: string;
@@ -68,27 +68,27 @@ export default function RecentActivities() {
   >([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch recent activities from Sanity
+  // The Studio's Announcement documents control this homepage carousel.
   useEffect(() => {
     async function fetchRecentActivities(showLoading = false) {
       try {
         if (showLoading) setLoading(true);
-        const allActivities = await getSanityActivities();
+        const announcements = await getAnnouncements();
 
-        const recent = allActivities.slice(0, 5);
+        const recent = announcements.slice(0, 5);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const transformedActivities = recent.map((activity: any, index: number) => ({
-          id: activity._id || `activity-${index}`,
-          title: activity.title,
-          date: new Date(activity.date).toLocaleDateString('en-US', {
+        const transformedActivities = recent.map((announcement: any, index: number) => ({
+          id: announcement._id || `announcement-${index}`,
+          title: announcement.title,
+          date: new Date(announcement.publishDate).toLocaleDateString('en-US', {
             month: 'long',
             day: 'numeric',
             year: 'numeric',
           }),
-          description: activity.description || 'Details coming soon.',
-          image: activity.coverImage || '/CIE Design.png',
-          link: `/activities#${activity._id || index}`,
+          description: announcement.content || 'Details coming soon.',
+          image: announcement.image || '/CIE Design.png',
+          link: announcement.linkUrl || '/activities',
         }));
 
         setRecentActivities(
@@ -103,11 +103,19 @@ export default function RecentActivities() {
     }
 
     void fetchRecentActivities(true);
-    return subscribeToSanityQuery(
-      '*[_type == "activity"]',
+    const unsubscribe = subscribeToSanityQuery(
+      '*[_type == "announcement"]',
       () => void fetchRecentActivities(),
       error => console.warn('Sanity recent-activity live updates are unavailable:', error)
     );
+
+    // Keep scheduled homepage items accurate even when no Studio edit occurs.
+    const scheduleTimer = window.setInterval(() => void fetchRecentActivities(), 60_000);
+
+    return () => {
+      window.clearInterval(scheduleTimer);
+      unsubscribe();
+    };
   }, []);
 
   if (loading) {

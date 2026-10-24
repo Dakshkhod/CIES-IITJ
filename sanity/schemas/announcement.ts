@@ -4,6 +4,7 @@ export default defineType({
   name: 'announcement',
   title: 'Announcement',
   type: 'document',
+  description: 'Controls the Recent Activities carousel on the homepage.',
   fields: [
     defineField({
       name: 'title',
@@ -13,22 +14,32 @@ export default defineType({
     }),
     defineField({
       name: 'content',
-      title: 'Content',
+      title: 'Description',
       type: 'text',
       rows: 5,
       validation: Rule => Rule.required().min(5).max(1200),
     }),
     defineField({
+      name: 'image',
+      title: 'Carousel Image',
+      type: 'image',
+      description: 'Displayed beside this item in the homepage Recent Activities carousel.',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: 'isActive',
       title: 'Is Active',
       type: 'boolean',
+      description: 'Show this item in the homepage Recent Activities carousel.',
       initialValue: true,
     }),
     defineField({
       name: 'isPinned',
       title: 'Is Pinned',
       type: 'boolean',
-      description: 'Pinned announcements appear first',
+      description: 'Pinned items appear first in the carousel.',
       initialValue: false,
     }),
     defineField({
@@ -41,16 +52,16 @@ export default defineType({
     }),
     defineField({
       name: 'publishDate',
-      title: 'Publish Date',
+      title: 'Activity Date',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'expiryDate',
-      title: 'Expiry Date',
+      title: 'Legacy Expiry Date',
       type: 'datetime',
-      description: 'Leave blank for no expiry',
+      description: 'Kept for existing records; it does not hide historical carousel items.',
       validation: Rule =>
         Rule.custom((expiryDate, context) => {
           const publishDate = context.document?.publishDate;
@@ -62,7 +73,7 @@ export default defineType({
     }),
     defineField({
       name: 'targetAudience',
-      title: 'Target Audience',
+      title: 'Legacy Target Audience',
       type: 'string',
       options: {
         list: [
@@ -80,7 +91,7 @@ export default defineType({
       name: 'linkUrl',
       title: 'Link URL',
       type: 'url',
-      description: 'Optional destination for the announcement action',
+      description: 'Optional destination for the View More button.',
       validation: Rule =>
         Rule.uri({ scheme: ['http', 'https'] }).custom((linkUrl, context) => {
           return !context.document?.linkText || linkUrl
@@ -90,9 +101,9 @@ export default defineType({
     }),
     defineField({
       name: 'linkText',
-      title: 'Link Text',
+      title: 'Legacy Link Text',
       type: 'string',
-      description: 'For example: Register now or Read more',
+      description: 'Kept for existing records; the carousel button is labelled View More.',
       validation: Rule =>
         Rule.max(50).custom((linkText, context) => {
           return !context.document?.linkUrl || linkText
@@ -108,8 +119,9 @@ export default defineType({
       isActive: 'isActive',
       isPinned: 'isPinned',
       targetAudience: 'targetAudience',
+      media: 'image',
     },
-    prepare({ title, publishDate, isActive, isPinned, targetAudience }) {
+    prepare({ title, publishDate, isActive, isPinned, targetAudience, media }) {
       const status = isActive ? 'Active' : 'Inactive';
       const pinned = isPinned ? ' · Pinned' : '';
       const audience =
@@ -123,6 +135,7 @@ export default defineType({
       return {
         title,
         subtitle: `${status}${pinned}${audience} · ${date}`,
+        media,
       };
     },
   },

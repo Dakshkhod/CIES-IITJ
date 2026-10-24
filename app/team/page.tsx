@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, Mail, Instagram, Loader2, X } from 'lucide-react';
 import { getTeamMembers as getSanityTeamMembers, subscribeToSanityQuery } from '@/lib/sanity';
@@ -672,7 +673,7 @@ export default function TeamPage() {
 
     void fetchTeamData(true);
     return subscribeToSanityQuery(
-      '*[_type == "teamMember"]',
+      '*[_type in ["teamMember", "teamSettings"]]',
       () => void fetchTeamData(),
       subscriptionError =>
         console.warn('Sanity team live updates are unavailable:', subscriptionError)
@@ -704,6 +705,14 @@ export default function TeamPage() {
             </div>
           )}
           <TeamPageContent setSelectedImage={setSelectedImage} teamData={teamData} />
+          <section className="px-4 pb-16 pt-8 text-center sm:pb-20 sm:pt-12">
+            <Link
+              href="/team/past"
+              className="inline-flex min-w-[220px] items-center justify-center rounded-full bg-slate-900 px-12 py-5 text-xl font-bold text-white shadow-xl transition-all hover:-translate-y-1 hover:bg-slate-800 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/50 dark:bg-slate-800 dark:hover:bg-slate-700 sm:min-w-[280px] sm:text-2xl"
+            >
+              Past Teams
+            </Link>
+          </section>
         </main>
 
         {/* Image Modal */}

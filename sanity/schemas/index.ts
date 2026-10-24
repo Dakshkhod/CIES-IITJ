@@ -4,5 +4,14 @@ import activity from './activity';
 import contactInfo from './contactInfo';
 import announcement from './announcement';
 import gallery from './gallery';
+import teamSettings from './teamSettings';
 
-export const schemaTypes = [teamMember, event, activity, contactInfo, announcement, gallery];
+export const schemaTypes = [
+  teamMember,
+  teamSettings,
+  event,
+  activity,
+  contactInfo,
+  announcement,
+  gallery,
+];

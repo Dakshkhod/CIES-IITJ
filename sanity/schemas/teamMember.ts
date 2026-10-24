@@ -12,6 +12,15 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'teamYear',
+      title: 'Team Year',
+      type: 'number',
+      description:
+        'The year this member belongs to. Use Team Management to choose which year is current.',
+      initialValue: 2025,
+      validation: Rule => Rule.required().integer().min(2025).max(2100),
+    }),
+    defineField({
       name: 'role',
       title: 'Role',
       type: 'string',
@@ -98,7 +107,8 @@ export default defineType({
       name: 'isActive',
       title: 'Is Active',
       type: 'boolean',
-      description: 'Currently active member',
+      description:
+        'Keep this enabled to show the member on either the current Team page or the Past Teams archive. Use Team Year—not this switch—to archive a team.',
       initialValue: true,
     }),
     defineField({
@@ -131,11 +141,27 @@ export default defineType({
   preview: {
     select: {
       title: 'name',
-      subtitle: 'role',
+      role: 'role',
+      teamYear: 'teamYear',
       media: 'profileImage',
+    },
+    prepare({ title, role, teamYear, media }) {
+      return {
+        title,
+        subtitle: `${role || 'Member'} · Team ${teamYear || 2025}`,
+        media,
+      };
     },
   },
   orderings: [
+    {
+      title: 'Team Year (Newest)',
+      name: 'teamYearDesc',
+      by: [
+        { field: 'teamYear', direction: 'desc' },
+        { field: 'displayOrder', direction: 'asc' },
+      ],
+    },
     {
       title: 'Display Order',
       name: 'displayOrderAsc',

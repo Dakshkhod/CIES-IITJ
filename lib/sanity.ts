@@ -24,9 +24,14 @@ export function urlFor(source: any) {
 // ============== GROQ Queries ==============
 
 // Team Members
-export const teamMembersQuery = `*[_type == "teamMember" && isActive == true] | order(displayOrder asc, name asc) {
+export const teamMembersQuery = `*[
+  _type == "teamMember" &&
+  isActive == true &&
+  coalesce(teamYear, 2025) == coalesce(*[_type == "teamSettings" && _id == "teamSettings"][0].currentYear, 2025)
+] | order(displayOrder asc, name asc) {
   _id,
   name,
+  "teamYear": coalesce(teamYear, 2025),
   role,
   committee,
   batch,
@@ -44,6 +49,33 @@ export const teamMembersQuery = `*[_type == "teamMember" && isActive == true] | 
     github,
     website
   }
+}`;
+
+export const allTeamMembersQuery = `*[
+  _type == "teamMember" &&
+  isActive == true &&
+  coalesce(teamYear, 2025) >= 2025
+] | order(teamYear desc, displayOrder asc, name asc) {
+  _id,
+  name,
+  "teamYear": coalesce(teamYear, 2025),
+  role,
+  committee,
+  batch,
+  bio,
+  "photo": profileImage.asset->url,
+  isHOD,
+  isFaculty,
+  displayOrder,
+  socials {
+    linkedin,
+    email,
+    instagram
+  }
+}`;
+
+export const teamSettingsQuery = `*[_type == "teamSettings" && _id == "teamSettings"][0] {
+  currentYear
 }`;
 
 export const featuredTeamQuery = `*[_type == "teamMember" && featured == true && isActive == true] | order(displayOrder asc) [0...10] {
@@ -224,6 +256,14 @@ export function subscribeToSanityQuery(
 
 export async function getTeamMembers() {
   return sanityClient.fetch(teamMembersQuery);
+}
+
+export async function getAllTeamMembers() {
+  return sanityClient.fetch(allTeamMembersQuery);
+}
+
+export async function getTeamSettings() {
+  return sanityClient.fetch(teamSettingsQuery);
 }
 
 export async function getFeaturedTeam() {

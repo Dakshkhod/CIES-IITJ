@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Instagram, Linkedin, Loader2, Mail } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { getAllTeamMembers, subscribeToSanityQuery } from '@/lib/sanity';
+import { getTeamPhoto } from '@/lib/teamPhotos';
 
 type ArchivedMember = {
   _id: string;
@@ -152,7 +153,9 @@ export default function PastTeamsPage() {
                           className={`w-[calc(50%-0.625rem)] max-w-[260px] rounded-2xl border border-t-4 bg-white p-5 text-center shadow-lg dark:border-gray-700 dark:bg-gray-800/60 ${committeeColors[committee] || 'border-gray-400'}`}
                         >
                           <Image
-                            src={member.photo || placeholderFor(member.name)}
+                            src={
+                              getTeamPhoto(member.name, member.photo) || placeholderFor(member.name)
+                            }
                             alt={member.name}
                             width={112}
                             height={112}

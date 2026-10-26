@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, Mail, Instagram, Loader2, X } from 'lucide-react';
 import { getTeamMembers as getSanityTeamMembers, subscribeToSanityQuery } from '@/lib/sanity';
+import { getTeamPhoto } from '@/lib/teamPhotos';
 import AppLayout from '@/components/layout/AppLayout';
 
 /* =========================
@@ -278,37 +279,6 @@ const LEGACY_TEAM_DATA: TeamMemberLocal[] = [
     socials: { linkedin: '#', email: '#', instagram: '#' },
   },
 ];
-
-// Fallback photos for team members when API doesn't provide one
-const TEAM_FALLBACK_PHOTOS: Record<string, string> = {
-  // Coordination & core
-  'Mayank Tiwari': '/Team images/Mayank.jpeg',
-  Shashank: '/Team images/Shashank.jpeg',
-
-  // Events & community
-  Saurabh: '/Team images/Saurabh.jpeg',
-  Vikas: '/Team images/Vikas.jpeg',
-  Manish: '/Team images/Manish.jpg',
-
-  // Technical
-  'Keshav Saini': '/Team images/Keshav.jpeg',
-  Daksh: '/Other images/1759265474674~3.jpg',
-
-  // Seminars & academic
-  'Falak Khan': '/Team images/Falak.jpeg',
-  'Faizah Wani': '/Team images/Faizah.jpeg',
-  'Sri Raghava': '/Team images/Sri Raghava.jpeg',
-
-  // Media & design
-  Deepali: '/Team images/Deepali.jpeg',
-  Nitesh: '/Team images/Nitesh.jpeg',
-  'Simran Sehgal': '/Team images/Simran Sehgal.jpeg',
-  'Simranjit Kaur': '/Team images/Simranjit Kaur.jpeg',
-
-  // Outreach & publicity
-  'Ram Kunawar': '/Team images/Ram.jpeg',
-  Nishant: '/Team images/Nishant.jpeg',
-};
 
 /* =========================
    UTILITIES
@@ -614,11 +584,8 @@ export default function TeamPage() {
         // Transform Sanity data to component format with local photo fallbacks
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedData: TeamMemberLocal[] = allMembers.map((member: any) => {
-          const nameKey = (member.name || '').trim();
-          const fallbackPhoto = TEAM_FALLBACK_PHOTOS[nameKey];
           const photo =
-            member.photo ||
-            fallbackPhoto ||
+            getTeamPhoto(member.name || '', member.photo) ||
             "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='55' font-size='50' text-anchor='middle' fill='%239e9e9e'%3E%3C/text%3E%3C/svg%3E";
 
           return {

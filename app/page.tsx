@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 
 import AppLayout from '@/components/layout/AppLayout';
+import DiwaliGreeting from '@/components/home/DiwaliGreeting';
 
 const RecentActivities = dynamic(() => import('@/components/home/RecentActivities'), {
   ssr: false,
@@ -592,6 +593,8 @@ const CIEHeroDesign = () => {
           >
             Building Futures, Strengthening Foundations
           </motion.p>
+
+          <DiwaliGreeting />
         </div>
       </div>
     </div>
